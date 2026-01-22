@@ -1,0 +1,73 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4D9134', 'primaryTextColor': '#000', 'primaryBorderColor': '#2D3E35', 'lineColor': '#2D3E35', 'secondaryColor': '#E3DED1', 'tertiaryColor': '#F5F7F5', 'actorBkg': '#4D9134', 'actorTextColor': '#fff', 'signalColor': '#2D3E35', 'signalTextColor': '#000', 'noteBkgColor': '#FFF8E1', 'noteTextColor': '#000', 'activationBorderColor': '#2D3E35', 'sequenceNumberColor': '#fff'}}}%%
+sequenceDiagram
+    autonumber
+    participant Corp as Corporate<br/>(Originator)
+    participant GW as Bank API<br/>Gateway
+    participant MMS as MMS/<br/>Channel
+    participant CBO as CBO<br/>(Central System)
+    participant Bank as Respective<br/>Bank
+    participant Cust as Customer
+
+    rect rgb(232, 245, 233)
+        Note over Corp,CBO: Mandate Initiation Flow
+        Corp->>GW: POST /mandates (Bearer token)
+        GW->>GW: Validate JWT/Keycloak token
+        GW->>MMS: Forward Mandate Request + headers
+        MMS->>CBO: Send Mandate Request (MNDT)
+
+        rect rgb(255, 249, 196)
+            CBO->>CBO: Syntactic & business rule validation
+        end
+
+        CBO-->>MMS: Immediate ACK (MNDTACK) + CorrelationId
+        MMS-->>GW: Relay ACK + CorrelationId
+        GW-->>Corp: Relay ACK + CorrelationId
+
+        Note over CBO,Bank: Persist mapping: RequestId ↔ CorrelationId
+
+        CBO->>Bank: Forward Mandate to Respective Bank
+
+        rect rgb(255, 249, 196)
+            Bank->>Bank: Bank performs mandate checks/holds
+        end
+
+        Bank->>Cust: Notify customer for mandate approval/rejection
+    end
+
+    alt Customer Accepts
+        rect rgb(200, 230, 201)
+            Cust-->>Bank: Acknowledgement: ACCEPT
+            Bank-->>CBO: Mandate Response (MNDTRESP: ACCEPT)
+            CBO-->>MMS: Final Response (MNDTRESP: ACCEPT)
+            MMS-->>GW: Relay Final Response
+            GW-->>Corp: Relay Final Response
+        end
+    else Customer Rejects
+        rect rgb(255, 205, 210)
+            Cust-->>Bank: Acknowledgement: REJECT
+            Bank-->>CBO: Mandate Response (MNDTRESP: REJECT)
+            CBO-->>MMS: Final Response (MNDTRESP: REJECT)
+            MMS-->>GW: Relay Final Response
+            GW-->>Corp: Relay Final Response
+        end
+    end
+
+    rect rgb(239, 239, 239)
+        Note over Corp,CBO: Error Handling Scenarios
+
+        opt Token Invalid / Scope Denied
+            GW-->>Corp: 401/403 (Invalid token / Insufficient scope)
+        end
+
+        opt Validation Failure at CBO
+            CBO-->>MMS: MNDTACK with errors (CorrelationId)
+            MMS-->>GW: Relay errors
+            GW-->>Corp: Relay errors
+        end
+
+        opt Bank SLA Timeout / No Customer Action
+            CBO-->>MMS: MNDTRESP: TIMEOUT / EXPIRED
+            MMS-->>GW: Relay timeout
+            GW-->>Corp: Relay timeout
+        end
+    end

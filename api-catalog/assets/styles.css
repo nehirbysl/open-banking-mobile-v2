@@ -1,0 +1,574 @@
+/* Bank Dhofar API Specification Guide - Stylesheet
+   Based on Bank Dhofar Design System
+   Optimized for A4 Portrait PDF Output
+
+   Color Reference (for maintenance):
+   - Primary Lime Green: #92D050
+   - Dark Green (Headers): #4D9134
+   - Forest Green (Secondary): #549E39
+   - Teal (Links): #029676
+   - Blue (Info): #0989B1
+   - Cream (Borders): #E3DED1
+   - White: #FFFFFF
+   - Light Gray: #F5F7F5
+   - Dark (Body text): #2D3E35
+   - Amber: #FFC107
+   - Red: #DC3545
+*/
+
+/* ============================================
+   Page Setup for Print/PDF
+   ============================================ */
+@page {
+    size: A4 portrait;
+    margin: 25mm 15mm 20mm 15mm;
+
+    @top-left {
+        content: "Bank Dhofar API Specification Guide V1.3";
+        font-size: 9pt;
+        color: #666;
+    }
+
+    @top-right {
+        content: element(header-logo);
+    }
+
+    @bottom-left {
+        content: "Confidential - Partners";
+        font-size: 8pt;
+        color: #999;
+    }
+
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 8pt;
+        color: #999;
+    }
+}
+
+@page :first {
+    margin: 0;
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+}
+
+@page toc {
+    @top-left { content: none; }
+}
+
+/* Running header logo element */
+.header-logo-container {
+    position: running(header-logo);
+}
+
+.header-logo-container img {
+    height: 20pt;
+    width: auto;
+}
+
+/* ============================================
+   Base Typography
+   ============================================ */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10pt;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: #2D3E35;
+    background: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   Headings
+   ============================================ */
+h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    color: #4D9134;
+    margin: 0 0 10pt 0;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 16pt;
+    font-weight: 600;
+    color: #4D9134;
+    border-bottom: 3px solid #92D050;
+    padding-bottom: 4pt;
+    margin: 20pt 0 12pt 0;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: 600;
+    color: #4D9134;
+    margin: 16pt 0 8pt 0;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 11pt;
+    font-weight: 600;
+    color: #549E39;
+    margin: 12pt 0 6pt 0;
+    page-break-after: avoid;
+}
+
+h5 {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #2D3E35;
+    margin: 10pt 0 4pt 0;
+}
+
+/* ============================================
+   Cover Page
+   ============================================ */
+.cover-page {
+    page: first;
+    width: 210mm;
+    height: 297mm;
+    background-color: #4D9134;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 180pt 40pt 40pt 40pt;
+    margin: 0;
+    page-break-after: always;
+}
+
+.cover-page-inner {
+    /* No positioning tricks - just let it flow naturally */
+}
+
+.cover-page .logo {
+    width: 180px;
+    height: auto;
+    margin: 0 auto 40pt auto;
+    display: block;
+    /* White box with rounded corners for logo visibility */
+    background-color: #FFFFFF;
+    padding: 15pt 25pt;
+    border-radius: 8pt;
+}
+
+.cover-page h1 {
+    color: #FFFFFF;
+    font-size: 36pt;
+    margin: 0 0 15pt 0;
+    border: none;
+    line-height: 1.2;
+}
+
+.cover-page .subtitle {
+    color: #92D050;
+    font-size: 20pt;
+    font-weight: 400;
+    margin-bottom: 50pt;
+}
+
+.cover-page .version {
+    color: #E3DED1;
+    font-size: 14pt;
+    margin-bottom: 8pt;
+}
+
+.cover-page .classification {
+    color: #FFFFFF;
+    font-size: 11pt;
+    margin-top: 60pt;
+    padding: 10pt 30pt;
+    border: 2px solid #92D050;
+    border-radius: 8pt;
+    display: inline-block;
+    background-color: #3d7329;
+}
+
+/* ============================================
+   Table of Contents
+   ============================================ */
+.toc {
+    page: toc;
+    page-break-after: always;
+}
+
+.toc h2 {
+    border-bottom: none;
+    text-align: center;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    padding: 4pt 0;
+    border-bottom: 1px dotted #ccc;
+}
+
+.toc-list li a {
+    color: #2D3E35;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.toc-list li a:hover {
+    color: #029676;
+}
+
+.toc-part {
+    font-weight: 600;
+    color: #4D9134;
+    margin-top: 12pt;
+    padding-top: 8pt;
+    border-bottom: 2px solid #92D050;
+}
+
+.toc-section {
+    padding-left: 15pt;
+}
+
+/* ============================================
+   Section Dividers
+   ============================================ */
+.part-divider {
+    page-break-before: always;
+    background-color: #4D9134;
+    color: #FFFFFF;
+    padding: 40pt 30pt;
+    margin: 0 -15mm 20pt -15mm;
+    text-align: center;
+}
+
+.part-divider .part-number {
+    font-size: 48pt;
+    font-weight: 700;
+    color: #92D050;
+    margin-bottom: 10pt;
+}
+
+.part-divider h2 {
+    color: #FFFFFF;
+    border: none;
+    font-size: 20pt;
+    margin: 0;
+}
+
+.part-divider .part-description {
+    color: #E3DED1;
+    font-size: 11pt;
+    margin-top: 10pt;
+}
+
+/* ============================================
+   Tables
+   ============================================ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12pt 0;
+    font-size: 9pt;
+    page-break-inside: auto;
+}
+
+thead {
+    display: table-header-group;
+}
+
+tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+th {
+    background: #4D9134;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-align: left;
+    padding: 8pt 6pt;
+    border: 1px solid #4D9134;
+}
+
+td {
+    padding: 6pt;
+    border: 1px solid #ddd;
+    vertical-align: top;
+}
+
+tr:nth-child(even) {
+    background: #F5F7F5;
+}
+
+/* Compact table variant */
+table.compact td,
+table.compact th {
+    padding: 4pt 6pt;
+    font-size: 8pt;
+}
+
+/* Parameter table */
+table.params th:first-child,
+table.params td:first-child {
+    width: 25%;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 8pt;
+}
+
+table.params th:nth-child(2),
+table.params td:nth-child(2) {
+    width: 15%;
+}
+
+/* ============================================
+   Code Blocks
+   ============================================ */
+pre {
+    background: #f8f9fa;
+    border: 1px solid #E3DED1;
+    border-left: 4px solid #92D050;
+    border-radius: 0 4pt 4pt 0;
+    padding: 10pt;
+    margin: 10pt 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 8pt;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    page-break-inside: avoid;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 9pt;
+    background: #f0f0f0;
+    padding: 1pt 4pt;
+    border-radius: 2pt;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* ============================================
+   Info Boxes
+   ============================================ */
+.info-box {
+    background: #e3f2fd;
+    border-left: 4px solid #0989B1;
+    padding: 10pt 12pt;
+    margin: 12pt 0;
+    border-radius: 0 4pt 4pt 0;
+}
+
+.warning-box {
+    background: #fff8e1;
+    border-left: 4px solid #FFC107;
+    padding: 10pt 12pt;
+    margin: 12pt 0;
+    border-radius: 0 4pt 4pt 0;
+}
+
+.important-box {
+    background: #e8f5e9;
+    border-left: 4px solid #92D050;
+    padding: 10pt 12pt;
+    margin: 12pt 0;
+    border-radius: 0 4pt 4pt 0;
+}
+
+.info-box strong,
+.warning-box strong,
+.important-box strong {
+    display: block;
+    margin-bottom: 4pt;
+}
+
+/* ============================================
+   API Endpoint Box
+   ============================================ */
+.endpoint-box {
+    background: #F5F7F5;
+    border: 1px solid #E3DED1;
+    border-radius: 4pt;
+    padding: 10pt 12pt;
+    margin: 12pt 0;
+}
+
+.endpoint-box .method {
+    display: inline-block;
+    padding: 2pt 8pt;
+    border-radius: 3pt;
+    font-weight: 600;
+    font-size: 9pt;
+    margin-right: 8pt;
+}
+
+.endpoint-box .method.post {
+    background: #549E39;
+    color: white;
+}
+
+.endpoint-box .method.get {
+    background: #0989B1;
+    color: white;
+}
+
+.endpoint-box .method.put {
+    background: #FFC107;
+    color: #333;
+}
+
+.endpoint-box .method.delete {
+    background: #DC3545;
+    color: white;
+}
+
+.endpoint-box .url {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 9pt;
+    color: #2D3E35;
+}
+
+/* ============================================
+   Badges
+   ============================================ */
+.badge {
+    display: inline-block;
+    padding: 2pt 6pt;
+    border-radius: 3pt;
+    font-size: 8pt;
+    font-weight: 600;
+}
+
+.badge-required {
+    background: #ffebee;
+    color: #DC3545;
+}
+
+.badge-optional {
+    background: #e8f5e9;
+    color: #549E39;
+}
+
+.badge-string {
+    background: #e3f2fd;
+    color: #0989B1;
+}
+
+.badge-number {
+    background: #fff8e1;
+    color: #f57c00;
+}
+
+.badge-boolean {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* ============================================
+   Lists
+   ============================================ */
+ul, ol {
+    margin: 8pt 0;
+    padding-left: 20pt;
+}
+
+li {
+    margin: 4pt 0;
+}
+
+/* ============================================
+   Links
+   ============================================ */
+a {
+    color: #029676;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================
+   Diagrams
+   ============================================ */
+.diagram {
+    text-align: center;
+    margin: 16pt 0;
+    page-break-inside: avoid;
+}
+
+.diagram img {
+    max-width: 100%;
+    height: auto;
+}
+
+.diagram-caption {
+    font-size: 9pt;
+    color: #666;
+    font-style: italic;
+    margin-top: 6pt;
+}
+
+/* ============================================
+   Page Breaks
+   ============================================ */
+.page-break {
+    page-break-after: always;
+}
+
+.no-break {
+    page-break-inside: avoid;
+}
+
+/* ============================================
+   Footer Note
+   ============================================ */
+.document-footer {
+    margin-top: 30pt;
+    padding-top: 15pt;
+    border-top: 1px solid #E3DED1;
+    font-size: 8pt;
+    color: #666;
+    text-align: center;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: #666; }
+.text-small { font-size: 8pt; }
+.mt-1 { margin-top: 8pt; }
+.mt-2 { margin-top: 16pt; }
+.mb-1 { margin-bottom: 8pt; }
+.mb-2 { margin-bottom: 16pt; }
+
+/* ============================================
+   Print Optimizations
+   ============================================ */
+@media print {
+    .no-print {
+        display: none;
+    }
+
+    a[href]:after {
+        content: none;
+    }
+}

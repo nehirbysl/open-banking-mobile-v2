@@ -1,0 +1,53 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4D9134', 'primaryTextColor': '#fff', 'primaryBorderColor': '#2D3E35', 'lineColor': '#2D3E35', 'secondaryColor': '#E3DED1', 'tertiaryColor': '#F5F7F5', 'clusterBkg': '#F5F7F5', 'clusterBorder': '#4D9134', 'edgeLabelBackground': '#fff'}}}%%
+flowchart TB
+    subgraph Partners["B2B Partners"]
+        P1[Corporate Systems]
+        P2[Financial Institutes]
+        P3[Payment Platforms]
+    end
+
+    subgraph BankDhofar["Bank Dhofar API Gateway"]
+        direction TB
+        GW[API Gateway<br/>api-gateway.bankdhofar.com]
+    end
+
+    subgraph APIs["API Services"]
+        direction TB
+
+        subgraph EasyBiz["Part 1: EasyBiz Payment Services"]
+            E1[Customer Management]
+            E2[Virtual Accounts]
+            E3[Payment Collection]
+        end
+
+        subgraph Corp["Part 2: Corporate Banking APIs"]
+            C1[Account Inquiry]
+            C2[Beneficiary Management]
+            C3[Fund Transfers]
+            C4[Statements & History]
+        end
+
+        subgraph Mandate["Part 3: E-Mandate Services"]
+            M1[Company Registration]
+            M2[Mandate Lifecycle]
+            M3[Bulk Payments]
+        end
+    end
+
+    subgraph Core["Core Banking Systems"]
+        CBS[Core Banking]
+        CBO[CBO/ProgressSoft]
+    end
+
+    P1 --> GW
+    P2 --> GW
+    P3 --> GW
+
+    GW --> EasyBiz
+    GW --> Corp
+    GW --> Mandate
+
+    EasyBiz --> CBS
+    Corp --> CBS
+    Mandate --> CBO
+    CBO --> CBS

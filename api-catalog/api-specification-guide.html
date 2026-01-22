@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Dhofar API Specification Guide V1.3</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<!-- Running header logo (appears on all pages except cover) -->
+<div class="header-logo-container">
+    <img src="assets/bankdhofar-logo.png" alt="Bank Dhofar">
+</div>
+
+<!-- ============================================
+     COVER PAGE
+     ============================================ -->
+<div class="cover-page">
+    <div class="cover-page-inner">
+        <img src="assets/bankdhofar-logo.png" alt="Bank Dhofar" class="logo">
+        <h1>API Specification Guide</h1>
+        <div class="subtitle">API Catalog</div>
+        <div class="version">Version 1.3</div>
+        <div class="version">January 2026</div>
+        <div class="classification">Confidential - Partners</div>
+    </div>
+</div>
+
+<!-- ============================================
+     DOCUMENT INFORMATION
+     ============================================ -->
+<h2>Document Information</h2>
+
+<table>
+    <tr><th>Item</th><th>Details</th></tr>
+    <tr><td>Document Title</td><td>Bank Dhofar API Specification Guide</td></tr>
+    <tr><td>Version</td><td>1.3</td></tr>
+    <tr><td>Classification</td><td>Confidential - Partners</td></tr>
+    <tr><td>Country</td><td>Oman</td></tr>
+    <tr><td>Last Updated</td><td>January 2026</td></tr>
+</table>
+
+<h3>Version History</h3>
+<table>
+    <tr><th>Version</th><th>Description</th><th>Date</th></tr>
+    <tr><td>1.0</td><td>E-Mandate Integration Specification - Initial release</td><td>24-Jan-2024</td></tr>
+    <tr><td>1.1</td><td>Corporate Banking APIs - Initial release</td><td>12-Sep-2025</td></tr>
+    <tr><td>1.2</td><td>EasyBiz Payment Services - API Specification</td><td>11-Nov-2025</td></tr>
+    <tr><td>1.3</td><td>Consolidated API Catalog - All services unified</td><td>21-Jan-2026</td></tr>
+</table>
+
+<h3>Confidentiality Notice</h3>
+<div class="warning-box">
+    <strong>CONFIDENTIAL - PARTNERS ONLY</strong>
+    This document contains confidential and proprietary information of Bank Dhofar. The receipt or possession of this document does not convey any rights to reproduce or disclose its contents. This document must be used only in connection with authorized API integration projects and for no other purpose. Unauthorized disclosure to any third party is strictly prohibited.
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     TABLE OF CONTENTS
+     ============================================ -->
+<div class="toc">
+<h2>Table of Contents</h2>
+
+<ul class="toc-list">
+    <li><a href="#introduction"><span>Introduction</span><span>4</span></a></li>
+    <li><a href="#api-overview"><span>API Overview</span><span>5</span></a></li>
+
+    <li class="toc-part"><a href="#part1"><span>Part 1: EasyBiz Payment Services</span><span>7</span></a></li>
+    <li class="toc-section"><a href="#easybiz-intro"><span>1.1 Introduction & Authentication</span><span>7</span></a></li>
+    <li class="toc-section"><a href="#easybiz-create-customer"><span>1.2 Create Customer API</span><span>10</span></a></li>
+    <li class="toc-section"><a href="#easybiz-update-customer"><span>1.3 Update Customer API</span><span>12</span></a></li>
+    <li class="toc-section"><a href="#easybiz-fetch-va"><span>1.4 Fetch Virtual Account API</span><span>14</span></a></li>
+    <li class="toc-section"><a href="#easybiz-payment-basic"><span>1.5 Collect Payment - Basic API</span><span>15</span></a></li>
+    <li class="toc-section"><a href="#easybiz-payment-detailed"><span>1.6 Collect Payment - Detailed API</span><span>17</span></a></li>
+    <li class="toc-section"><a href="#easybiz-payment-status"><span>1.7 Check Payment Status API</span><span>20</span></a></li>
+    <li class="toc-section"><a href="#easybiz-update-payment"><span>1.8 Update Payment API</span><span>21</span></a></li>
+    <li class="toc-section"><a href="#easybiz-cancel-payment"><span>1.9 Cancel Payment API</span><span>22</span></a></li>
+
+    <li class="toc-part"><a href="#part2"><span>Part 2: Corporate Banking APIs</span><span>23</span></a></li>
+    <li class="toc-section"><a href="#corp-intro"><span>2.1 Introduction & Authentication</span><span>23</span></a></li>
+    <li class="toc-section"><a href="#corp-token"><span>2.2 Token Generation API</span><span>25</span></a></li>
+    <li class="toc-section"><a href="#corp-operative"><span>2.3 Operative Account Listing API</span><span>27</span></a></li>
+    <li class="toc-section"><a href="#corp-balance"><span>2.4 Account Balance Inquiry API</span><span>29</span></a></li>
+    <li class="toc-section"><a href="#corp-beneficiary"><span>2.5 Beneficiary Listing API</span><span>31</span></a></li>
+    <li class="toc-section"><a href="#corp-transfer"><span>2.6 Fund Transfer API</span><span>33</span></a></li>
+    <li class="toc-section"><a href="#corp-mini"><span>2.7 Mini Statement API</span><span>36</span></a></li>
+    <li class="toc-section"><a href="#corp-history"><span>2.8 Transaction History API</span><span>38</span></a></li>
+    <li class="toc-section"><a href="#corp-deposit"><span>2.9 Deposit Account Listing API</span><span>40</span></a></li>
+    <li class="toc-section"><a href="#corp-loan"><span>2.10 Loan Account Listing API</span><span>42</span></a></li>
+
+    <li class="toc-part"><a href="#part3"><span>Part 3: E-Mandate Services</span><span>44</span></a></li>
+    <li class="toc-section"><a href="#emandate-intro"><span>3.1 Introduction & Architecture</span><span>44</span></a></li>
+    <li class="toc-section"><a href="#emandate-auth"><span>3.2 Authentication</span><span>46</span></a></li>
+    <li class="toc-section"><a href="#emandate-register"><span>3.3 Company Registration API</span><span>47</span></a></li>
+    <li class="toc-section"><a href="#emandate-initiate"><span>3.4 Initiate Mandate API</span><span>48</span></a></li>
+    <li class="toc-section"><a href="#emandate-amend"><span>3.5 Amend Mandate API</span><span>51</span></a></li>
+    <li class="toc-section"><a href="#emandate-terminate"><span>3.6 Mandate Termination API</span><span>53</span></a></li>
+    <li class="toc-section"><a href="#emandate-ack"><span>3.7 Request Acknowledgement API</span><span>54</span></a></li>
+    <li class="toc-section"><a href="#emandate-accept"><span>3.8 Request Acceptance API</span><span>55</span></a></li>
+    <li class="toc-section"><a href="#emandate-bulk-release"><span>3.9 Bulk Payment Release API</span><span>56</span></a></li>
+    <li class="toc-section"><a href="#emandate-bulk-response"><span>3.10 Bulk Payment Response API</span><span>57</span></a></li>
+    <li class="toc-section"><a href="#emandate-errors"><span>3.11 Error Codes Reference</span><span>58</span></a></li>
+
+    <li class="toc-part"><a href="#appendix"><span>Appendix</span><span>59</span></a></li>
+    <li class="toc-section"><a href="#appendix-purpose-codes"><span>A. Transaction Purpose Codes</span><span>59</span></a></li>
+    <li class="toc-section"><a href="#appendix-endpoints"><span>B. Quick Reference - All Endpoints</span><span>61</span></a></li>
+</ul>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     INTRODUCTION
+     ============================================ -->
+<h2 id="introduction">Introduction</h2>
+
+<p>This comprehensive document serves as the official API specification guide for Bank Dhofar's partner services. It provides detailed interface specifications to enable seamless integration between partners and Bank Dhofar's banking systems.</p>
+
+<p>The APIs documented herein enable secure, real-time communication between external corporate systems and Bank Dhofar's infrastructure, supporting operations such as:</p>
+
+<ul>
+    <li><strong>Payment Collection</strong> - Create customers, virtual accounts, and collect payments</li>
+    <li><strong>Account Management</strong> - Query balances, statements, and transaction history</li>
+    <li><strong>Fund Transfers</strong> - Initiate transfers within the bank and across Oman</li>
+    <li><strong>E-Mandate Services</strong> - Manage recurring payment mandates with Financial Institutes</li>
+</ul>
+
+<h3>API Design Principles</h3>
+<ul>
+    <li>RESTful architecture using JSON for data exchange</li>
+    <li>OAuth 2.0 / OpenID Connect authentication</li>
+    <li>HTTPS transport with TLS 1.2+</li>
+    <li>Strict validation with structured error responses</li>
+</ul>
+
+<div class="info-box">
+    <strong>Production URLs</strong>
+    This document contains UAT/Test environment URLs. For production endpoint URLs, please contact your Bank Dhofar relationship manager.
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     API OVERVIEW
+     ============================================ -->
+<h2 id="api-overview">API Overview</h2>
+
+<h3>API Services Summary</h3>
+
+<table>
+    <tr>
+        <th>Part</th>
+        <th>Service</th>
+        <th>APIs</th>
+        <th>Authentication</th>
+        <th>Use Case</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>EasyBiz Payment Services</td>
+        <td>9</td>
+        <td>OAuth2 + mTLS + AES-256</td>
+        <td>Payment collection, invoicing</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Corporate Banking APIs</td>
+        <td>9</td>
+        <td>OAuth2 + VPN</td>
+        <td>Account inquiry, fund transfers</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>E-Mandate Services</td>
+        <td>9</td>
+        <td>Keycloak OIDC</td>
+        <td>Recurring mandate management</td>
+    </tr>
+</table>
+
+<h3>Base URLs</h3>
+
+<table>
+    <tr>
+        <th>Service</th>
+        <th>Environment</th>
+        <th>Base URL</th>
+    </tr>
+    <tr>
+        <td>EasyBiz</td>
+        <td>UAT</td>
+        <td><code>https://easybiz.dob.bankdhofar.com:1650</code></td>
+    </tr>
+    <tr>
+        <td>Corporate Banking</td>
+        <td>UAT</td>
+        <td><code>https://api-gateway.uat.bankdhofar.com</code></td>
+    </tr>
+    <tr>
+        <td>E-Mandate</td>
+        <td>UAT</td>
+        <td><code>https://api-gateway.uat.bankdhofar.com</code></td>
+    </tr>
+</table>
+
+<h3>Architecture Overview</h3>
+
+<div class="diagram">
+    <img src="diagrams/api-overview.png" alt="Bank Dhofar API Architecture" style="max-width: 100%; height: auto;">
+    <div class="diagram-caption">Figure 1: Bank Dhofar API Architecture</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     PART 1: EASYBIZ PAYMENT SERVICES
+     ============================================ -->
+<div class="part-divider" id="part1">
+    <div class="part-number">1</div>
+    <h2>EasyBiz Payment Services</h2>
+    <div class="part-description">Customer Management, Virtual Accounts & Payment Collection APIs</div>
+</div>
+
+<h2 id="easybiz-intro">1.1 Introduction & Authentication</h2>
+
+<p>EasyBiz Payment Services enable partners to manage customers, create virtual accounts, and collect payments through Bank Dhofar's infrastructure.</p>
+
+<h3>Authentication Flow</h3>
+
+<h4>Step 1: Client Registration</h4>
+<p>Partners must register their applications to receive:</p>
+<ul>
+    <li><code>client_id</code> - Unique identifier for the client application</li>
+    <li><code>client_secret</code> - Secret key for authentication</li>
+</ul>
+
+<h4>Step 2: Token Generation</h4>
+<ol>
+    <li>Client sends POST request to <code>/oauth2GetToken</code> with credentials</li>
+    <li>System generates access token with client information</li>
+    <li>Token is cached for validation purposes</li>
+    <li>Access token is returned to client (expires in 3600 seconds)</li>
+</ol>
+
+<h4>Step 3: API Access</h4>
+<ol>
+    <li>Client includes access token in Authorization header: <code>Bearer &lt;token&gt;</code></li>
+    <li>OAuth2 middleware validates the token</li>
+    <li>Middleware extracts client information and sets up request context</li>
+    <li>API processes the request with authenticated client data</li>
+</ol>
+
+<h3>Token Generation Endpoint</h3>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://easybiz.dob.bankdhofar.com:1650/Api/v1.0/oauth2GetToken</span>
+</div>
+
+<h4>Request Body</h4>
+<pre><code>{
+    "grant_type": "client_credentials",
+    "client_id": "hylo_470_5e5c41222d17ce4d",
+    "client_secret": "$2a$10$jRaFtxVnke4q36jDe2A4uubWP",
+    "scope": "payment:write"
+}</code></pre>
+
+<h4>Response</h4>
+<pre><code>{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "token_type": "Bearer",
+    "expires_in": 3600,
+    "scope": "payment:write"
+}</code></pre>
+
+<h3>Security Requirements</h3>
+
+<div class="important-box">
+    <strong>mTLS Required</strong>
+    Certificate and Key must be passed while calling APIs since mTLS is enabled.
+</div>
+
+<h4>Request Body Encryption</h4>
+<p>Request body must be encrypted and passed in the <code>Data</code> field. Responses are also encrypted.</p>
+
+<table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Algorithm</td><td>AES-256 in CBC mode with PKCS5 padding</td></tr>
+    <tr><td>IV</td><td>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}</td></tr>
+    <tr><td>Key Derivation</td><td>PBKDF2 with SHA-1</td></tr>
+</table>
+
+<p class="text-muted text-small">* Key and salt will be shared separately by Bank Dhofar.</p>
+
+<h4>Client Certificate Generation</h4>
+<pre><code># Step 1: Generate client key
+openssl genrsa -out client.key 2048
+
+# Step 2: Generate client CSR
+openssl req -new -key client.key -out client.csr \
+    -subj "/C=OM/ST=Muscat/L=Muscat/O=YourOrg/OU=Client/CN=client-user"
+
+# Step 3: Create client-ext.cnf
+echo "extendedKeyUsage = clientAuth" > client-ext.cnf
+
+# Step 4: Sign Client CSR with CA
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+    -out client.crt -days 825 -sha256 -extfile client-ext.cnf</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Create Customer API -->
+<h2 id="easybiz-create-customer">1.2 Create Customer API</h2>
+
+<p>Creates a new customer/contact in the system and returns a virtual account number.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/CreateContact</span>
+</div>
+
+<table class="compact">
+    <tr><th>Content Type</th><td>application/json</td></tr>
+    <tr><th>Method</th><td>POST</td></tr>
+    <tr><th>Authentication</th><td>Bearer Token + mTLS</td></tr>
+</table>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>ContactEmail</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Contact/Buyer's Email Id</td></tr>
+    <tr><td>ContactMobile</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Contact's Mobile Number</td></tr>
+    <tr><td>ContactBizName</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Contact's organization Name</td></tr>
+    <tr><td>ContactFullName</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Name of the contact</td></tr>
+    <tr><td>CompanyId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Seller CompanyId</td></tr>
+    <tr><td>Mobile</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Seller Username</td></tr>
+    <tr><td>OpeningBalance</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Opening Balance</td></tr>
+    <tr><td>Address1</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Address line 1</td></tr>
+    <tr><td>Address2</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Address line 2</td></tr>
+    <tr><td>City</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>City</td></tr>
+    <tr><td>State</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>State</td></tr>
+    <tr><td>Country</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Country</td></tr>
+    <tr><td>PostalCode</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Postal Code</td></tr>
+</table>
+
+<h4>Response Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+    <tr><td>Code</td><td>String</td><td>Response code (0 = success)</td></tr>
+    <tr><td>Status</td><td>String</td><td>Status of contact creation</td></tr>
+    <tr><td>Message</td><td>String</td><td>Descriptive message</td></tr>
+    <tr><td>Contact.Id</td><td>String</td><td>Unique contact identifier</td></tr>
+    <tr><td>Contact.LedgerLink</td><td>String</td><td>Unique LedgerLink</td></tr>
+    <tr><td>VPA</td><td>String</td><td>Virtual Account Number</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "CompanyId": "415",
+    "ContactEmail": "john@gmail.com",
+    "ContactMobile": "67111101",
+    "Mobile": "H.891999920",
+    "ContactBizName": "BritannicaEnterprise",
+    "ContactFullName": "john",
+    "MobileCountry": "Oman",
+    "Address1": "AS1",
+    "Address2": "Bait Al Falaj St",
+    "City": "Cbd",
+    "State": "Ruwi",
+    "Country": "Oman",
+    "PostalCode": "2992"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "Code": "0",
+    "Message": "Contact created successfully.",
+    "Status": "APPROVED",
+    "Contact": {
+        "Id": "983",
+        "LedgerLink": "iqQ6B39t",
+        "Mobile": "6578934",
+        "OpeningBalance": "0"
+    },
+    "VPA": "0603143010351739"
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Update Customer API -->
+<h2 id="easybiz-update-customer">1.3 Update Customer API</h2>
+
+<p>Updates an existing customer/contact in the system.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/UpdateContact</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>ContactId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>ContactId from create contact response</td></tr>
+    <tr><td>CompanyId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>CompanyId</td></tr>
+    <tr><td>Mobile</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Username of the seller</td></tr>
+    <tr><td>ContactEmail</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Contact's Email (either email or mobile required)</td></tr>
+    <tr><td>ContactMobile</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Contact's Mobile (either email or mobile required)</td></tr>
+    <tr><td>ContactBizName</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Contact's organization name</td></tr>
+    <tr><td>ContactFullName</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Name of the contact</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "ContactId": "841",
+    "CompanyId": "415",
+    "Mobile": "H.891999920",
+    "ContactEmail": "john1@gmail.com",
+    "ContactMobile": "24833083",
+    "ContactBizName": "britannica enterprises",
+    "ContactFullName": "john"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "Code": "0",
+    "Message": "Contact updated successfully.",
+    "Status": "APPROVED",
+    "Contact": {
+        "Id": "841",
+        "LedgerLink": "RyovWajv",
+        "Mobile": "24833083",
+        "Email": "john1@gmail.com"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Fetch Virtual Account API -->
+<h2 id="easybiz-fetch-va">1.4 Fetch Virtual Account API</h2>
+
+<p>Retrieves the virtual account number for an existing contact.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/fetchVirtualAccount</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>ContactId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Contact/Buyer Unique Identification Number</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "ContactId": "795"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "Code": "0",
+    "Message": "Contact account number fetched successfully.",
+    "Status": "APPROVED",
+    "Contact": {
+        "Id": "795",
+        "VPA": "0702617"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Collect Payment - Basic API -->
+<h2 id="easybiz-payment-basic">1.5 Collect Payment - Basic API</h2>
+
+<p>Creates a basic payment link for collecting payments.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/Payment</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>orderId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Unique Identifier for Payment Link</td></tr>
+    <tr><td>amount</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Payment Amount</td></tr>
+    <tr><td>customer_name</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Name of the Payer</td></tr>
+    <tr><td>customer_mobile</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Payer Mobile Number</td></tr>
+    <tr><td>customer_email</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Payer Email Id</td></tr>
+    <tr><td>currency</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Currency (default: "OMR")</td></tr>
+    <tr><td>expire_by</td><td>Integer</td><td><span class="badge badge-optional">Optional</span></td><td>Payment expiry timestamp</td></tr>
+    <tr><td>sms_notify</td><td>Boolean</td><td><span class="badge badge-optional">Optional</span></td><td>Send SMS notification (default: true)</td></tr>
+    <tr><td>email_notify</td><td>Boolean</td><td><span class="badge badge-optional">Optional</span></td><td>Send Email notification (default: true)</td></tr>
+    <tr><td>partial_payment</td><td>Boolean</td><td><span class="badge badge-optional">Optional</span></td><td>Allow partial payment (default: true)</td></tr>
+    <tr><td>dueDate</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Due Date (YYYY-MM-DD)</td></tr>
+    <tr><td>redirect_url</td><td>String</td><td><span class="badge badge-optional">Optional</span></td><td>Redirect URL after payment</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "orderId": "INV1001",
+    "amount": "100",
+    "customer_name": "TEST ACCOUNT PVT LTD",
+    "customer_mobile": "919999999999",
+    "customer_email": "testaccount@example.com",
+    "currency": "OMR",
+    "expire_by": 1691097057,
+    "sms_notify": true,
+    "email_notify": true,
+    "partial_payment": true,
+    "dueDate": "2022-05-24"
+}</code></pre>
+
+<h4>Sample Response - Success</h4>
+<pre><code>{
+    "code": "0",
+    "message": "Payment link created successfully",
+    "status": "CREATED",
+    "hyloRefNo": "PAY123456",
+    "currency": "OMR",
+    "short_url": "https://pay.bankdhofar.com/p/abc123",
+    "order_id": "INV1001",
+    "expire_by": 1691097057,
+    "issued_at": 1690924257,
+    "amount": "100",
+    "amount_due": "100",
+    "amount_paid": "0",
+    "customer_name": "TEST ACCOUNT PVT LTD",
+    "customer_mobile": "919999999999",
+    "customer_email": "testaccount@example.com",
+    "dueDate": "2022-05-24"
+}</code></pre>
+
+<h4>Sample Response - Failure</h4>
+<pre><code>{
+    "code": "1001",
+    "type": "VALIDATION_ERROR",
+    "message": "Invalid order ID format"
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Collect Payment - Detailed API -->
+<h2 id="easybiz-payment-detailed">1.6 Collect Payment - Detailed API</h2>
+
+<p>Creates a detailed invoice with line items, taxes, discounts, and generates a payment link.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/createInvoice</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+    <tr><td>orderId</td><td>String</td><td>Unique identifier for the order</td></tr>
+    <tr><td>title</td><td>String</td><td>Title or description of the order</td></tr>
+    <tr><td>contactMobile</td><td>String</td><td>Customer's mobile number</td></tr>
+    <tr><td>contactEmail</td><td>String</td><td>Customer's email address</td></tr>
+    <tr><td>contactFullName</td><td>String</td><td>Customer's full name</td></tr>
+    <tr><td>chargeApplyType</td><td>String</td><td>Level at which charges apply (e.g., "Item Level")</td></tr>
+    <tr><td>items</td><td>Array</td><td>List of order items (see below)</td></tr>
+    <tr><td>charges</td><td>Object</td><td>Overall order-level charges</td></tr>
+    <tr><td>subTotal</td><td>String</td><td>Total amount before charges</td></tr>
+    <tr><td>totalTax</td><td>String</td><td>Total tax amount</td></tr>
+    <tr><td>totalDiscount</td><td>String</td><td>Total discount amount</td></tr>
+    <tr><td>totalAmount</td><td>String</td><td>Final total amount</td></tr>
+    <tr><td>currency</td><td>String</td><td>Currency code (e.g., "OMR")</td></tr>
+    <tr><td>generatePaymentLink</td><td>String</td><td>"yes" to generate payment link</td></tr>
+    <tr><td>DueDate</td><td>String</td><td>Due date for the payment</td></tr>
+</table>
+
+<h4>Items Array Structure</h4>
+
+<table class="params compact">
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>id</td><td>String</td><td>Unique item ID</td></tr>
+    <tr><td>name</td><td>String</td><td>Item name</td></tr>
+    <tr><td>units</td><td>String</td><td>Unit of measure (e.g., "pcs", "kg")</td></tr>
+    <tr><td>quantity</td><td>String</td><td>Quantity of the item</td></tr>
+    <tr><td>sellingPrice</td><td>String</td><td>Price per unit</td></tr>
+    <tr><td>totalAmount</td><td>String</td><td>Total amount for this item</td></tr>
+    <tr><td>itemCharges</td><td>Object</td><td>Item-level charges (taxes, discounts)</td></tr>
+</table>
+
+<h4>Charges Object Structure</h4>
+
+<table class="params compact">
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>taxes</td><td>Array</td><td>List of taxes [{name, value, amount}]</td></tr>
+    <tr><td>discounts</td><td>Array</td><td>List of discounts [{name, value, amount}]</td></tr>
+    <tr><td>otherCharges</td><td>Array</td><td>List of other charges [{name, value, amount}]</td></tr>
+</table>
+
+<h4>Sample Response - Success</h4>
+<pre><code>{
+    "code": "0",
+    "message": "Invoice created successfully",
+    "status": "CREATED",
+    "hyloRefNo": "INV789012",
+    "invoice_url": "https://invoice.bankdhofar.com/v/xyz789",
+    "short_url": "https://pay.bankdhofar.com/p/xyz789",
+    "order_id": "ORD-2024-001"
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Check Payment Status API -->
+<h2 id="easybiz-payment-status">1.7 Check Payment Status API</h2>
+
+<p>Retrieves the current status of a payment.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/PaymentStatus</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>orderId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Unique Identifier for Payment Link</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "orderId": "INV1001"
+}</code></pre>
+
+<h4>Sample Response - Success</h4>
+<pre><code>{
+    "code": "0",
+    "message": "Payment status retrieved",
+    "paymentDetails": {
+        "code": "0",
+        "message": "SUCCESS",
+        "txStatus": "COMPLETED",
+        "txTime": "2024-01-15T10:30:00Z",
+        "paymentStatus": "PAID",
+        "currency": "OMR",
+        "paymentMode": "CARD",
+        "referenceId": "TXN123456789",
+        "orderAmount": "100.000",
+        "remainingAmount": "0.000",
+        "signature": "abc123def456..."
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Update Payment API -->
+<h2 id="easybiz-update-payment">1.8 Update Payment API</h2>
+
+<p>Updates an existing payment record (e.g., for cash or cheque payments).</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/UpdatePayment</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+    <tr><td>orderId</td><td>String</td><td>Order/Invoice identifier</td></tr>
+    <tr><td>paymentMode</td><td>String</td><td>Mode of Payment (CASH, CHEQUE)</td></tr>
+    <tr><td>amount</td><td>String</td><td>Amount being paid</td></tr>
+    <tr><td>status</td><td>String</td><td>Payment status (e.g., "PAID")</td></tr>
+    <tr><td>refNo</td><td>String</td><td>Cheque Number (for cheque payments)</td></tr>
+    <tr><td>settlementDate</td><td>String</td><td>Cheque Date (for cheque payments)</td></tr>
+    <tr><td>bankName</td><td>String</td><td>Bank Name (for cheque payments)</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "orderId": "INV1001",
+    "paymentMode": "CASH",
+    "amount": "100",
+    "status": "PAID",
+    "refNo": "",
+    "settlementDate": "",
+    "bankName": ""
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "code": "0",
+    "message": "Payment updated successfully",
+    "status": "SUCCESS"
+}</code></pre>
+
+<!-- Cancel Payment API -->
+<h2 id="easybiz-cancel-payment">1.9 Cancel Payment API</h2>
+
+<p>Cancels an existing payment link.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">&lt;base_url&gt;/api/v1.0/CancelPayment</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>orderId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Unique Identifier for Payment Link</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "orderId": "INV1001"
+}</code></pre>
+
+<h4>Sample Response - Success</h4>
+<pre><code>{
+    "code": "0",
+    "type": "SUCCESS",
+    "message": "Payment cancelled successfully"
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     PART 2: CORPORATE BANKING APIs
+     ============================================ -->
+<div class="part-divider" id="part2">
+    <div class="part-number">2</div>
+    <h2>Corporate Banking APIs</h2>
+    <div class="part-description">Account Inquiry, Fund Transfers & Statement APIs for Corporate Customers</div>
+</div>
+
+<h2 id="corp-intro">2.1 Introduction & Authentication</h2>
+
+<p>The Corporate Banking APIs enable corporate customers to access account information, manage beneficiaries, and initiate fund transfers through Bank Dhofar's API infrastructure.</p>
+
+<h3>API Categories</h3>
+<ul>
+    <li><strong>Authentication APIs</strong> - Token generation for secure access</li>
+    <li><strong>Inquiry APIs</strong> - Fetch account balances, mini statements, and transaction history</li>
+    <li><strong>Listing APIs</strong> - Retrieve lists of accounts, beneficiaries, deposits, and loans</li>
+    <li><strong>Transaction APIs</strong> - Initiate fund transfers within the bank or across Oman</li>
+</ul>
+
+<h3>Security & Connectivity Requirements</h3>
+
+<table>
+    <tr><th>Requirement</th><th>Details</th></tr>
+    <tr><td>Protocol</td><td>HTTPS</td></tr>
+    <tr><td>Authentication</td><td>OAuth 2.0 Token-based</td></tr>
+    <tr><td>Data Format</td><td>JSON</td></tr>
+    <tr><td>Connectivity</td><td>VPN access required (provided during onboarding)</td></tr>
+    <tr><td>IP Whitelist</td><td>Static or dynamic IP ranges must be provided</td></tr>
+    <tr><td>Rate Limit</td><td>5 requests/second</td></tr>
+    <tr><td>Burst Rate</td><td>10 requests/second</td></tr>
+</table>
+
+<h3>Base URL</h3>
+<div class="endpoint-box">
+    <span class="url">https://api-gateway.uat.bankdhofar.com</span>
+</div>
+
+<div class="warning-box">
+    <strong>Open API Access Required</strong>
+    Users must be enabled for Open API access via admin settings: Corporate Customer Entitlements → User Maintenance → Modify Corporate User ID → "Open API Access Required Allowed" = Y
+</div>
+
+<div class="page-break"></div>
+
+<!-- Token Generation API -->
+<h2 id="corp-token">2.2 Token Generation API</h2>
+
+<p>Generates an OAuth2 access token for authenticating subsequent API calls.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/openauth/v2/oauth/token</span>
+</div>
+
+<h4>Request Body Parameters (x-www-form-urlencoded)</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Required</th><th>Example</th><th>Description</th></tr>
+    <tr><td>grant_type</td><td><span class="badge badge-required">Required</span></td><td>password</td><td>OAuth grant type</td></tr>
+    <tr><td>client_id</td><td><span class="badge badge-required">Required</span></td><td>86b90fd562c0b4b0cb14</td><td>Client identifier</td></tr>
+    <tr><td>client_secret</td><td><span class="badge badge-required">Required</span></td><td>a4cddf0aa8db0d7a...</td><td>Client secret</td></tr>
+    <tr><td>bank_id</td><td><span class="badge badge-required">Required</span></td><td>025</td><td>Bank identifier</td></tr>
+    <tr><td>channel_id</td><td><span class="badge badge-required">Required</span></td><td>I</td><td>Channel identifier</td></tr>
+    <tr><td>username</td><td><span class="badge badge-required">Required</span></td><td>MUATCORP.MAKER1</td><td>Corporate username</td></tr>
+    <tr><td>password</td><td><span class="badge badge-required">Required</span></td><td>Password@123</td><td>User password</td></tr>
+    <tr><td>language_id</td><td><span class="badge badge-required">Required</span></td><td>001</td><td>Language (001 = English)</td></tr>
+    <tr><td>login_type</td><td><span class="badge badge-required">Required</span></td><td>02</td><td>Login type</td></tr>
+    <tr><td>custom_data</td><td><span class="badge badge-required">Required</span></td><td>Y</td><td>Must be "Y" for Open API users</td></tr>
+</table>
+
+<h4>Request Headers</h4>
+<table class="params compact">
+    <tr><th>Header</th><th>Value</th></tr>
+    <tr><td>Content-Type</td><td>application/json</td></tr>
+    <tr><td>Accept</td><td>application/json</td></tr>
+</table>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "access_token": "4192dbb88915fcbcfaaa77b180572687bf75d50e8c57a66ae4ebc50f2bbc2211",
+    "token_type": "Bearer",
+    "expires_in": 3599,
+    "user": {
+        "userId": "MAKER1",
+        "userType": "2",
+        "corporateId": "MUATCORP",
+        "isTermsandConditionsAcceptanceRequired": "N",
+        "forceSignonPasswordChangeFlag": "N",
+        "forceTxnPasswordChangeFlag": "N",
+        "forceSecurityQuestionChangeFlag": "N",
+        "isUnifiedLoginAllowed": "N",
+        "uniqueId": "efb43cae8caf67b730aef72726b8ee3591b6f954"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Operative Account Listing API -->
+<h2 id="corp-operative">2.3 Operative Account Listing API</h2>
+
+<p>Retrieves the list of operative (current/savings) accounts for the corporate customer.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-operativeaccounts/accountsummarylist</span>
+</div>
+
+<h4>Path Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Description</th></tr>
+    <tr><td>bankid</td><td>Bank identifier (e.g., "025")</td></tr>
+    <tr><td>corpid</td><td>Corporate identifier</td></tr>
+    <tr><td>userid</td><td>User identifier</td></tr>
+</table>
+
+<h4>Query Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Required</th><th>Description</th></tr>
+    <tr><td>accountCurrency</td><td><span class="badge badge-required">Required</span></td><td>Currency filter (e.g., "OMR")</td></tr>
+</table>
+
+<h4>Request Headers</h4>
+<table class="params compact">
+    <tr><th>Header</th><th>Value</th></tr>
+    <tr><td>Authorization</td><td>Bearer {access_token}</td></tr>
+    <tr><td>Content-Type</td><td>application/json</td></tr>
+    <tr><td>Accept</td><td>application/json</td></tr>
+</table>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "header": {
+        "status": {
+            "message": [{"message_TYPE": "SU", "messageDesc": "SUCCESS", "messageCode": "0000"}]
+        },
+        "pagination": {"totalRecordCount": "12", "hasMoreRecords": "N", "numRecReturned": "12"}
+    },
+    "data": [
+        {
+            "accountId": "01040007431002",
+            "accountEntityType": {"codeType": "LMAT", "cmCode": "I", "codeDescription": "Home Bank Own Entity"},
+            "accountName": "OMAN INVESTMENT FINANCE CO",
+            "accountNickName": "OMAN INVES",
+            "accountStatus": {"codeType": "ACS", "cmCode": "O", "codeDescription": "Active"},
+            "accountCurrency": {"codeType": "CRN", "cmCode": "OMR", "codeDescription": "OMR"},
+            "accountType": {"codeType": "ACNT", "cmCode": "ODA", "codeDescription": "OVERDRAFT A/C"},
+            "balances": [
+                {"type": "totalBalance", "amountDetails": {"amount": 20348.648, "currency": "OMR"}},
+                {"type": "availableBalance", "amountDetails": {"amount": 20348.648, "currency": "OMR"}}
+            ]
+        }
+    ]
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Account Balance Inquiry API -->
+<h2 id="corp-balance">2.4 Account Balance Inquiry API</h2>
+
+<p>Retrieves detailed balance information for a specific account.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-operativeaccounts/{accountId}</span>
+</div>
+
+<h4>Path Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Description</th></tr>
+    <tr><td>accountId</td><td>Account number to query</td></tr>
+</table>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "accountId": "01040007431004",
+    "accountName": "OMAN INVESTMENT FINANCE CO",
+    "accountStatus": {"codeType": "ACS", "cmCode": "A", "codeDescription": "Active"},
+    "accountCurrency": {"codeType": "CRN", "cmCode": "OMR", "codeDescription": "OMR"},
+    "accountType": {"codeType": "ACT", "cmCode": "ODA", "codeDescription": "OVERDRAFT A/C"},
+    "branchCode": "009",
+    "customerId": "0007431",
+    "sanctionLimit": {"amount": 225000.0, "currency": "OMR"},
+    "drawingPower": {"amount": 28372950.869, "currency": "OMR"},
+    "availableBalance": {"amount": -223895.525, "currency": "OMR"},
+    "accountBalance": {"amount": -223895.525, "currency": "OMR"},
+    "effectiveAvailableBalance": {"amount": 0.0, "currency": "OMR"},
+    "ledgerBalance": {"amount": 0.0, "currency": "OMR"},
+    "lienBalance": {"amount": 770376.039, "currency": "OMR"},
+    "unclearBalance": {"amount": 0.0, "currency": "OMR"},
+    "modeOfOperation": "SOLE",
+    "debitInterestRate": 0.0,
+    "creditInterestRate": 0.0
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Beneficiary Listing API -->
+<h2 id="corp-beneficiary">2.5 Beneficiary Listing API</h2>
+
+<p>Retrieves the list of registered beneficiaries/counterparties for the corporate customer.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/custom-all-counterparties</span>
+</div>
+
+<h4>Query Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Required</th><th>Values</th><th>Description</th></tr>
+    <tr><td>payeeType</td><td><span class="badge badge-required">Required</span></td><td>AL, WB, WO</td><td>AL=All, WB=Within Bank, WO=Within Oman</td></tr>
+</table>
+
+<h4>Sample Response</h4>
+<pre><code>[
+    {
+        "counterpartyId": 628,
+        "counterpartyName": "UATBAHARIN1",
+        "counterpartyNickname": "UATBAHARIN1",
+        "accountId": "12345678",
+        "bankDetails": {
+            "isExistingBank": "Y",
+            "counterpartyBank": {"codeType": "IBT", "cmCode": "OBK", "codeDescription": "Other Bank"},
+            "bankIdentifier": "BMAGBHBMXXX",
+            "networkType": {"codeType": "NWK", "cmCode": "GPC", "codeDescription": "GCC Transfer"},
+            "bankName": "CENTRAL BANK OF BAHRAIN",
+            "branchName": "XXX",
+            "country": {"codeType": "CNT", "cmCode": "BH", "codeDescription": "BAHRAIN"}
+        },
+        "counterpartyUserType": {"codeType": "CPYT", "cmCode": "C", "codeDescription": "Corporate"},
+        "accountCurrency": "BHD",
+        "creationDate": "2024-10-21T08:40:45Z"
+    }
+]</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Fund Transfer API -->
+<h2 id="corp-transfer">2.6 Fund Transfer API</h2>
+
+<p>Initiates fund transfers including Own Account, Within Bank, and Within Oman transfers.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">/dehadmin/rest/v3/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-multientrytransactionswithlimitedfieldrequests</span>
+</div>
+
+<h4>Request Headers</h4>
+<table class="params compact">
+    <tr><th>Header</th><th>Value</th></tr>
+    <tr><td>Authorization</td><td>Bearer {access_token}</td></tr>
+    <tr><td>Content-Type</td><td>application/json</td></tr>
+    <tr><td>ChannelContext</td><td>JSON object with authorization details (see below)</td></tr>
+</table>
+
+<h4>ChannelContext Header</h4>
+<pre><code>{
+    "authorizationDetails": {
+        "primaryAccessCode": "",
+        "secondaryAccessCode": "",
+        "userId": "OMAL",
+        "acceptTermsAndConditions": "Y",
+        "isConfirmationMode": "Y",
+        "workflowInput": {
+            "ruleId": "",
+            "approverDetails": [{"approverType": "R", "approverId": ""}],
+            "userRemarks": ""
+        }
+    }
+}</code></pre>
+
+<h4>Request Body Parameters</h4>
+<table class="params">
+    <tr><th>Parameter</th><th>Required</th><th>Description</th></tr>
+    <tr><td>transactionCurrency</td><td><span class="badge badge-required">Required</span></td><td>Transaction currency (beneficiary currency)</td></tr>
+    <tr><td>transactionType</td><td><span class="badge badge-required">Required</span></td><td>OWN=Self, TPA=Within Bank, PMT=Other Bank</td></tr>
+    <tr><td>transactionDate</td><td><span class="badge badge-required">Required</span></td><td>Transaction date (current date)</td></tr>
+    <tr><td>initiatorAccount</td><td><span class="badge badge-required">Required</span></td><td>Debit account number</td></tr>
+    <tr><td>amount</td><td><span class="badge badge-required">Required</span></td><td>Transaction amount</td></tr>
+    <tr><td>remarks</td><td><span class="badge badge-required">Required</span></td><td>Transaction remarks (max 35 chars)</td></tr>
+    <tr><td>payeeAccountDetails</td><td><span class="badge badge-required">Required</span></td><td>Beneficiary details</td></tr>
+    <tr><td>counterpartyType</td><td><span class="badge badge-required">Required</span></td><td>O=Own, P=Registered, H=Adhoc</td></tr>
+    <tr><td>transactionPurpose</td><td>For PMT</td><td>Purpose code (see Appendix A)</td></tr>
+</table>
+
+<h4>Sample Request - Within Bank Transfer</h4>
+<pre><code>{
+    "transactionCurrency": "OMR",
+    "transactionType": "TPA",
+    "transactionDate": "2025-01-14T20:00:00",
+    "entryDetails": [
+        {
+            "initiatorAccount": "01040125856001",
+            "amount": 121,
+            "remarks": "SELFSAMECURRENCY5",
+            "payeeAccountDetails": {
+                "counterpartyAccount": "01040125856002"
+            },
+            "counterpartyType": "O"
+        }
+    ]
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "frequencyType": {"id": "O", "description": "One Time"},
+    "transactionDate": "2025-01-14T20:00:00Z",
+    "transactionType": {"codeType": "TTP", "cmCode": "OWN", "codeDescription": "Self transfer"},
+    "commonSection": {
+        "numberOfEntries": "1",
+        "totalAmount": "121.0",
+        "requestReferenceId": 1467501,
+        "transactionReferenceId": 1443700,
+        "transactionStatus": {"codeType": "ALS", "cmCode": "SUC", "codeDescription": "Success"}
+    }
+}</code></pre>
+
+<h4>Transaction Status Codes</h4>
+<table class="compact">
+    <tr><th>Code</th><th>Description</th></tr>
+    <tr><td>SUC</td><td>Success</td></tr>
+    <tr><td>PEN</td><td>Pending</td></tr>
+    <tr><td>PCA</td><td>Pending for Corporate Approval</td></tr>
+    <tr><td>PBA</td><td>Pending for Bank Approval</td></tr>
+    <tr><td>REJ</td><td>Rejected</td></tr>
+    <tr><td>FAL</td><td>Failed</td></tr>
+    <tr><td>ABT</td><td>Aborted</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- Mini Statement API -->
+<h2 id="corp-mini">2.7 Mini Statement API</h2>
+
+<p>Retrieves the last N transactions for an account.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-operativeaccounts/{accountId}/ministatement</span>
+</div>
+
+<h4>Query Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Required</th><th>Description</th></tr>
+    <tr><td>lastNTransactions</td><td><span class="badge badge-required">Required</span></td><td>Number of transactions (e.g., 15)</td></tr>
+</table>
+
+<h4>Sample Response</h4>
+<pre><code>[
+    {
+        "transactionDate": "2024-11-14T02:01:00Z",
+        "amountType": {"codeType": "ACT", "cmCode": "05", "codeDescription": "DEBIT"},
+        "amount": {"amount": 100.0, "currency": "OMR"},
+        "transactionRemarks": "IB-TF-ok-1535-1",
+        "transactionCategory": "TCI",
+        "transactionBalance": {"amount": 20027.607, "currency": "OMR"},
+        "lastTransactionSerialNo": "1",
+        "lastTransactionId": "SD7381063",
+        "lastPostedDate": "2024-11-16T20:40:47Z",
+        "availableBalance": {"amount": 19092.607, "currency": "OMR"},
+        "ledgerBalance": {"amount": 20348.648, "currency": "OMR"}
+    }
+]</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Transaction History API -->
+<h2 id="corp-history">2.8 Transaction History API</h2>
+
+<p>Retrieves transaction history for an account within a date range.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-operativeaccounts/{accountId}/transactions</span>
+</div>
+
+<h4>Query Parameters</h4>
+<table class="params compact">
+    <tr><th>Parameter</th><th>Required</th><th>Description</th></tr>
+    <tr><td>transactionValue</td><td><span class="badge badge-required">Required</span></td><td>Minimum transaction value (0 for all)</td></tr>
+    <tr><td>transactionDate</td><td><span class="badge badge-required">Required</span></td><td>Date range (URL encoded JSON)</td></tr>
+</table>
+
+<div class="info-box">
+    <strong>Date Range Format</strong>
+    The transactionDate parameter must be URL encoded. Example:
+    <br><code>{"lt":"2023-11-16T20:00:00","gt":"2024-11-16T20:00:00"}</code>
+    <br>Encoded: <code>%7B%22lt%22%3A%222023-11-16T20%3A00%3A00%22%2C%22gt%22%3A%222024-11-16T20%3A00%3A00%22%7D</code>
+</div>
+
+<h4>Sample Response</h4>
+<pre><code>[
+    {
+        "transactionDate": "14-11-2024",
+        "accountId": "01130605347002",
+        "amountType": {"codeType": "ACT", "cmCode": "05", "codeDescription": "DEBIT"},
+        "amount": {"amount": 20.0, "currency": "OMR"},
+        "transactionRemarks": "IB-TF-TEST-2723-1SAIMK-TEST",
+        "transactionBalance": {"amount": 2445.53, "currency": "OMR"},
+        "transactionId": "SD7381061",
+        "valueDate": "17-11-2024"
+    }
+]</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Deposit Account Listing API -->
+<h2 id="corp-deposit">2.9 Deposit Account Listing API</h2>
+
+<p>Retrieves the list of deposit (term deposit) accounts.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/customdepositaccounts</span>
+</div>
+
+<h4>Sample Response</h4>
+<pre><code>[
+    {
+        "accountId": "01030007431017",
+        "accountName": "OMAN INVESTMENT FINANCE CO",
+        "accountNickName": "OMAN INVES",
+        "accountStatus": {"codeType": "ACS", "cmCode": "A", "codeDescription": "Active"},
+        "accountCurrency": {"codeType": "CRN", "cmCode": "OMR", "codeDescription": "OMR"},
+        "accountOpenDate": "2024-10-02T20:00:00Z",
+        "parentAccountType": {"codeType": "MAT", "cmCode": "DEP", "codeDescription": "Deposit Accounts"},
+        "accountType": {"codeType": "ACNT", "cmCode": "TDA", "codeDescription": "TERM DEPOSIT"},
+        "balances": [
+            {"type": "maturityAmount", "amountDetails": {"amount": 578.481, "currency": "OMR"}},
+            {"type": "depositAmount", "amountDetails": {"amount": 544.0, "currency": "OMR"}}
+        ],
+        "interestRate": 4.75,
+        "maturityDate": "21-01-2026"
+    }
+]</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Loan Account Listing API -->
+<h2 id="corp-loan">2.10 Loan Account Listing API</h2>
+
+<p>Retrieves the list of loan accounts.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">/dehadmin/rest/v1/banks/{bankid}/corporates/{corpid}/users/{userid}/custom-loanaccounts</span>
+</div>
+
+<h4>Sample Response</h4>
+<pre><code>[
+    {
+        "accountId": "01060007431276",
+        "accountName": "OMAN INVESTMENT FINANCE CO",
+        "accountNickName": "OMAN INVES",
+        "accountStatus": {"codeType": "ACS", "cmCode": "O", "codeDescription": "Open"},
+        "accountCurrency": {"codeType": "CRN", "cmCode": "OMR", "codeDescription": "OMR"},
+        "accountOpenDate": "2020-06-30T20:00:00Z",
+        "parentAccountType": {"codeType": "MAT", "cmCode": "LON", "codeDescription": "Loan Accounts"},
+        "accountType": {"codeType": "ACNT", "cmCode": "CLA", "codeDescription": "COMMERCIAL LENDING"},
+        "balances": [
+            {"type": "disbursedAmount", "amountDetails": {"amount": 2000000.0, "currency": "OMR"}},
+            {"type": "dueAmount", "amountDetails": {"amount": -900000.0, "currency": "OMR"}},
+            {"type": "overdueAmount", "amountDetails": {"amount": -900000.0, "currency": "OMR"}}
+        ],
+        "interestRate": 0.0
+    }
+]</code></pre>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     PART 3: E-MANDATE SERVICES
+     ============================================ -->
+<div class="part-divider" id="part3">
+    <div class="part-number">3</div>
+    <h2>E-Mandate Services</h2>
+    <div class="part-description">Mandate Lifecycle Management & Bulk Payment APIs for Financial Institutes</div>
+</div>
+
+<h2 id="emandate-intro">3.1 Introduction & Architecture</h2>
+
+<p>E-Mandate Services enable Financial Institutes to manage direct debit mandates with Bank Dhofar through the CBO (Central Bank of Oman) integrated system powered by ProgressSoft.</p>
+
+<h3>Service Capabilities</h3>
+<ul>
+    <li><strong>Company Registration</strong> - Register financial institutes as creditors</li>
+    <li><strong>Mandate Lifecycle</strong> - Initiate, amend, and terminate mandates</li>
+    <li><strong>Status Tracking</strong> - Acknowledgement and acceptance workflows</li>
+    <li><strong>Bulk Payments</strong> - Release and track bulk payment executions</li>
+</ul>
+
+<h3>Architecture Flow</h3>
+
+<div class="diagram">
+    <img src="diagrams/emandate-flow.png" alt="E-Mandate Request Flow" style="max-width: 100%; height: auto;">
+    <div class="diagram-caption">Figure 2: E-Mandate Request Flow</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- E-Mandate Authentication -->
+<h2 id="emandate-auth">3.2 Authentication</h2>
+
+<p>E-Mandate services are secured using Keycloak OpenID Connect (OIDC) authentication.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/token</span>
+</div>
+
+<h4>Request Body</h4>
+<pre><code>{
+    "clientId": "D4E7F9A1B2C34567A8B9C0D12345EFGH",
+    "username": "corpuser001",
+    "password": "Corp@2026!XyZ#",
+    "grantType": "password"
+}</code></pre>
+
+<h4>Response</h4>
+<pre><code>{
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "token_type": "Bearer",
+    "expires_in": 3600
+}</code></pre>
+
+<div class="important-box">
+    <strong>Authorization Header Format</strong>
+    All subsequent API calls must include: <code>Authorization: Bearer &lt;access_token&gt;</code>
+</div>
+
+<div class="warning-box">
+    <strong>Credentials</strong>
+    For actual clientId, username and password, please contact the Bank Dhofar business team.
+    Requests without a valid access token will be rejected with a 401 Unauthorized response.
+</div>
+
+<div class="page-break"></div>
+
+<!-- Company Registration API -->
+<h2 id="emandate-register">3.3 Company Registration API</h2>
+
+<p>Registers a financial institute as a creditor in the mandate system.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/companies/register</span>
+</div>
+
+<h4>Request Body</h4>
+<pre><code>{
+    "name": "United Finance SOAG",
+    "addressLine1": "Ruwi Street 12",
+    "city": "Muscat",
+    "postalCode": "113",
+    "country": "OM"
+}</code></pre>
+
+<h4>Response</h4>
+<pre><code>{
+    "id": "27507061-3b84-4aeb-a694-2f526d1bb755",
+    "name": "United Finance SOAG",
+    "postalCode": "113",
+    "country": "OM",
+    "prefix": "UNF1",
+    "createdAt": null
+}</code></pre>
+
+<div class="info-box">
+    <strong>Company Prefix</strong>
+    The returned <code>prefix</code> (e.g., "UNF1") must be used as the first 4 characters of every subsequent request ID.
+</div>
+
+<div class="page-break"></div>
+
+<!-- Initiate Mandate API -->
+<h2 id="emandate-initiate">3.4 Initiate Mandate API</h2>
+
+<p>Initiates a new mandate request for recurring payments.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/mandate/initiate</span>
+</div>
+
+<h4>Request Body Parameters</h4>
+
+<table class="params">
+    <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td>mandateRequestId</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Unique ID (max 35 chars, format: {Prefix}-{CorpPrefix}-MNDT-{Seq})</td></tr>
+    <tr><td>creationDateTime</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>ISO datetime</td></tr>
+    <tr><td>sequenceType</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>RCUR (Recurring), OOFF (One-off)</td></tr>
+    <tr><td>frequencyType</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>DAIL, WEEK, MNTH, YEAR</td></tr>
+    <tr><td>startDate</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Mandate start date</td></tr>
+    <tr><td>endDate</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Mandate end date</td></tr>
+    <tr><td>collectionAmount</td><td>Number</td><td><span class="badge badge-optional">Optional</span></td><td>Fixed collection amount</td></tr>
+    <tr><td>maxAmount</td><td>Number</td><td><span class="badge badge-optional">Optional</span></td><td>Maximum amount (takes precedence over collectionAmount)</td></tr>
+    <tr><td>currency</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Currency code</td></tr>
+    <tr><td>creditorName</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Creditor name</td></tr>
+    <tr><td>creditorAccountNumber</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Creditor account</td></tr>
+    <tr><td>creditorBankCode</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Creditor bank BIC</td></tr>
+    <tr><td>debtorName</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Debtor name</td></tr>
+    <tr><td>debtorMobile</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Debtor mobile</td></tr>
+    <tr><td>debtorAccountNumber</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Debtor account</td></tr>
+    <tr><td>debtorBankCode</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>Debtor bank BIC</td></tr>
+    <tr><td>mandateType</td><td>String</td><td><span class="badge badge-required">Required</span></td><td>REVOCABLE, IRREVOCABLE</td></tr>
+    <tr><td>autoPost</td><td>Boolean</td><td><span class="badge badge-optional">Optional</span></td><td>Auto-post transactions</td></tr>
+</table>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "mandateRequestId": "UNF1-MNDTd4-1493",
+    "creationDateTime": "2025-05-14T11:29:00",
+    "sequenceType": "RCUR",
+    "frequencyType": "DAIL",
+    "startDate": "2025-05-17+04:00",
+    "endDate": "2025-05-31+04:00",
+    "collectionAmount": 50.00,
+    "currency": "11",
+    "creditorName": "UNITED FINANCE SOAG",
+    "creditorAccountNumber": "62W23140",
+    "creditorId": "01011139480001",
+    "creditorBankCode": "BDOFOMRU",
+    "debtorName": "AHMED MOHAMMED ALI",
+    "debtorMobile": "12687335",
+    "debtorAccountNumber": "01010603143001",
+    "debtorBankCode": "BDOFOMRU",
+    "mandateDescription": "BDOF-HMDT-109",
+    "autoPost": false,
+    "productCode": "RETAIL",
+    "productCif": "1139480",
+    "productType": "CREDITOR",
+    "mandateType": "REVOCABLE",
+    "numberOfDebits": 15,
+    "executionDay": 1,
+    "paymentPriority": 1,
+    "paymentMode": "1116"
+}</code></pre>
+
+<h4>Sample Response - Success</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Request received successfully",
+    "data": {
+        "requestId": "UNF1-MNDTd4-1493",
+        "eventType": "MNDTINIT",
+        "status": "RAISED"
+    }
+}</code></pre>
+
+<h4>Sample Response - Duplicate</h4>
+<pre><code>{
+    "success": false,
+    "code": "FAILED",
+    "message": "Duplicate mandateRequestId: UNF1-MNDTd4-1493"
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Amend Mandate API -->
+<h2 id="emandate-amend">3.5 Amend Mandate API</h2>
+
+<p>Amends an existing mandate.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/mandate/amend</span>
+</div>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "mandateRequestId": "76800298b189",
+    "mandateId": "5ea4fdd5d25ff",
+    "creDtTm": "2024-10-02T10:48:09",
+    "amendmentReasonCode": "4",
+    "amendmentAdditionalInfo": "Additional Info",
+    "sequenceType": "RCUR",
+    "frequencyType": "MNTH",
+    "fromDate": "2024-10-02",
+    "toDate": "2025-10-02",
+    "collectionAmount": 50,
+    "currency": "OMR",
+    "autoPost": false,
+    "initiatedBy": "UserName",
+    "mandateType": "AMENDMENT",
+    "numberOfPayments": 11
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Request received successfully",
+    "data": {
+        "requestId": "76800298b189",
+        "eventType": "MNDTAMEND",
+        "status": "RAISED"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Mandate Termination API -->
+<h2 id="emandate-terminate">3.6 Mandate Termination API</h2>
+
+<p>Terminates/cancels an existing mandate.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/mandate/terminate</span>
+</div>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "mandateRequestId": "MNDTCXLREQ123467",
+    "creDtTm": "2024-10-02T09:29:50",
+    "cancellationReasonCode": "CUSTOMER_REQUEST",
+    "cancellationAdditionalInfo": "Customer requested cancellation due to account closure",
+    "originalMandateId": "ORGMNDT9876545"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Request received successfully",
+    "data": {
+        "requestId": "MNDTCXLREQ123467",
+        "eventType": "MNDTTERM",
+        "status": "RAISED"
+    }
+}</code></pre>
+
+<!-- Request Acknowledgement API -->
+<h2 id="emandate-ack">3.7 Request Acknowledgement API</h2>
+
+<p>Retrieves the acknowledgement status of a mandate request.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/mandate/acknowledgement</span>
+</div>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "mandateRequestId": "5ea4fd5d25ff",
+    "requestType": "MNDTINIT"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Response Received successfully",
+    "data": {
+        "mandateId": "156991391cc1",
+        "eventType": "MNDTINIT",
+        "status": "ACCEPTED"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Request Acceptance API -->
+<h2 id="emandate-accept">3.8 Request Acceptance API</h2>
+
+<p>Retrieves the final acceptance status of a mandate request.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/mandate/acceptance</span>
+</div>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "mandateId": "5ea4fd5d25ff",
+    "requestType": "MNDTINIT"
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Response Received successfully",
+    "data": {
+        "requestId": "5ea4fd5d25ff",
+        "mandateId": "5ea4fd5d25ff",
+        "eventType": "MNDTAMEND",
+        "status": "ACCEPTED",
+        "reason": "Only in case of rejected"
+    }
+}</code></pre>
+
+<!-- Bulk Payment Release API -->
+<h2 id="emandate-bulk-release">3.9 Bulk Payment Release API</h2>
+
+<p>Releases a batch of payments for execution.</p>
+
+<div class="endpoint-box">
+    <span class="method post">POST</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/bulk/payment/release</span>
+</div>
+
+<h4>Sample Request</h4>
+<pre><code>{
+    "BulkPaymentRequest": {
+        "BulkRequestId": "UNF2-HMDETd4-1493",
+        "Summary": {
+            "NumberOfRecords": 2,
+            "TotalAmount": 150.00,
+            "Currency": "OMR"
+        },
+        "Payments": [
+            {
+                "MandateId": "MAND12345",
+                "PaymentSequence": 1,
+                "ReleaseDate": "2025-09-01",
+                "PaymentAmount": 100.00
+            },
+            {
+                "MandateId": "MAND67890",
+                "PaymentSequence": 2,
+                "ReleaseDate": "2025-09-01",
+                "PaymentAmount": 50.00
+            }
+        ]
+    }
+}</code></pre>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "BulkRequest received successfully",
+    "data": {
+        "bulkRequestId": "464654654658",
+        "systemId": 8,
+        "eventType": "RELEASEBULKPAY",
+        "status": "RAISED"
+    }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<!-- Bulk Payment Response API -->
+<h2 id="emandate-bulk-response">3.10 Bulk Payment Response API</h2>
+
+<p>Retrieves the status and results of a bulk payment request.</p>
+
+<div class="endpoint-box">
+    <span class="method get">GET</span>
+    <span class="url">https://api-gateway.uat.bankdhofar.com/api/v1/bulk/payment/response/{BulkRequestId}</span>
+</div>
+
+<h4>Sample Response</h4>
+<pre><code>{
+    "success": true,
+    "code": "OK",
+    "message": "Response received successfully",
+    "data": {
+        "Summary": {
+            "externalRequestId": "4646546546567",
+            "numberOfRecords": 2,
+            "totalAmount": "150.000",
+            "currency": "OMR",
+            "status": "PERSISTED",
+            "requestedAt": "2025-12-30T11:46:23.691956",
+            "Payments": [
+                {
+                    "mandateId": "MAND12345",
+                    "paymentSequence": 1,
+                    "releaseDate": "2025-09-01",
+                    "paymentAmount": "100.000",
+                    "status": "ACCEPTED",
+                    "reason": "ACCEPTED"
+                },
+                {
+                    "mandateId": "MAND67890",
+                    "paymentSequence": 2,
+                    "releaseDate": "2025-09-01",
+                    "paymentAmount": "50.000",
+                    "status": "REJECTED",
+                    "reason": "Amount should not exceed the amount of mandate"
+                }
+            ]
+        },
+        "eventType": "RELEASEBULKPAY",
+        "status": "PERSISTED"
+    }
+}</code></pre>
+
+<!-- Error Codes Reference -->
+<h2 id="emandate-errors">3.11 Error Codes Reference</h2>
+
+<table>
+    <tr><th>Code</th><th>Value</th><th>Description</th></tr>
+    <tr><td>200</td><td>SUCCESS</td><td>Request raised successfully</td></tr>
+    <tr><td>204</td><td>No content</td><td>Unable to find response</td></tr>
+    <tr><td>400</td><td>Bad Request</td><td>Invalid parameters</td></tr>
+    <tr><td>401</td><td>Unauthorized</td><td>Invalid or missing token</td></tr>
+    <tr><td>403</td><td>Forbidden</td><td>Insufficient scope/permissions</td></tr>
+    <tr><td>404</td><td>Method not Found</td><td>Invalid endpoint</td></tr>
+    <tr><td>503</td><td>Service unavailable</td><td>Services facing issues</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ============================================
+     APPENDIX
+     ============================================ -->
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="appendix-purpose-codes">A. Transaction Purpose Codes</h3>
+
+<p>The following purpose codes are used in fund transfer transactions:</p>
+
+<table class="compact">
+    <tr><th>Code</th><th>Description</th></tr>
+    <tr><td>1001</td><td>Membership fees</td></tr>
+    <tr><td>1002</td><td>Charity Payment</td></tr>
+    <tr><td>1003</td><td>Others</td></tr>
+    <tr><td>201</td><td>Monthly Pension Salary</td></tr>
+    <tr><td>301</td><td>Monthly Social Security Salary</td></tr>
+    <tr><td>302</td><td>Social Security onetime payment</td></tr>
+    <tr><td>401</td><td>Deposit Operation</td></tr>
+    <tr><td>402</td><td>Account Management</td></tr>
+    <tr><td>403</td><td>Utility Payment</td></tr>
+    <tr><td>404</td><td>Customer to Corporate</td></tr>
+    <tr><td>405</td><td>Customer to Customer</td></tr>
+    <tr><td>406</td><td>Reversal of Debit/Credit Transaction</td></tr>
+    <tr><td>501</td><td>Court Order</td></tr>
+    <tr><td>601</td><td>Government Payment</td></tr>
+    <tr><td>602</td><td>Government Fee Collection</td></tr>
+    <tr><td>603</td><td>Government Penalty Payment</td></tr>
+    <tr><td>701</td><td>Property Tax</td></tr>
+    <tr><td>702</td><td>Corporate Tax</td></tr>
+    <tr><td>703</td><td>Income Tax</td></tr>
+    <tr><td>704</td><td>VAT payment</td></tr>
+    <tr><td>705</td><td>Excise (Import/Export) payment</td></tr>
+    <tr><td>706</td><td>Municipality Tax</td></tr>
+    <tr><td>707</td><td>Tourism Tax</td></tr>
+    <tr><td>801</td><td>IPO subscription</td></tr>
+    <tr><td>802</td><td>IPO refund</td></tr>
+    <tr><td>803</td><td>Dividend</td></tr>
+    <tr><td>804</td><td>Market Shares Payment</td></tr>
+    <tr><td>901</td><td>Interest Payment</td></tr>
+    <tr><td>902</td><td>Loan disbursement</td></tr>
+    <tr><td>903</td><td>Full & final Loan Settlement</td></tr>
+    <tr><td>904</td><td>Loan installment payment</td></tr>
+    <tr><td>905</td><td>Loan insurance refund</td></tr>
+    <tr><td>906</td><td>Mortgage installment</td></tr>
+    <tr><td>907</td><td>Credit card payment</td></tr>
+    <tr><td>1101</td><td>Bills to Vendor/company</td></tr>
+    <tr><td>1102</td><td>Service payment</td></tr>
+    <tr><td>1103</td><td>Insurance payment</td></tr>
+    <tr><td>1104</td><td>Rent of lease</td></tr>
+    <tr><td>1105</td><td>Fees collection</td></tr>
+    <tr><td>1106</td><td>School fees</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h3 id="appendix-endpoints">B. Quick Reference - All Endpoints</h3>
+
+<h4>Part 1: EasyBiz Payment Services</h4>
+<table class="compact">
+    <tr><th>API</th><th>Method</th><th>Endpoint</th></tr>
+    <tr><td>Token Generation</td><td>POST</td><td>/Api/v1.0/oauth2GetToken</td></tr>
+    <tr><td>Create Customer</td><td>POST</td><td>/api/v1.0/CreateContact</td></tr>
+    <tr><td>Update Customer</td><td>POST</td><td>/api/v1.0/UpdateContact</td></tr>
+    <tr><td>Fetch Virtual Account</td><td>POST</td><td>/api/v1.0/fetchVirtualAccount</td></tr>
+    <tr><td>Collect Payment (Basic)</td><td>POST</td><td>/api/v1.0/Payment</td></tr>
+    <tr><td>Collect Payment (Detailed)</td><td>POST</td><td>/api/v1.0/createInvoice</td></tr>
+    <tr><td>Check Payment Status</td><td>POST</td><td>/api/v1.0/PaymentStatus</td></tr>
+    <tr><td>Update Payment</td><td>POST</td><td>/api/v1.0/UpdatePayment</td></tr>
+    <tr><td>Cancel Payment</td><td>POST</td><td>/api/v1.0/CancelPayment</td></tr>
+</table>
+
+<h4>Part 2: Corporate Banking APIs</h4>
+<table class="compact">
+    <tr><th>API</th><th>Method</th><th>Endpoint</th></tr>
+    <tr><td>Token Generation</td><td>POST</td><td>/openauth/v2/oauth/token</td></tr>
+    <tr><td>Operative Account Listing</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../accountsummarylist</td></tr>
+    <tr><td>Account Balance Inquiry</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../custom-operativeaccounts/{accId}</td></tr>
+    <tr><td>Beneficiary Listing</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../custom-all-counterparties</td></tr>
+    <tr><td>Fund Transfer</td><td>POST</td><td>/dehadmin/rest/v3/banks/{id}/.../custom-multientrytransactions...</td></tr>
+    <tr><td>Mini Statement</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../ministatement</td></tr>
+    <tr><td>Transaction History</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../transactions</td></tr>
+    <tr><td>Deposit Account Listing</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../customdepositaccounts</td></tr>
+    <tr><td>Loan Account Listing</td><td>GET</td><td>/dehadmin/rest/v1/banks/{id}/.../custom-loanaccounts</td></tr>
+</table>
+
+<h4>Part 3: E-Mandate Services</h4>
+<table class="compact">
+    <tr><th>API</th><th>Method</th><th>Endpoint</th></tr>
+    <tr><td>Token Generation</td><td>POST</td><td>/api/token</td></tr>
+    <tr><td>Company Registration</td><td>POST</td><td>/api/v1/companies/register</td></tr>
+    <tr><td>Initiate Mandate</td><td>POST</td><td>/api/v1/mandate/initiate</td></tr>
+    <tr><td>Amend Mandate</td><td>POST</td><td>/api/v1/mandate/amend</td></tr>
+    <tr><td>Terminate Mandate</td><td>POST</td><td>/api/v1/mandate/terminate</td></tr>
+    <tr><td>Request Acknowledgement</td><td>POST</td><td>/api/v1/mandate/acknowledgement</td></tr>
+    <tr><td>Request Acceptance</td><td>POST</td><td>/api/v1/mandate/acceptance</td></tr>
+    <tr><td>Bulk Payment Release</td><td>POST</td><td>/api/v1/bulk/payment/release</td></tr>
+    <tr><td>Bulk Payment Response</td><td>GET</td><td>/api/v1/bulk/payment/response/{id}</td></tr>
+</table>
+
+<div class="document-footer">
+    <p><strong>Bank Dhofar API Specification Guide V1.3</strong></p>
+    <p>Confidential - Partners | January 2026</p>
+    <p>&copy; Bank Dhofar SAOG. All rights reserved.</p>
+</div>
+
+</body>
+</html>
