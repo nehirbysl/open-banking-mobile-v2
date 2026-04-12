@@ -1,12 +1,18 @@
-FROM harbor.cp.bankdhofar.com/dockerhub/node:20-alpine AS build
+FROM harbor.cp.bankdhofar.com/dockerhub/python:3.12-slim AS build
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json ./
+RUN npm install --no-optional
 COPY . .
 RUN npm run build
 
-FROM harbor.cp.bankdhofar.com/dockerhub/nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+FROM harbor.cp.bankdhofar.com/dockerhub/python:3.12-slim
+RUN pip install --no-cache-dir uvicorn
+COPY --from=build /app/dist /app/dist
+COPY nginx.conf /app/nginx.conf
+WORKDIR /app
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["python3", "-m", "http.server", "80", "--directory", "/app/dist"]
