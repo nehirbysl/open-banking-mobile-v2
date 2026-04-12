@@ -1,7 +1,7 @@
 global:
   domain: qantara.tnd.bankdhofar.com
   namespace: ob-tnd
-  registry: harbor.cp.bankdhofar.com/qantara
+  registry: registry.bankdhofar.com/ea/open-banking
   imageTag: latest
 
 apiServer:
