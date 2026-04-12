@@ -64,6 +64,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ob-api-server
+                name: ob-portal
                 port:
-                  number: 8000
+                  number: 80

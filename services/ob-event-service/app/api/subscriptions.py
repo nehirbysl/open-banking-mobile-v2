@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Response
 
 from app.models.subscription import (
     CreateSubscriptionRequest,
@@ -64,8 +64,8 @@ async def update_subscription_endpoint(
         raise HTTPException(status_code=exc.status_code, detail=exc.message)
 
 
-@router.delete("/{subscription_id}", status_code=204)
-async def delete_subscription_endpoint(subscription_id: UUID) -> None:
+@router.delete("/{subscription_id}", status_code=204, response_class=Response)
+async def delete_subscription_endpoint(subscription_id: UUID):
     """Delete a subscription."""
     try:
         await delete_subscription(subscription_id)
