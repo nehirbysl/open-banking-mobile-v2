@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -o /build/ob-tpp-manager \
     ./cmd/main.go
 
-FROM harbor.cp.bankdhofar.com/dockerhub/alpine:3.20
+FROM harbor.cp.bankdhofar.com/dockerhub/alpine:3.21
 
 RUN apk add --no-cache ca-certificates tzdata \
     && addgroup -S appgroup \
