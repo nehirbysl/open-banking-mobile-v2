@@ -33,7 +33,7 @@ export async function createConsent(): Promise<ConsentResponse> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      consent_type: 'AccountAccess',
+      consent_type: 'account-access',
       tpp_id: CLIENT_ID,
       permissions: [
         'ReadAccountsBasic',
