@@ -10,9 +10,12 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from typing import Any
 
+import httpx
+
 from app.adapters.base import OBIEAdapter
 from app.adapters.mock import data as fixtures
 from app.core.errors import not_found, bad_request
+from app.config import settings
 
 _TZ_OMAN = timezone(timedelta(hours=4))
 
@@ -105,11 +108,33 @@ class MockAdapter(OBIEAdapter):
             raise not_found("AccountAccessConsent", consent_id)
         del self._account_consents[consent_id]
 
+    # ── Consent-scoped account filtering ────────────────────────────────
+
+    async def _get_consented_account_ids(self, consent_id: str) -> list[str] | None:
+        """Fetch selected_accounts from consent service. Returns None if consent not found or no filter."""
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                resp = await client.get(f"{settings.consent_service_url}/consents/{consent_id}")
+                if resp.status_code == 200:
+                    data = resp.json()
+                    return data.get("selected_accounts")
+        except Exception:
+            pass
+        return None
+
+    def _filter_accounts(self, account_ids: list[str] | None) -> list[dict]:
+        """Filter accounts by IDs. If None, return all."""
+        if account_ids is None:
+            return self._accounts
+        return [a for a in self._accounts if a["AccountId"] in account_ids]
+
     # ── AIS: Accounts ───────────────────────────────────────────────────
 
     async def get_accounts(self, consent_id: str) -> dict[str, Any]:
+        allowed = await self._get_consented_account_ids(consent_id)
+        accounts = self._filter_accounts(allowed)
         return {
-            "Data": {"Account": self._accounts},
+            "Data": {"Account": accounts},
             "Links": {"Self": "/open-banking/v4.0/aisp/accounts"},
             "Meta": {"TotalPages": 1},
         }

@@ -72,40 +72,52 @@ ACCOUNTS = [
         "Currency": "OMR",
         "AccountType": "Personal",
         "AccountSubType": "CurrentAccount",
-        "Description": "Al Yusr Islamic Current Account",
-        "Nickname": "Islamic Account",
+        "Description": "Personal Current Account",
+        "Nickname": "Fatima Current",
         "Status": "Enabled",
         "StatusUpdateDateTime": "2025-03-01T09:00:00+04:00",
         "OpeningDate": "2023-01-15T00:00:00+04:00",
         "Account": [
             {
                 "SchemeName": "IBAN",
-                "Identification": "OM02DHOF0002010055667701",
-                "Name": "Fatima bint Khalid Al-Hinai",
+                "Identification": "OM02DHOF0001010008920500",
+                "Name": "Fatima Al-Rashdi",
                 "SecondaryIdentification": "10004",
             }
         ],
     },
     {
         "AccountId": "DHOF-10005",
-        "Currency": "USD",
+        "Currency": "OMR",
         "AccountType": "Personal",
-        "AccountSubType": "CurrentAccount",
-        "Description": "USD Foreign Currency Account",
-        "Nickname": "USD Account",
+        "AccountSubType": "Savings",
+        "Description": "Savings Account",
+        "Nickname": "Fatima Savings",
         "Status": "Enabled",
         "StatusUpdateDateTime": "2025-01-20T11:00:00+04:00",
         "OpeningDate": "2022-09-05T00:00:00+04:00",
         "Account": [
             {
                 "SchemeName": "IBAN",
-                "Identification": "OM02DHOF0001020012345601",
-                "Name": "Ahmed bin Said Al-Busaidi",
+                "Identification": "OM02DHOF0001010022100000",
+                "Name": "Fatima Al-Rashdi",
                 "SecondaryIdentification": "10005",
             }
         ],
     },
 ]
+
+# ── Customer → Account Mapping ──────────────────────────────────────────
+
+CUSTOMER_ACCOUNTS: dict[str, list[str]] = {
+    "CUST-001": ["DHOF-10001", "DHOF-10002", "DHOF-10003"],
+    "CUST-002": ["DHOF-10004", "DHOF-10005"],
+}
+
+ACCOUNT_TO_CUSTOMER: dict[str, str] = {}
+for _cust, _accs in CUSTOMER_ACCOUNTS.items():
+    for _acc in _accs:
+        ACCOUNT_TO_CUSTOMER[_acc] = _cust
 
 # ── Balances ─────────────────────────────────────────────────────────────
 
@@ -157,7 +169,7 @@ BALANCES = {
     "DHOF-10004": [
         {
             "AccountId": "DHOF-10004",
-            "Amount": {"Amount": "3200.750", "Currency": "OMR"},
+            "Amount": {"Amount": "8920.500", "Currency": "OMR"},
             "CreditDebitIndicator": "Credit",
             "Type": "InterimAvailable",
             "DateTime": "2026-04-12T06:00:00+04:00",
@@ -167,7 +179,7 @@ BALANCES = {
     "DHOF-10005": [
         {
             "AccountId": "DHOF-10005",
-            "Amount": {"Amount": "8500.00", "Currency": "USD"},
+            "Amount": {"Amount": "22100.000", "Currency": "OMR"},
             "CreditDebitIndicator": "Credit",
             "Type": "InterimAvailable",
             "DateTime": "2026-04-12T06:00:00+04:00",
