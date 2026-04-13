@@ -155,6 +155,9 @@ export default function ConsentApproval() {
       if (state) {
         url.searchParams.set('state', state);
       }
+      if (consentId) {
+        url.searchParams.set('consent_id', consentId);
+      }
       window.location.href = url.toString();
     },
     [redirectUri, state, navigate],

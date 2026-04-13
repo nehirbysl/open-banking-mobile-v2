@@ -5,7 +5,7 @@
  * All calls require Bearer token from the consent flow.
  */
 
-import { getStoredToken } from './consent';
+import { getStoredToken, getStoredConsentId } from './consent';
 
 const BASE_URL = '/api/obie';
 
@@ -14,14 +14,16 @@ function generateInteractionId(): string {
 }
 
 async function apiCall<T>(path: string): Promise<T> {
+  const consentId = getStoredConsentId();
   const token = getStoredToken();
-  if (!token) {
+  if (!consentId && !token) {
     throw new Error('No access token. Please connect your bank account first.');
   }
 
+  // Use consent_id as Bearer token — the OBIE API server uses it to look up consented accounts
   const response = await fetch(`${BASE_URL}${path}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${consentId || token}`,
       'x-fapi-interaction-id': generateInteractionId(),
       Accept: 'application/json',
     },
