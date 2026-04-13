@@ -1,0 +1,106 @@
+import { Group, Text, Box, ActionIcon, Indicator } from '@mantine/core';
+import { IconShoppingCart } from '@tabler/icons-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCart } from '@/App';
+
+interface HeaderProps {
+  onCartOpen: () => void;
+}
+
+export default function Header({ onCartOpen }: HeaderProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { itemCount } = useCart();
+
+  return (
+    <Box
+      component="header"
+      style={{
+        height: 64,
+        borderBottom: '1px solid #e9ecef',
+        background: 'white',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+      }}
+    >
+      <Group h="100%" px="md" justify="space-between" maw={1200} mx="auto">
+        <Group
+          gap="sm"
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+        >
+          <Box
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              background: 'linear-gradient(135deg, #0984E3, #74B9FF)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text c="white" fw={700} size="lg">
+              S
+            </Text>
+          </Box>
+          <Box>
+            <Group gap={8} align="baseline">
+              <Text fw={700} size="lg" c="blue.7">
+                Salalah Electronics
+              </Text>
+              <Text size="sm" c="dimmed" fw={500}>
+                {'\u0635\u0644\u0627\u0644\u0629 \u0644\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A\u0627\u062A'}
+              </Text>
+            </Group>
+            <Text size="xs" c="dimmed" mt={-4}>
+              Authentic Omani Goods
+            </Text>
+          </Box>
+        </Group>
+
+        <Group gap="md">
+          {location.pathname !== '/merchant' && (
+            <Text
+              size="sm"
+              c="dimmed"
+              style={{ cursor: 'pointer', textDecoration: 'none' }}
+              onClick={() => navigate('/merchant')}
+            >
+              Merchant Portal
+            </Text>
+          )}
+          {location.pathname === '/merchant' && (
+            <Text
+              size="sm"
+              c="dimmed"
+              style={{ cursor: 'pointer', textDecoration: 'none' }}
+              onClick={() => navigate('/')}
+            >
+              Back to Store
+            </Text>
+          )}
+          <Indicator
+            label={itemCount}
+            size={18}
+            color="red"
+            disabled={itemCount === 0}
+            offset={4}
+          >
+            <ActionIcon
+              variant="light"
+              color="blue"
+              size="lg"
+              radius="md"
+              onClick={onCartOpen}
+              aria-label="Shopping cart"
+            >
+              <IconShoppingCart size={22} stroke={1.5} />
+            </ActionIcon>
+          </Indicator>
+        </Group>
+      </Group>
+    </Box>
+  );
+}
