@@ -91,6 +91,7 @@ build-bd-online:
       --destination "${CI_REGISTRY_IMAGE}/bd-online:${CI_COMMIT_SHORT_SHA}"
       --destination "${CI_REGISTRY_IMAGE}/bd-online:latest"
       --build-arg "CACHE_BUST=${CI_COMMIT_SHORT_SHA}"
+      --cache=false
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
