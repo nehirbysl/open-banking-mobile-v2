@@ -24,6 +24,10 @@ import {
   Alert,
   Paper,
   ThemeIcon,
+  Badge,
+  Anchor,
+  SimpleGrid,
+  UnstyledButton,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import {
@@ -32,6 +36,7 @@ import {
   IconArrowRight,
   IconBuildingBank,
   IconReceipt,
+  IconUserPlus,
 } from '@tabler/icons-react';
 import { getUser, getDisplayName, type User } from '@/utils/auth';
 import {
@@ -45,7 +50,29 @@ import {
   type TransferRecord,
 } from '@/utils/accounts';
 
-type TransferMode = 'own' | 'external';
+type TransferMode = 'own' | 'external' | 'beneficiary';
+
+interface Beneficiary {
+  beneficiary_id: string;
+  customer_id: string;
+  name: string;
+  name_ar: string;
+  iban: string;
+  bank_name: string;
+  bank_code: string;
+  nickname: string;
+  created_at: string;
+}
+
+async function fetchBeneficiaries(customerId: string): Promise<Beneficiary[]> {
+  try {
+    const resp = await fetch(`/banking/customers/${encodeURIComponent(customerId)}/beneficiaries`);
+    if (!resp.ok) return [];
+    return resp.json();
+  } catch {
+    return [];
+  }
+}
 
 export default function Transfer() {
   const navigate = useNavigate();
@@ -54,6 +81,11 @@ export default function Transfer() {
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
   const [customerId, setCustomerId] = useState<string>('');
   const [loading, setLoading] = useState(true);
+
+  // Beneficiaries state
+  const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
+  const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | null>(null);
+  const [loadingBeneficiaries, setLoadingBeneficiaries] = useState(false);
 
   // Form state
   const [transferMode, setTransferMode] = useState<TransferMode>('own');
@@ -94,6 +126,23 @@ export default function Transfer() {
     }
   }, [customerId]);
 
+  // Load beneficiaries when mode switches to 'beneficiary'
+  useEffect(() => {
+    if (transferMode === 'beneficiary' && customerId && beneficiaries.length === 0) {
+      setLoadingBeneficiaries(true);
+      fetchBeneficiaries(customerId).then((bens) => {
+        setBeneficiaries(bens);
+        setLoadingBeneficiaries(false);
+      });
+    }
+  }, [transferMode, customerId, beneficiaries.length]);
+
+  // When a beneficiary is selected, auto-fill the IBAN
+  const handleSelectBeneficiary = (ben: Beneficiary) => {
+    setSelectedBeneficiary(ben);
+    setToIban(ben.iban);
+  };
+
   const fromAccount = accounts.find((a) => a.accountId === fromAccountId);
   const toAccount = accounts.find((a) => a.accountId === toAccountId);
   const parsedAmount = typeof amount === 'number' ? amount : 0;
@@ -115,7 +164,11 @@ export default function Transfer() {
     fromAccountId &&
     parsedAmount > 0 &&
     parsedAmount <= (fromAccount?.balance || 0) &&
-    (transferMode === 'own' ? toAccountId && toAccountId !== fromAccountId : toIban.length >= 16) &&
+    (transferMode === 'own'
+      ? toAccountId && toAccountId !== fromAccountId
+      : transferMode === 'beneficiary'
+        ? selectedBeneficiary !== null
+        : toIban.length >= 16) &&
     reference.trim().length > 0;
 
   const handleSubmit = async () => {
@@ -150,13 +203,16 @@ export default function Transfer() {
         saveTransfer(record);
         setSuccess(record);
       } else {
-        // External IBAN transfer — save locally only (no backend target account)
+        // External IBAN or Beneficiary transfer — save locally only (no backend target account)
+        const targetIban = transferMode === 'beneficiary' && selectedBeneficiary
+          ? selectedBeneficiary.iban
+          : toIban;
         const refNum = `TRF-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
         const record: TransferRecord = {
           id: refNum,
           fromAccountId: fromAccount.accountId,
           toAccountId: null,
-          toIban: toIban,
+          toIban: targetIban,
           amount: parsedAmount,
           currency: 'OMR',
           reference: reference.trim(),
@@ -193,6 +249,7 @@ export default function Transfer() {
     setAmount('');
     setReference('');
     setTransferMode('own');
+    setSelectedBeneficiary(null);
     void refreshAccounts();
   };
 
@@ -357,12 +414,41 @@ export default function Transfer() {
       {/* Transfer type */}
       <Card withBorder radius="md" padding="md">
         <Stack gap="md">
-          <Text fw={600}>Transfer Type / نوع التحويل</Text>
-          <Radio.Group value={transferMode} onChange={(v) => setTransferMode(v as TransferMode)}>
-            <Group>
+          <Group justify="space-between">
+            <Text fw={600}>Transfer Type / نوع التحويل</Text>
+            <Anchor
+              size="sm"
+              c="#4D9134"
+              href="/beneficiaries"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/beneficiaries');
+              }}
+            >
+              <Group gap={4}>
+                <IconUserPlus size={14} />
+                Manage Beneficiaries / إدارة المستفيدين
+              </Group>
+            </Anchor>
+          </Group>
+          <Radio.Group
+            value={transferMode}
+            onChange={(v) => {
+              setTransferMode(v as TransferMode);
+              setSelectedBeneficiary(null);
+              setToIban('');
+              setToAccountId(null);
+            }}
+          >
+            <Stack gap="xs">
               <Radio
                 value="own"
                 label="Between My Accounts / بين حساباتي"
+                color="green"
+              />
+              <Radio
+                value="beneficiary"
+                label="To a Beneficiary / إلى مستفيد"
                 color="green"
               />
               <Radio
@@ -370,7 +456,7 @@ export default function Transfer() {
                 label="To Another IBAN / إلى حساب آخر"
                 color="green"
               />
-            </Group>
+            </Stack>
           </Radio.Group>
         </Stack>
       </Card>
@@ -401,13 +487,15 @@ export default function Transfer() {
         </Stack>
       </Card>
 
-      {/* To account / IBAN */}
+      {/* To account / IBAN / Beneficiary */}
       <Card withBorder radius="md" padding="md">
         <Stack gap="md">
           <Text fw={600}>
             {transferMode === 'own'
               ? 'To Account / إلى حساب'
-              : 'Beneficiary IBAN / رقم الآيبان'}
+              : transferMode === 'beneficiary'
+                ? 'Select Beneficiary / اختر المستفيد'
+                : 'Beneficiary IBAN / رقم الآيبان'}
           </Text>
           {transferMode === 'own' ? (
             <Select
@@ -418,6 +506,84 @@ export default function Transfer() {
               searchable
               disabled={!fromAccountId}
             />
+          ) : transferMode === 'beneficiary' ? (
+            <>
+              {loadingBeneficiaries ? (
+                <Center py="md">
+                  <Loader color="green" size="sm" />
+                </Center>
+              ) : beneficiaries.length === 0 ? (
+                <Alert color="gray" title="No Beneficiaries / لا يوجد مستفيدون">
+                  <Text size="sm">
+                    You have no saved beneficiaries.{' '}
+                    <Anchor
+                      c="#4D9134"
+                      href="/beneficiaries"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/beneficiaries');
+                      }}
+                    >
+                      Add a beneficiary / أضف مستفيدا
+                    </Anchor>
+                  </Text>
+                </Alert>
+              ) : (
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm">
+                  {beneficiaries.map((ben) => {
+                    const isSelected = selectedBeneficiary?.beneficiary_id === ben.beneficiary_id;
+                    return (
+                      <UnstyledButton
+                        key={ben.beneficiary_id}
+                        onClick={() => handleSelectBeneficiary(ben)}
+                        style={{ width: '100%' }}
+                      >
+                        <Paper
+                          p="sm"
+                          radius="md"
+                          withBorder
+                          style={{
+                            borderColor: isSelected ? '#4D9134' : undefined,
+                            borderWidth: isSelected ? 2 : 1,
+                            backgroundColor: isSelected ? '#f0f9ed' : undefined,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <Stack gap={4}>
+                            <Group justify="space-between" wrap="nowrap">
+                              <Text size="sm" fw={600} truncate>
+                                {ben.name}
+                              </Text>
+                              {ben.nickname && (
+                                <Badge size="xs" color="green" variant="light">
+                                  {ben.nickname}
+                                </Badge>
+                              )}
+                            </Group>
+                            {ben.name_ar && (
+                              <Text size="xs" c="dimmed" dir="rtl">
+                                {ben.name_ar}
+                              </Text>
+                            )}
+                            <Text size="xs" ff="monospace" c="dimmed">
+                              {maskIban(ben.iban)}
+                            </Text>
+                            {ben.bank_name && (
+                              <Group gap={4}>
+                                <IconBuildingBank size={12} color="#888" />
+                                <Text size="xs" c="dimmed">
+                                  {ben.bank_name}
+                                </Text>
+                              </Group>
+                            )}
+                          </Stack>
+                        </Paper>
+                      </UnstyledButton>
+                    );
+                  })}
+                </SimpleGrid>
+              )}
+            </>
           ) : (
             <TextInput
               placeholder="OM02DHOF..."
@@ -490,9 +656,11 @@ export default function Transfer() {
               <Text size="sm" fw={500}>
                 {transferMode === 'own' && toAccount
                   ? toAccount.description
-                  : toIban
-                    ? maskIban(toIban)
-                    : '-'}
+                  : transferMode === 'beneficiary' && selectedBeneficiary
+                    ? `${selectedBeneficiary.name} (${maskIban(selectedBeneficiary.iban)})`
+                    : toIban
+                      ? maskIban(toIban)
+                      : '-'}
               </Text>
             </Group>
             <Group justify="space-between">

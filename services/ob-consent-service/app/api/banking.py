@@ -50,6 +50,15 @@ class TransferResponse(BaseModel):
     created_at: str
 
 
+class AddBeneficiaryRequest(BaseModel):
+    name: str = Field(..., min_length=1, max_length=200)
+    name_ar: str = Field("", max_length=200)
+    iban: str = Field(..., min_length=15, max_length=34)
+    bank_name: str = Field("", max_length=200)
+    bank_code: str = Field("", max_length=20)
+    nickname: str = Field("", max_length=100)
+
+
 # ── Helpers ─────────────────────────────────────────────────────────────
 
 def _row_to_dict(row) -> dict[str, Any]:
@@ -177,6 +186,83 @@ async def get_account_transactions(
             offset,
         )
     return [_row_to_dict(r) for r in rows]
+
+
+# ── Beneficiaries ──────────────────────────────────────────────────────
+
+
+@router.get("/customers/{customer_id}/beneficiaries")
+async def list_beneficiaries(customer_id: str) -> list[dict[str, Any]]:
+    """List all beneficiaries for a customer."""
+    async with acquire() as conn:
+        cust = await conn.fetchrow(
+            "SELECT customer_id FROM customers WHERE customer_id = $1",
+            customer_id,
+        )
+        if not cust:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Customer {customer_id} not found")
+
+        rows = await conn.fetch(
+            """SELECT beneficiary_id, customer_id, name, name_ar, iban,
+                      bank_name, bank_code, nickname, created_at
+               FROM beneficiaries
+               WHERE customer_id = $1
+               ORDER BY created_at DESC""",
+            customer_id,
+        )
+    return [_row_to_dict(r) for r in rows]
+
+
+@router.post("/customers/{customer_id}/beneficiaries", status_code=status.HTTP_201_CREATED)
+async def add_beneficiary(customer_id: str, req: AddBeneficiaryRequest) -> dict[str, Any]:
+    """Add a new beneficiary for a customer."""
+    async with acquire() as conn:
+        cust = await conn.fetchrow(
+            "SELECT customer_id FROM customers WHERE customer_id = $1",
+            customer_id,
+        )
+        if not cust:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Customer {customer_id} not found")
+
+        beneficiary_id = f"BEN-{uuid.uuid4().hex[:12].upper()}"
+        now = datetime.now(_TZ_OMAN)
+
+        await conn.execute(
+            """INSERT INTO beneficiaries
+               (beneficiary_id, customer_id, name, name_ar, iban,
+                bank_name, bank_code, nickname, created_at)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)""",
+            beneficiary_id,
+            customer_id,
+            req.name,
+            req.name_ar,
+            req.iban.upper().replace(" ", ""),
+            req.bank_name,
+            req.bank_code,
+            req.nickname,
+            now,
+        )
+
+        row = await conn.fetchrow(
+            "SELECT * FROM beneficiaries WHERE beneficiary_id = $1",
+            beneficiary_id,
+        )
+    return _row_to_dict(row)
+
+
+@router.delete("/beneficiaries/{beneficiary_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_beneficiary(beneficiary_id: str) -> None:
+    """Remove a beneficiary."""
+    async with acquire() as conn:
+        result = await conn.execute(
+            "DELETE FROM beneficiaries WHERE beneficiary_id = $1",
+            beneficiary_id,
+        )
+        if result == "DELETE 0":
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Beneficiary {beneficiary_id} not found",
+            )
 
 
 # ── Transfers ───────────────────────────────────────────────────────────

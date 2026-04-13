@@ -104,7 +104,6 @@ class MockAdapter(OBIEAdapter):
 
     def __init__(self) -> None:
         # Fixtures still used for supplementary AIS resources
-        self._beneficiaries: dict[str, list[dict]] = copy.deepcopy(fixtures.BENEFICIARIES)
         self._direct_debits: dict[str, list[dict]] = copy.deepcopy(fixtures.DIRECT_DEBITS)
         self._standing_orders: dict[str, list[dict]] = copy.deepcopy(fixtures.STANDING_ORDERS)
         self._scheduled_payments: dict[str, list[dict]] = copy.deepcopy(fixtures.SCHEDULED_PAYMENTS)
@@ -189,19 +188,25 @@ class MockAdapter(OBIEAdapter):
 
     # ── Consent-scoped account filtering ────────────────────────────────
 
-    async def _get_consented_account_ids(self, consent_id: str) -> list[str] | None:
-        """Fetch selected_accounts from consent service. Returns empty list if revoked/expired."""
+    async def _get_consent(self, consent_id: str) -> dict | None:
+        """Fetch the full consent record from the consent service."""
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 resp = await client.get(f"{settings.consent_service_url}/consents/{consent_id}")
                 if resp.status_code == 200:
-                    data = resp.json()
-                    status = data.get("status", "")
-                    if status != "Authorised":
-                        return []  # Consent revoked/expired — no access
-                    return data.get("selected_accounts")
+                    return resp.json()
         except Exception:
             pass
+        return None
+
+    async def _get_consented_account_ids(self, consent_id: str) -> list[str] | None:
+        """Fetch selected_accounts from consent service. Returns empty list if revoked/expired."""
+        data = await self._get_consent(consent_id)
+        if data:
+            status = data.get("status", "")
+            if status != "Authorised":
+                return []  # Consent revoked/expired — no access
+            return data.get("selected_accounts")
         return None
 
     # ── AIS: Accounts (from Banking API) ────────────────────────────────
@@ -276,7 +281,29 @@ class MockAdapter(OBIEAdapter):
 
     async def get_beneficiaries(self, account_id: str, consent_id: str) -> dict[str, Any]:
         await self._validate_account(account_id)
-        bens = self._beneficiaries.get(account_id, [])
+        # Get customer_id from the consent to fetch beneficiaries from Banking API
+        bens: list[dict] = []
+        consent = await self._get_consent(consent_id)
+        if consent:
+            customer_id = consent.get("customer_id")
+            if customer_id:
+                try:
+                    rows = await self._banking_get(f"/customers/{customer_id}/beneficiaries")
+                    bens = [
+                        {
+                            "AccountId": account_id,
+                            "BeneficiaryId": r.get("beneficiary_id", ""),
+                            "Reference": r.get("nickname", ""),
+                            "CreditorAccount": {
+                                "SchemeName": "IBAN",
+                                "Identification": r.get("iban", ""),
+                                "Name": r.get("name", ""),
+                            },
+                        }
+                        for r in rows
+                    ]
+                except Exception:
+                    logger.warning("Failed to fetch beneficiaries for customer %s", customer_id)
         return {
             "Data": {"Beneficiary": bens},
             "Links": {"Self": f"/open-banking/v4.0/aisp/accounts/{account_id}/beneficiaries"},
@@ -418,9 +445,29 @@ class MockAdapter(OBIEAdapter):
         }
 
     async def get_all_beneficiaries(self, consent_id: str) -> dict[str, Any]:
-        all_bens = []
-        for bens in self._beneficiaries.values():
-            all_bens.extend(bens)
+        all_bens: list[dict] = []
+        consent = await self._get_consent(consent_id)
+        if consent:
+            customer_id = consent.get("customer_id")
+            allowed = consent.get("selected_accounts") or []
+            if customer_id:
+                try:
+                    rows = await self._banking_get(f"/customers/{customer_id}/beneficiaries")
+                    # Map beneficiaries to each consented account
+                    for account_id in allowed:
+                        for r in rows:
+                            all_bens.append({
+                                "AccountId": account_id,
+                                "BeneficiaryId": r.get("beneficiary_id", ""),
+                                "Reference": r.get("nickname", ""),
+                                "CreditorAccount": {
+                                    "SchemeName": "IBAN",
+                                    "Identification": r.get("iban", ""),
+                                    "Name": r.get("name", ""),
+                                },
+                            })
+                except Exception:
+                    logger.warning("Failed to fetch all beneficiaries for customer %s", customer_id)
         return {
             "Data": {"Beneficiary": all_bens},
             "Links": {"Self": "/open-banking/v4.0/aisp/beneficiaries"},
