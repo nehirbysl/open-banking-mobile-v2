@@ -166,12 +166,14 @@ export async function getConsentHistory(consentId: string): Promise<ConsentHisto
 export async function listConsents(customerId: string, status?: string): Promise<Consent[]> {
   const params = new URLSearchParams({ customer_id: customerId });
   if (status) params.set('status', status);
-  try {
-    return await apiFetch<Consent[]>(`${CONSENT_API_BASE}?${params.toString()}`);
-  } catch (err) {
-    console.error('listConsents failed:', err);
-    throw err;
+  // Simple fetch without auth — consent list is internal API
+  const response = await fetch(`${CONSENT_API_BASE}?${params.toString()}`, {
+    headers: { 'Accept': 'application/json' },
+  });
+  if (!response.ok) {
+    throw new Error(`Consent list failed: ${response.status}`);
   }
+  return response.json();
 }
 
 // ----- TPP endpoints -----

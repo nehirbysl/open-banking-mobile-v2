@@ -44,6 +44,18 @@ import { type TppApplication } from './index';
 // Demo data — same as in index.tsx for cross-navigation
 const DEMO_APPS: TppApplication[] = [
   {
+    id: 'masroofi-demo',
+    name: 'Masroofi \u2014 Personal Finance Manager',
+    description: 'Personal finance management app by Emrah Baysal. Track spending, view accounts, analyze transactions via Bank Dhofar Open Banking APIs.',
+    clientId: 'masroofi-demo',
+    clientSecret: 'masroofi-demo-secret-tnd',
+    status: 'active',
+    roles: ['AISP'],
+    redirectUris: ['https://masroofi.tnd.bankdhofar.com/callback'],
+    createdAt: '2026-04-12T00:00:00Z',
+    environment: 'production',
+  },
+  {
     id: 'app-001',
     name: 'FinTech PFM App',
     description: 'Personal finance management application for account aggregation and budgeting.',
