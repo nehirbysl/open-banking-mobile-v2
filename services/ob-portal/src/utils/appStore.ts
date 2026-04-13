@@ -35,6 +35,20 @@ const BUILT_IN_APPS: any[] = [
     companyName: 'Sadad Technologies LLC',
     contactEmail: 'emrahbaysal@gmail.com',
   },
+  {
+    id: 'hisab-business',
+    name: 'Hisab \u2014 Smart Business Dashboard',
+    description: "Business intelligence for Omani merchants. Revenue analytics, cash flow insights, customer trends, and transaction monitoring via Open Banking.",
+    clientId: 'hisab-business',
+    clientSecret: 'hisab-business-secret-tnd',
+    status: 'active',
+    roles: ['AISP'],
+    redirectUris: ['https://hisab.tnd.bankdhofar.com/callback'],
+    createdAt: '2026-04-13T00:00:00Z',
+    environment: 'production',
+    companyName: 'Hisab Technologies LLC',
+    contactEmail: 'emrahbaysal@gmail.com',
+  },
 ];
 
 function loadCustomApps(): any[] {
