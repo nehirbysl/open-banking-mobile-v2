@@ -1,7 +1,8 @@
 import { MantineProvider, createTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { isLoggedIn } from './utils/auth';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -48,6 +49,14 @@ const queryClient = new QueryClient({
   },
 });
 
+/** Route guard — redirects to landing if not logged in */
+function RequireAuth({ children }: { children: React.ReactElement }) {
+  if (!isLoggedIn()) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -57,7 +66,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/callback" element={<Callback />} />
-            <Route element={<Layout />}>
+            <Route element={<RequireAuth><Layout /></RequireAuth>}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/connect" element={<ConnectBank />} />
               <Route path="/accounts" element={<Accounts />} />
@@ -65,6 +74,8 @@ export default function App() {
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/spending" element={<Spending />} />
             </Route>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </MantineProvider>
