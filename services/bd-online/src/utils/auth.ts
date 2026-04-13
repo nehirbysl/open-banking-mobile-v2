@@ -19,10 +19,19 @@ const userManager = new UserManager({
   post_logout_redirect_uri: POST_LOGOUT_URI,
   response_type: 'code',
   scope: 'openid profile email',
-  automaticSilentRenew: true,
-  silent_redirect_uri: `${window.location.origin}/auth/silent-renew`,
+  automaticSilentRenew: false,
   userStore: new WebStorageStateStore({ store: window.sessionStorage }),
-  // PKCE is default in oidc-client-ts for code flow
+  // Skip OIDC discovery — provide metadata directly to avoid cross-origin cert issues
+  metadataUrl: undefined,
+  metadata: {
+    issuer: KEYCLOAK_BASE,
+    authorization_endpoint: `${KEYCLOAK_BASE}/protocol/openid-connect/auth`,
+    // Token + userinfo proxied through BD Online nginx to avoid self-signed cert issues
+    token_endpoint: `${window.location.origin}/auth/realms/open-banking/protocol/openid-connect/token`,
+    userinfo_endpoint: `${window.location.origin}/auth/realms/open-banking/protocol/openid-connect/userinfo`,
+    end_session_endpoint: `${KEYCLOAK_BASE}/protocol/openid-connect/logout`,
+    jwks_uri: `${window.location.origin}/auth/realms/open-banking/protocol/openid-connect/certs`,
+  },
 });
 
 /** Redirect user to Keycloak login page. */
