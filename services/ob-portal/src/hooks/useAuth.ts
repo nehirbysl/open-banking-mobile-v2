@@ -32,6 +32,13 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(() => loadUser());
   const [loading, setLoading] = useState(false);
 
+  // Re-check localStorage on every render (catches same-tab login from Header)
+  useEffect(() => {
+    const current = loadUser();
+    if (current && !user) setUser(current);
+    if (!current && user) setUser(null);
+  });
+
   const login = useCallback((email: string, name: string, organization?: string) => {
     setLoading(true);
     const newUser: User = {
