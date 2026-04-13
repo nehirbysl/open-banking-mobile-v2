@@ -127,7 +127,15 @@ function generateClientSecret(): string {
 export default function ApplicationsPage() {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-  const [apps, setApps] = useState<TppApplication[]>(INITIAL_APPS);
+  const [apps, setApps] = useState<TppApplication[]>(() => {
+    // Load from shared store (built-in + localStorage-registered)
+    try {
+      const { getAllApps } = require('../../utils/appStore');
+      return getAllApps();
+    } catch {
+      return INITIAL_APPS;
+    }
+  });
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [credentialsOpened, { open: openCredentials, close: closeCredentials }] = useDisclosure(false);
 
@@ -183,8 +191,12 @@ export default function ApplicationsPage() {
       environment: newEnvironment as 'sandbox' | 'production',
     };
 
-    // 1. Add to local state immediately
+    // 1. Add to local state + persist in localStorage
     setApps((prev) => [app, ...prev]);
+    try {
+      const { registerApp } = require('../../utils/appStore');
+      registerApp(app);
+    } catch { /* ignore */ }
 
     // 2. Fire-and-forget TPP manager API call (don't block on it)
     try {

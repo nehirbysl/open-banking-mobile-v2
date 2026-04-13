@@ -121,7 +121,15 @@ export default function AppDetail() {
   const [certFile, setCertFile] = useState<File | null>(null);
   const [regenerateConfirm, { open: openRegenerate, close: closeRegenerate }] = useDisclosure(false);
 
-  const app = DEMO_APPS.find((a) => a.id === appId);
+  // Try shared store first (includes built-in + user-registered), fallback to DEMO_APPS
+  let app: TppApplication | undefined;
+  try {
+    const { getAppById } = require('../../utils/appStore');
+    app = getAppById(appId);
+  } catch { /* ignore */ }
+  if (!app) {
+    app = DEMO_APPS.find((a) => a.id === appId);
+  }
 
   if (!isAuthenticated) {
     navigate('/applications');
