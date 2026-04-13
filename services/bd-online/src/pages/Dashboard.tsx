@@ -81,7 +81,7 @@ export default function Dashboard() {
   const firstName = displayName.split(' ')[0];
 
   // Arabic greeting based on first name
-  const arabicGreeting = '\u0645\u0631\u062D\u0628\u0627';
+  const arabicGreeting = 'مرحبا';
 
   const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
   const activeConsents = consents.filter((c) => c.status === 'Authorised').length;
@@ -112,7 +112,7 @@ export default function Dashboard() {
           </Box>
           <Box ta="right">
             <Text size="xs" c="rgba(255,255,255,0.6)">
-              Total Balance / \u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0631\u0635\u064A\u062F
+              Total Balance / إجمالي الرصيد
             </Text>
             <Text size="xl" fw={700} c="white" mt={4}>
               {formatBalance(totalBalance)}
@@ -130,7 +130,7 @@ export default function Dashboard() {
             </ThemeIcon>
             <Box>
               <Text size="xs" c="dimmed">
-                Accounts / \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A
+                Accounts / الحسابات
               </Text>
               <Text size="xl" fw={700}>
                 {accounts.length}
@@ -146,7 +146,7 @@ export default function Dashboard() {
             </ThemeIcon>
             <Box>
               <Text size="xs" c="dimmed">
-                Active Consents / \u0645\u0648\u0627\u0641\u0642\u0627\u062A \u0646\u0634\u0637\u0629
+                Active Consents / موافقات نشطة
               </Text>
               <Text size="xl" fw={700}>
                 {activeConsents}
@@ -162,7 +162,7 @@ export default function Dashboard() {
             </ThemeIcon>
             <Box>
               <Text size="xs" c="dimmed">
-                Pending Approvals / \u0628\u0627\u0646\u062A\u0638\u0627\u0631 \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629
+                Pending Approvals / بانتظار الموافقة
               </Text>
               <Group gap="xs" align="baseline">
                 <Text size="xl" fw={700}>
@@ -185,7 +185,7 @@ export default function Dashboard() {
           <Box>
             <Title order={4}>Your Accounts</Title>
             <Text size="sm" c="dimmed">
-              {'\u062D\u0633\u0627\u0628\u0627\u062A\u0643'}
+              {'حساباتك'}
             </Text>
           </Box>
         </Group>
@@ -203,7 +203,7 @@ export default function Dashboard() {
             <Text fw={600}>Open Banking Consents</Text>
             <Text size="sm" c="dimmed">
               Manage third-party access to your accounts /
-              {' \u0625\u062F\u0627\u0631\u0629 \u0648\u0635\u0648\u0644 \u0627\u0644\u0623\u0637\u0631\u0627\u0641 \u0627\u0644\u062E\u0627\u0631\u062C\u064A\u0629 \u0625\u0644\u0649 \u062D\u0633\u0627\u0628\u0627\u062A\u0643'}
+              {' إدارة وصول الأطراف الخارجية إلى حساباتك'}
             </Text>
           </Box>
           <Button

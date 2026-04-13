@@ -249,7 +249,7 @@ export default function ConsentDetail() {
       {/* Key dates */}
       <Card withBorder radius="md" padding="md">
         <Text fw={600} mb="sm">
-          Timeline / \u0627\u0644\u062C\u062F\u0648\u0644 \u0627\u0644\u0632\u0645\u0646\u064A
+          Timeline / الجدول الزمني
         </Text>
         <Stack gap="xs">
           <Group justify="space-between">
@@ -320,7 +320,7 @@ export default function ConsentDetail() {
       {/* Permissions */}
       <Card withBorder radius="md" padding="md">
         <Text fw={600} mb="md">
-          Permissions / \u0627\u0644\u0635\u0644\u0627\u062D\u064A\u0627\u062A
+          Permissions / الصلاحيات
         </Text>
         <PermissionDisplay permissions={consent.permissions} />
       </Card>
@@ -329,7 +329,7 @@ export default function ConsentDetail() {
       {consent.selected_accounts && consent.selected_accounts.length > 0 && (
         <Card withBorder radius="md" padding="md">
           <Text fw={600} mb="md">
-            Shared Accounts / \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A \u0627\u0644\u0645\u0634\u062A\u0631\u0643\u0629
+            Shared Accounts / الحسابات المشتركة
           </Text>
           <Stack gap="sm">
             {consent.selected_accounts.map((accountId) => {
@@ -357,7 +357,7 @@ export default function ConsentDetail() {
           <Group gap="xs" mb="md">
             <IconHistory size={18} color="var(--mantine-color-gray-6)" />
             <Text fw={600}>
-              Audit History / \u0633\u062C\u0644 \u0627\u0644\u0645\u0631\u0627\u062C\u0639\u0629
+              Audit History / سجل المراجعة
             </Text>
           </Group>
           <Timeline active={history.length - 1} bulletSize={24} lineWidth={2}>
@@ -439,7 +439,7 @@ export default function ConsentDetail() {
           </Alert>
 
           <Text size="sm" c="dimmed">
-            {'\u0625\u0644\u063A\u0627\u0621 \u0647\u0630\u0647 \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0633\u064A\u0648\u0642\u0641 \u0648\u0635\u0648\u0644 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062E\u0627\u0631\u062C\u064A \u0625\u0644\u0649 \u0628\u064A\u0627\u0646\u0627\u062A \u062D\u0633\u0627\u0628\u0643 \u0641\u0648\u0631\u064B\u0627.'}
+            {'إلغاء هذه الموافقة سيوقف وصول الطرف الخارجي إلى بيانات حسابك فورًا.'}
           </Text>
 
           <Textarea

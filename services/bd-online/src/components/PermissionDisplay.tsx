@@ -30,7 +30,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   // Account Information
   ReadAccountsBasic: {
     label: 'View Account Names',
-    labelAr: '\u0639\u0631\u0636 \u0623\u0633\u0645\u0627\u0621 \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A',
+    labelAr: 'عرض أسماء الحسابات',
     description: 'See your account names and types',
     icon: IconBuildingBank,
     color: 'blue',
@@ -38,7 +38,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadAccountsDetail: {
     label: 'View Account Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A',
+    labelAr: 'عرض تفاصيل الحسابات',
     description: 'See your account numbers, sort codes, and IBANs',
     icon: IconBuildingBank,
     color: 'blue',
@@ -46,7 +46,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadBalances: {
     label: 'View Balances',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0623\u0631\u0635\u062F\u0629',
+    labelAr: 'عرض الأرصدة',
     description: 'See your current account balances',
     icon: IconCreditCard,
     color: 'green',
@@ -54,7 +54,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadTransactionsBasic: {
     label: 'View Transaction History',
-    labelAr: '\u0639\u0631\u0636 \u0633\u062C\u0644 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A',
+    labelAr: 'عرض سجل المعاملات',
     description: 'See your transaction amounts and dates',
     icon: IconReceipt,
     color: 'orange',
@@ -62,7 +62,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadTransactionsDetail: {
     label: 'View Transaction Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A',
+    labelAr: 'عرض تفاصيل المعاملات',
     description: 'See full transaction details including merchant names',
     icon: IconReceipt,
     color: 'orange',
@@ -70,7 +70,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadTransactionsCredits: {
     label: 'View Credit Transactions',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A \u0627\u0644\u062F\u0627\u0626\u0646\u0629',
+    labelAr: 'عرض المعاملات الدائنة',
     description: 'See incoming payments and credits',
     icon: IconReceipt,
     color: 'teal',
@@ -78,7 +78,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadTransactionsDebits: {
     label: 'View Debit Transactions',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A \u0627\u0644\u0645\u062F\u064A\u0646\u0629',
+    labelAr: 'عرض المعاملات المدينة',
     description: 'See outgoing payments and debits',
     icon: IconReceipt,
     color: 'red',
@@ -86,7 +86,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadBeneficiariesBasic: {
     label: 'View Saved Payees',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0645\u0633\u062A\u0641\u064A\u062F\u064A\u0646',
+    labelAr: 'عرض المستفيدين',
     description: 'See your saved payee names',
     icon: IconUsers,
     color: 'grape',
@@ -94,7 +94,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadBeneficiariesDetail: {
     label: 'View Payee Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0645\u0633\u062A\u0641\u064A\u062F\u064A\u0646',
+    labelAr: 'عرض تفاصيل المستفيدين',
     description: 'See your saved payee account details',
     icon: IconUsers,
     color: 'grape',
@@ -102,7 +102,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadDirectDebits: {
     label: 'View Direct Debits',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u062E\u0635\u0645 \u0627\u0644\u0645\u0628\u0627\u0634\u0631',
+    labelAr: 'عرض الخصم المباشر',
     description: 'See your direct debit mandates',
     icon: IconFileText,
     color: 'cyan',
@@ -110,7 +110,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadStandingOrdersBasic: {
     label: 'View Standing Orders',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0623\u0648\u0627\u0645\u0631 \u0627\u0644\u062F\u0627\u0626\u0645\u0629',
+    labelAr: 'عرض الأوامر الدائمة',
     description: 'See your standing order amounts and schedules',
     icon: IconCalendar,
     color: 'indigo',
@@ -118,7 +118,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadStandingOrdersDetail: {
     label: 'View Standing Order Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0623\u0648\u0627\u0645\u0631 \u0627\u0644\u062F\u0627\u0626\u0645\u0629',
+    labelAr: 'عرض تفاصيل الأوامر الدائمة',
     description: 'See full standing order details including payee info',
     icon: IconCalendar,
     color: 'indigo',
@@ -126,7 +126,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadProducts: {
     label: 'View Product Information',
-    labelAr: '\u0639\u0631\u0636 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0645\u0646\u062A\u062C',
+    labelAr: 'عرض معلومات المنتج',
     description: 'See your account product details and features',
     icon: IconShieldCheck,
     color: 'lime',
@@ -134,7 +134,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadOffers: {
     label: 'View Account Offers',
-    labelAr: '\u0639\u0631\u0636 \u0639\u0631\u0648\u0636 \u0627\u0644\u062D\u0633\u0627\u0628',
+    labelAr: 'عرض عروض الحساب',
     description: 'See available offers on your accounts',
     icon: IconShieldCheck,
     color: 'yellow',
@@ -142,7 +142,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadParty: {
     label: 'View Personal Information',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0634\u062E\u0635\u064A\u0629',
+    labelAr: 'عرض المعلومات الشخصية',
     description: 'See your name, address, and contact details',
     icon: IconUsers,
     color: 'pink',
@@ -150,7 +150,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadPartyPSU: {
     label: 'View Identity Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0647\u0648\u064A\u0629',
+    labelAr: 'عرض تفاصيل الهوية',
     description: 'See your identity verification details',
     icon: IconUsers,
     color: 'pink',
@@ -158,7 +158,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadScheduledPaymentsBasic: {
     label: 'View Scheduled Payments',
-    labelAr: '\u0639\u0631\u0636 \u0627\u0644\u0645\u062F\u0641\u0648\u0639\u0627\u062A \u0627\u0644\u0645\u062C\u062F\u0648\u0644\u0629',
+    labelAr: 'عرض المدفوعات المجدولة',
     description: 'See your upcoming scheduled payments',
     icon: IconCalendar,
     color: 'violet',
@@ -166,7 +166,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadScheduledPaymentsDetail: {
     label: 'View Scheduled Payment Details',
-    labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0645\u062F\u0641\u0648\u0639\u0627\u062A \u0627\u0644\u0645\u062C\u062F\u0648\u0644\u0629',
+    labelAr: 'عرض تفاصيل المدفوعات المجدولة',
     description: 'See full details of scheduled payments',
     icon: IconCalendar,
     color: 'violet',
@@ -174,7 +174,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadStatementsBasic: {
     label: 'View Statement Summaries',
-    labelAr: '\u0639\u0631\u0636 \u0645\u0644\u062E\u0635 \u0643\u0634\u0641 \u0627\u0644\u062D\u0633\u0627\u0628',
+    labelAr: 'عرض ملخص كشف الحساب',
     description: 'See your statement dates and totals',
     icon: IconFileText,
     color: 'gray',
@@ -182,7 +182,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadStatementsDetail: {
     label: 'View Full Statements',
-    labelAr: '\u0639\u0631\u0636 \u0643\u0634\u0641 \u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u0643\u0627\u0645\u0644',
+    labelAr: 'عرض كشف الحساب الكامل',
     description: 'See your complete bank statements',
     icon: IconFileText,
     color: 'gray',
@@ -190,7 +190,7 @@ const PERMISSION_MAP: Record<string, PermissionInfo> = {
   },
   ReadPAN: {
     label: 'View Card Numbers',
-    labelAr: '\u0639\u0631\u0636 \u0623\u0631\u0642\u0627\u0645 \u0627\u0644\u0628\u0637\u0627\u0642\u0627\u062A',
+    labelAr: 'عرض أرقام البطاقات',
     description: 'See your full card numbers (PAN)',
     icon: IconCreditCard,
     color: 'red',

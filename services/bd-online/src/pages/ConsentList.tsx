@@ -108,7 +108,7 @@ export default function ConsentList() {
       <Box>
         <Title order={3}>Open Banking Consents</Title>
         <Text size="sm" c="dimmed">
-          {'\u0645\u0648\u0627\u0641\u0642\u0627\u062A \u0627\u0644\u062E\u062F\u0645\u0627\u062A \u0627\u0644\u0645\u0635\u0631\u0641\u064A\u0629 \u0627\u0644\u0645\u0641\u062A\u0648\u062D\u0629'}
+          {'موافقات الخدمات المصرفية المفتوحة'}
           {' '}&mdash; Manage third-party access to your accounts
         </Text>
       </Box>

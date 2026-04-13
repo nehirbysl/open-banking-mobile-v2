@@ -20,9 +20,9 @@ export interface BankAccount {
 export type AccountType = 'CurrentAccount' | 'SavingsAccount' | 'BusinessAccount';
 
 const ACCOUNT_TYPE_AR: Record<AccountType, string> = {
-  CurrentAccount: '\u062D\u0633\u0627\u0628 \u062C\u0627\u0631\u064A',
-  SavingsAccount: '\u062D\u0633\u0627\u0628 \u062A\u0648\u0641\u064A\u0631',
-  BusinessAccount: '\u062D\u0633\u0627\u0628 \u062A\u062C\u0627\u0631\u064A',
+  CurrentAccount: 'حساب جاري',
+  SavingsAccount: 'حساب توفير',
+  BusinessAccount: 'حساب تجاري',
 };
 
 /**
@@ -37,7 +37,7 @@ const CUSTOMER_ACCOUNTS: Record<string, BankAccount[]> = {
       accountId: 'DHOF-10001',
       iban: 'OM02DHOF0001010012540350',
       description: 'Personal Current Account',
-      descriptionAr: '\u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u062C\u0627\u0631\u064A \u0627\u0644\u0634\u062E\u0635\u064A',
+      descriptionAr: 'الحساب الجاري الشخصي',
       currency: 'OMR',
       balance: 12540.350,
       type: 'CurrentAccount',
@@ -47,7 +47,7 @@ const CUSTOMER_ACCOUNTS: Record<string, BankAccount[]> = {
       accountId: 'DHOF-10002',
       iban: 'OM02DHOF0001010045230100',
       description: 'Savings Account',
-      descriptionAr: '\u062D\u0633\u0627\u0628 \u0627\u0644\u062A\u0648\u0641\u064A\u0631',
+      descriptionAr: 'حساب التوفير',
       currency: 'OMR',
       balance: 45230.100,
       type: 'SavingsAccount',
@@ -57,7 +57,7 @@ const CUSTOMER_ACCOUNTS: Record<string, BankAccount[]> = {
       accountId: 'DHOF-10003',
       iban: 'OM02DHOF0001010128450750',
       description: 'Business Current Account',
-      descriptionAr: '\u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u062A\u062C\u0627\u0631\u064A',
+      descriptionAr: 'الحساب التجاري',
       currency: 'OMR',
       balance: 128450.750,
       type: 'BusinessAccount',
@@ -69,7 +69,7 @@ const CUSTOMER_ACCOUNTS: Record<string, BankAccount[]> = {
       accountId: 'DHOF-10004',
       iban: 'OM02DHOF0001010008920500',
       description: 'Personal Current Account',
-      descriptionAr: '\u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u062C\u0627\u0631\u064A \u0627\u0644\u0634\u062E\u0635\u064A',
+      descriptionAr: 'الحساب الجاري الشخصي',
       currency: 'OMR',
       balance: 8920.500,
       type: 'CurrentAccount',
@@ -79,7 +79,7 @@ const CUSTOMER_ACCOUNTS: Record<string, BankAccount[]> = {
       accountId: 'DHOF-10005',
       iban: 'OM02DHOF0001010022100000',
       description: 'Savings Account',
-      descriptionAr: '\u062D\u0633\u0627\u0628 \u0627\u0644\u062A\u0648\u0641\u064A\u0631',
+      descriptionAr: 'حساب التوفير',
       currency: 'OMR',
       balance: 22100.000,
       type: 'SavingsAccount',

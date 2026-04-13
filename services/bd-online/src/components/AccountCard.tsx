@@ -112,7 +112,7 @@ export default function AccountCard({ account, compact = false }: AccountCardPro
           {maskIban(account.iban)}
         </Text>
         <Text size="xs" c="dimmed" mb={4}>
-          Available Balance / \u0627\u0644\u0631\u0635\u064A\u062F \u0627\u0644\u0645\u062A\u0627\u062D
+          Available Balance / الرصيد المتاح
         </Text>
         <Text size="xl" fw={700} c="dark">
           {formatBalance(account.balance, account.currency)}

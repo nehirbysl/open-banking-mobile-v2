@@ -104,12 +104,12 @@ export default function Login() {
                 Bank Dhofar
               </Text>
               <Text size="md" c="dimmed">
-                {'\u0628\u0646\u0643 \u0638\u0641\u0627\u0631'}
+                {'بنك ظفار'}
               </Text>
             </Stack>
 
             <Text size="sm" c="dimmed" ta="center">
-              Internet Banking / {'\u0627\u0644\u062E\u062F\u0645\u0627\u062A \u0627\u0644\u0645\u0635\u0631\u0641\u064A\u0629 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A'}
+              Internet Banking / {'الخدمات المصرفية عبر الإنترنت'}
             </Text>
 
             <Divider w="100%" />
@@ -129,7 +129,7 @@ export default function Login() {
                     A service provider is requesting access to your account information.
                   </Text>
                   <Text size="xs" ta="center" c="dimmed">
-                    {'\u064A\u0637\u0644\u0628 \u0645\u0632\u0648\u062F \u062E\u062F\u0645\u0629 \u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u062D\u0633\u0627\u0628\u0643.'}
+                    {'يطلب مزود خدمة الوصول إلى معلومات حسابك.'}
                   </Text>
                   <Text size="xs" c="dimmed">
                     Please sign in to review and approve.

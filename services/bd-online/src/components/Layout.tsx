@@ -39,13 +39,13 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   {
     label: 'Dashboard',
-    labelAr: '\u0644\u0648\u062D\u0629 \u0627\u0644\u062A\u062D\u0643\u0645',
+    labelAr: 'لوحة التحكم',
     icon: IconHome,
     path: '/dashboard',
   },
   {
     label: 'Consents',
-    labelAr: '\u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0627\u062A',
+    labelAr: 'الموافقات',
     icon: IconShieldCheck,
     path: '/consents',
   },
@@ -107,7 +107,7 @@ export default function Layout() {
                     Bank Dhofar
                   </Text>
                   <Text size="xs" c="rgba(255,255,255,0.8)" lh={1}>
-                    \u0628\u0646\u0643 \u0638\u0641\u0627\u0631
+                    بنك ظفار
                   </Text>
                 </Stack>
               </Group>

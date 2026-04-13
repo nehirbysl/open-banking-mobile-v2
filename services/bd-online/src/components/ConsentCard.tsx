@@ -20,37 +20,37 @@ const STATUS_CONFIG: Record<
 > = {
   AwaitingAuthorisation: {
     label: 'Pending',
-    labelAr: '\u0642\u064A\u062F \u0627\u0644\u0627\u0646\u062A\u0638\u0627\u0631',
+    labelAr: 'قيد الانتظار',
     color: 'yellow',
     icon: IconClock,
   },
   Authorised: {
     label: 'Active',
-    labelAr: '\u0646\u0634\u0637',
+    labelAr: 'نشط',
     color: 'green',
     icon: IconShieldCheck,
   },
   Rejected: {
     label: 'Rejected',
-    labelAr: '\u0645\u0631\u0641\u0648\u0636',
+    labelAr: 'مرفوض',
     color: 'red',
     icon: IconX,
   },
   Consumed: {
     label: 'Consumed',
-    labelAr: '\u0645\u0633\u062A\u062E\u062F\u0645',
+    labelAr: 'مستخدم',
     color: 'gray',
     icon: IconCheck,
   },
   Revoked: {
     label: 'Revoked',
-    labelAr: '\u0645\u0644\u063A\u0649',
+    labelAr: 'ملغى',
     color: 'orange',
     icon: IconShieldOff,
   },
   Expired: {
     label: 'Expired',
-    labelAr: '\u0645\u0646\u062A\u0647\u064A',
+    labelAr: 'منتهي',
     color: 'gray',
     icon: IconBan,
   },
@@ -59,27 +59,27 @@ const STATUS_CONFIG: Record<
 const CONSENT_TYPE_LABELS: Record<string, { en: string; ar: string }> = {
   'account-access': {
     en: 'Account Information',
-    ar: '\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u062D\u0633\u0627\u0628',
+    ar: 'معلومات الحساب',
   },
   'domestic-payment': {
     en: 'Payment',
-    ar: '\u062F\u0641\u0639',
+    ar: 'دفع',
   },
   'scheduled-payment': {
     en: 'Scheduled Payment',
-    ar: '\u062F\u0641\u0639 \u0645\u062C\u062F\u0648\u0644',
+    ar: 'دفع مجدول',
   },
   'standing-order': {
     en: 'Standing Order',
-    ar: '\u0623\u0645\u0631 \u062F\u0627\u0626\u0645',
+    ar: 'أمر دائم',
   },
   'domestic-vrp': {
     en: 'Variable Recurring Payment',
-    ar: '\u062F\u0641\u0639 \u0645\u062A\u0643\u0631\u0631 \u0645\u062A\u063A\u064A\u0631',
+    ar: 'دفع متكرر متغير',
   },
   'funds-confirmation': {
     en: 'Funds Confirmation',
-    ar: '\u062A\u0623\u0643\u064A\u062F \u0627\u0644\u0623\u0645\u0648\u0627\u0644',
+    ar: 'تأكيد الأموال',
   },
 };
 
@@ -162,7 +162,7 @@ export default function ConsentCard({ consent, tppName, onClick }: ConsentCardPr
         }}
       >
         <Text size="xs" c="dimmed" mb={2}>
-          Permissions / \u0627\u0644\u0635\u0644\u0627\u062D\u064A\u0627\u062A
+          Permissions / الصلاحيات
         </Text>
         <Text size="xs" lineClamp={1}>
           {getPermissionSummary(consent.permissions)}

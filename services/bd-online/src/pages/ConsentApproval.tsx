@@ -301,7 +301,7 @@ export default function ConsentApproval() {
             Authorize Access
           </Title>
           <Text size="sm" c="rgba(255,255,255,0.8)" ta="center">
-            {'\u062A\u0641\u0648\u064A\u0636 \u0627\u0644\u0648\u0635\u0648\u0644'}
+            {'تفويض الوصول'}
           </Text>
         </Stack>
       </Card>
@@ -370,7 +370,7 @@ export default function ConsentApproval() {
           <Stack gap="sm">
             <Group gap="xs">
               <IconCurrencyRiyal size={20} color="var(--mantine-color-orange-6)" />
-              <Text fw={600}>Payment Details / \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062F\u0641\u0639</Text>
+              <Text fw={600}>Payment Details / تفاصيل الدفع</Text>
             </Group>
             <Divider />
             <Group justify="space-between">
@@ -413,7 +413,7 @@ export default function ConsentApproval() {
               Requested Permissions
             </Text>
             <Text size="xs" c="dimmed">
-              {'\u0627\u0644\u0635\u0644\u0627\u062D\u064A\u0627\u062A \u0627\u0644\u0645\u0637\u0644\u0648\u0628\u0629'}
+              {'الصلاحيات المطلوبة'}
               {' '}&mdash; This service will be able to:
             </Text>
           </Box>
@@ -449,7 +449,7 @@ export default function ConsentApproval() {
                 Select Accounts to Share
               </Text>
               <Text size="xs" c="dimmed">
-                {'\u0627\u062E\u062A\u0631 \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A \u0644\u0644\u0645\u0634\u0627\u0631\u0643\u0629'}
+                {'اختر الحسابات للمشاركة'}
               </Text>
             </Box>
             <AccountPicker
@@ -533,7 +533,7 @@ export default function ConsentApproval() {
             </Text>
           </Alert>
           <Text size="sm" c="dimmed">
-            {'\u0647\u0644 \u0623\u0646\u062A \u0645\u062A\u0623\u0643\u062F \u0645\u0646 \u0631\u0641\u0636 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628\u061F'}
+            {'هل أنت متأكد من رفض هذا الطلب؟'}
           </Text>
           <Group justify="flex-end">
             <Button variant="default" onClick={closeReject}>
