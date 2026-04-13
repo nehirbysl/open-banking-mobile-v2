@@ -8,7 +8,7 @@
  * 4. Exchange code for access token (or use consent_id directly for demo)
  */
 
-const CONSENT_SERVICE_URL = '/api/consent/';
+const CONSENT_SERVICE_URL = '/api/consent';
 const BD_ONLINE_BASE = 'https://banking.tnd.bankdhofar.com';
 const KEYCLOAK_TOKEN_URL = 'https://keycloak.uat.bankdhofar.com/realms/open-banking/protocol/openid-connect/token';
 const MASROOFI_REDIRECT_URI = 'https://masroofi.tnd.bankdhofar.com/callback';
