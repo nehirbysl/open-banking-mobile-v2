@@ -126,3 +126,19 @@ build-sadad:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - services/sadad/**/*
+
+build-salalah-electronics:
+  <<: *build_template
+  script:
+    - >
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}/services/salalah-electronics"
+      --dockerfile "${CI_PROJECT_DIR}/services/salalah-electronics/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/salalah-electronics:${CI_COMMIT_SHORT_SHA}"
+      --destination "${CI_REGISTRY_IMAGE}/salalah-electronics:latest"
+      --build-arg "CACHE_BUST=${CI_COMMIT_SHORT_SHA}"
+      --cache=false
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - services/salalah-electronics/**/*
