@@ -24,7 +24,7 @@ const userManager = new UserManager({
   // Skip OIDC discovery — provide metadata directly to avoid cross-origin cert issues
   metadataUrl: undefined,
   metadata: {
-    issuer: KEYCLOAK_BASE,
+    issuer: 'https://keycloak.uat.bankdhofar.com/realms/open-banking',
     authorization_endpoint: `${KEYCLOAK_BASE}/protocol/openid-connect/auth`,
     // Token + userinfo proxied through BD Online nginx to avoid self-signed cert issues
     token_endpoint: `${window.location.origin}/auth/realms/open-banking/protocol/openid-connect/token`,
