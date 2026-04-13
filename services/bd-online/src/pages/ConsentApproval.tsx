@@ -94,8 +94,7 @@ export default function ConsentApproval() {
       }
       setUser(u);
 
-      const email = getEmail(u);
-      const custId = u.customer_id || resolveCustomerId(email || String(u.profile.sub || u.sub));
+      const custId = u.customer_id || resolveCustomerId(getEmail(u));
       setCustomerId(custId);
       const accts = await fetchCustomerAccounts(custId);
       setAccounts(accts);

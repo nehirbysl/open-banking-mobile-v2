@@ -52,8 +52,7 @@ export default function Dashboard() {
       }
       setUser(u);
 
-      const email = getEmail(u);
-      const customerId = u.customer_id || resolveCustomerId(email || String(u.profile.sub || u.sub));
+      const customerId = u.customer_id || resolveCustomerId(getEmail(u));
       const accts = await fetchCustomerAccounts(customerId);
       setAccounts(accts);
 

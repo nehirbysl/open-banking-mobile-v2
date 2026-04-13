@@ -111,7 +111,7 @@ export async function executeTransfer(transfer: TransferRequest): Promise<Transf
 }
 
 /**
- * Resolve customer ID from a Keycloak token value.
+ * Resolve customer ID from an email or username.
  * If the input already looks like a customer ID (starts with "CUST-"), return as-is.
  * Otherwise return the input unchanged (the backend resolves by customer_id).
  */

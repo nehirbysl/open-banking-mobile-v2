@@ -65,6 +65,11 @@ class MasroofiRegisterRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
 
 
+class BankAuthLoginRequest(BaseModel):
+    email: str = Field(..., min_length=1, max_length=255)
+    password: str = Field(..., min_length=1, max_length=255)
+
+
 class MasroofiLoginRequest(BaseModel):
     email: str = Field(..., min_length=1, max_length=255)
     password: str = Field(..., min_length=1, max_length=255)
@@ -280,6 +285,46 @@ async def delete_beneficiary(beneficiary_id: str):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Beneficiary {beneficiary_id} not found",
             )
+
+
+# ── Bank Auth (BD Online direct login) ─────────────────────────────────
+
+
+@router.post("/bank-auth/login")
+async def bank_auth_login(req: BankAuthLoginRequest) -> dict[str, Any]:
+    """Authenticate a bank customer directly (no Keycloak redirect).
+
+    Validates email + password against the ``customers`` table and returns
+    customer info with their account list.
+    """
+    async with acquire() as conn:
+        row = await conn.fetchrow(
+            "SELECT customer_id, email, first_name, last_name, password FROM customers WHERE email = $1",
+            req.email,
+        )
+
+    if not row or row["password"] != req.password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password",
+        )
+
+    customer_id = row["customer_id"]
+
+    # Fetch accounts for this customer
+    async with acquire() as conn:
+        acct_rows = await conn.fetch(
+            "SELECT account_id FROM accounts WHERE customer_id = $1 ORDER BY account_id",
+            customer_id,
+        )
+
+    return {
+        "customer_id": customer_id,
+        "email": row["email"],
+        "first_name": row["first_name"],
+        "last_name": row["last_name"],
+        "accounts": [r["account_id"] for r in acct_rows],
+    }
 
 
 # ── Masroofi Users ─────────────────────────────────────────────────────

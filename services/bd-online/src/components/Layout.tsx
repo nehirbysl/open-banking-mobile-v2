@@ -72,9 +72,9 @@ export default function Layout() {
     try {
       await logout();
     } catch {
-      // If Keycloak logout fails, just clear session and redirect
+      // Fallback: clear session and redirect
       window.sessionStorage.clear();
-      window.location.href = '/';
+      window.location.href = '/login';
     }
   };
 

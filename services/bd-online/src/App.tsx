@@ -2,22 +2,19 @@
  * BD Online — Bank Dhofar Internet Banking for Open Banking consent authorization.
  *
  * Routes:
- *  /                      → Login page (redirect to Keycloak)
+ *  /                      → Login page (bank's own login form)
  *  /login                 → Login page (explicit)
- *  /auth/callback         → OIDC callback handler
- *  /auth/silent-renew     → Silent token refresh (iframe)
  *  /dashboard             → Customer home
  *  /consent/approve       → Consent authorization flow (THE key page)
  *  /consents              → Consent list
  *  /consents/:consentId   → Consent detail
+ *  /transfer              → Transfer funds
  */
 
-import { useEffect } from 'react';
 import { MantineProvider, createTheme, MantineColorsTuple } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { handleCallback } from '@/utils/auth';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from '@/components/Layout';
 import Login from '@/pages/Login';
@@ -88,48 +85,6 @@ const queryClient = new QueryClient({
   },
 });
 
-/**
- * OIDC callback handler — processes the Keycloak redirect and navigates.
- */
-function AuthCallback() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    handleCallback()
-      .then(() => {
-        // Check if there was a pending consent redirect
-        const pending = sessionStorage.getItem('bd_online_consent_redirect');
-        if (pending) {
-          try {
-            const { consentId, redirectUri, state, clientId } = JSON.parse(pending);
-            sessionStorage.removeItem('bd_online_consent_redirect');
-            const params = new URLSearchParams();
-            if (consentId) params.set('consent_id', consentId);
-            if (redirectUri) params.set('redirect_uri', redirectUri);
-            if (state) params.set('state', state);
-            if (clientId) params.set('client_id', clientId);
-            navigate(`/consent/approve?${params.toString()}`, { replace: true });
-            return;
-          } catch {
-            // Ignore malformed pending data
-          }
-        }
-        navigate('/dashboard', { replace: true });
-      })
-      .catch((err) => {
-        console.error('OIDC callback failed:', err?.message || err);
-        navigate('/login', { replace: true });
-      });
-  }, [navigate]);
-
-  return null;
-}
-
-/** Silent renew stub — not needed with manual PKCE flow. */
-function SilentRenew() {
-  return null;
-}
-
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -139,8 +94,6 @@ export default function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/auth/silent-renew" element={<SilentRenew />} />
 
             {/* Root redirect */}
             <Route path="/" element={<Navigate to="/login" replace />} />

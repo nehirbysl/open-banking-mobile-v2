@@ -108,8 +108,7 @@ export default function Transfer() {
       }
       setUser(u);
 
-      const custId =
-        u.customer_id || resolveCustomerId(u.email || String(u.profile.sub || u.sub));
+      const custId = u.customer_id || resolveCustomerId(u.email);
       setCustomerId(custId);
       const accts = await fetchCustomerAccounts(custId);
       setAccounts(accts);
