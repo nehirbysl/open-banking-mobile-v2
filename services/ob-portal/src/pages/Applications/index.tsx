@@ -32,9 +32,10 @@ import {
   IconCopy,
   IconCheck,
   IconCircleCheck,
+  IconTrash,
 } from '@tabler/icons-react';
 import { useAuth } from '../../hooks/useAuth';
-import { getAllApps as getAllAppsFromStore, registerApp as registerAppToStore } from '../../utils/appStore';
+import { getAllApps as getAllAppsFromStore, registerApp as registerAppToStore, deleteApp as deleteAppFromStore } from '../../utils/appStore';
 import { StatusBadge } from '../../components/common/StatusBadge';
 
 export interface TppApplication {
@@ -286,7 +287,25 @@ export default function ApplicationsPage() {
               >
                 <Group justify="space-between" mb="sm">
                   <Text fw={600} size="lg">{app.name}</Text>
-                  <StatusBadge status={app.status} />
+                  <Group gap="xs">
+                    <StatusBadge status={app.status} />
+                    <Tooltip label="Delete application">
+                      <ActionIcon
+                        variant="subtle"
+                        color="red"
+                        size="sm"
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          if (window.confirm(`Delete "${app.name}"? This cannot be undone.`)) {
+                            deleteAppFromStore(app.id);
+                            setApps(getAllAppsFromStore());
+                          }
+                        }}
+                      >
+                        <IconTrash size={14} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Group>
                 </Group>
                 <Text size="sm" c="dimmed" mb="md" lineClamp={2}>
                   {app.description || 'No description provided.'}

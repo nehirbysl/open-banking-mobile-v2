@@ -63,3 +63,13 @@ export function registerApp(app: any): void {
   custom.unshift(app);
   saveCustomApps(custom);
 }
+
+export function deleteApp(id: string): boolean {
+  // Can't delete built-in apps
+  if (BUILT_IN_APPS.some((a: any) => a.id === id)) return false;
+  const custom = loadCustomApps();
+  const filtered = custom.filter((a: any) => a.id !== id);
+  if (filtered.length === custom.length) return false;
+  saveCustomApps(filtered);
+  return true;
+}
