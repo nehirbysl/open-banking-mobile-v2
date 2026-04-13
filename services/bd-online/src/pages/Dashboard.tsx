@@ -52,7 +52,7 @@ export default function Dashboard() {
       setUser(u);
 
       const email = getEmail(u);
-      const customerId = resolveCustomerId(email || u.profile.sub);
+      const customerId = resolveCustomerId(email || String(u.profile.sub || u.sub));
       const accts = getCustomerAccounts(customerId);
       setAccounts(accts);
 
