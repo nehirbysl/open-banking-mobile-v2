@@ -12,7 +12,7 @@ from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field
 
 from app.core.database import acquire
@@ -267,8 +267,8 @@ async def add_beneficiary(customer_id: str, req: AddBeneficiaryRequest) -> dict[
     return _row_to_dict(row)
 
 
-@router.delete("/beneficiaries/{beneficiary_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_beneficiary(beneficiary_id: str) -> None:
+@router.delete("/beneficiaries/{beneficiary_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+async def delete_beneficiary(beneficiary_id: str):
     """Remove a beneficiary."""
     async with acquire() as conn:
         result = await conn.execute(
