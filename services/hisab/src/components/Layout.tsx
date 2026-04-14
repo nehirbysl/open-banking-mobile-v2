@@ -28,9 +28,9 @@ import { getCurrentUser, logout } from '@/utils/auth';
 import { isBankConnected, disconnectBank } from '@/utils/consent';
 
 const NAV_ITEMS = [
-  { path: '/dashboard', label: 'Dashboard', labelAr: '\u0644\u0648\u062D\u0629 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A', icon: IconDashboard },
-  { path: '/transactions', label: 'Transactions', labelAr: '\u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A', icon: IconReceipt },
-  { path: '/analytics', label: 'Analytics', labelAr: '\u0627\u0644\u062A\u062D\u0644\u064A\u0644\u0627\u062A', icon: IconChartBar },
+  { path: '/dashboard', label: 'Dashboard', icon: IconDashboard },
+  { path: '/transactions', label: 'Transactions', icon: IconReceipt },
+  { path: '/analytics', label: 'Analytics', icon: IconChartBar },
 ];
 
 export default function Layout() {
@@ -132,12 +132,7 @@ export default function Layout() {
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.path}
-              label={
-                <Group gap={6}>
-                  <Text size="sm">{item.label}</Text>
-                  <Text size="xs" c="dimmed">{item.labelAr}</Text>
-                </Group>
-              }
+              label={item.label}
               leftSection={<item.icon size={20} stroke={1.5} />}
               active={location.pathname === item.path || location.pathname.startsWith(item.path + '/')}
               onClick={() => {
@@ -157,7 +152,6 @@ export default function Layout() {
               label={
                 <Group gap={6}>
                   <Text size="sm" fw={500}>Connect Bank</Text>
-                  <Text size="xs" c="dimmed">{'\u0631\u0628\u0637 \u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u0628\u0646\u0643\u064A'}</Text>
                 </Group>
               }
               leftSection={<IconBuildingBank size={20} stroke={1.5} />}

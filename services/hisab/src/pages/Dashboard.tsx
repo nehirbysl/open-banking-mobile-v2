@@ -57,7 +57,6 @@ function EmptyState() {
         </ThemeIcon>
         <Stack gap={4} align="center">
           <Text fw={700} size="xl" ta="center">Connect Your Bank to Get Started</Text>
-          <Text size="sm" c="dimmed" ta="center">{'\u0627\u0631\u0628\u0637 \u062D\u0633\u0627\u0628\u0643 \u0627\u0644\u0628\u0646\u0643\u064A \u0644\u0644\u0628\u062F\u0621'}</Text>
         </Stack>
         <Text size="sm" c="dimmed" ta="center" maw={500}>
           Link your Bank Dhofar business account to see revenue analytics, cash flow,
@@ -135,7 +134,6 @@ export default function Dashboard() {
         <Group justify="space-between" align="flex-start">
           <Box>
             <Title order={2}>Dashboard</Title>
-            <Text size="sm" c="dimmed">{'\u0644\u0648\u062D\u0629 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A'}</Text>
           </Box>
         </Group>
 
@@ -158,7 +156,7 @@ export default function Dashboard() {
             <Group gap="xs" align="center">
               <IconCash size={20} color="rgba(255,255,255,0.8)" />
               <Text size="sm" c="rgba(255,255,255,0.8)" fw={500}>
-                Revenue This Month / {'\u0625\u064A\u0631\u0627\u062F\u0627\u062A \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631'}
+                Revenue This Month
               </Text>
             </Group>
             {loading ? (
@@ -192,7 +190,6 @@ export default function Dashboard() {
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
           <StatCard
             title="Today's Revenue"
-            titleAr={'\u0625\u064A\u0631\u0627\u062F\u0627\u062A \u0627\u0644\u064A\u0648\u0645'}
             value={loading ? '...' : formatOMR(todayRevenue)}
             icon={IconTrendingUp}
             color="teal"
@@ -201,7 +198,6 @@ export default function Dashboard() {
           />
           <StatCard
             title="Total Transactions"
-            titleAr={'\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A'}
             value={loading ? '...' : totalTxCount.toString()}
             icon={IconReceipt}
             color="blue"
@@ -210,7 +206,6 @@ export default function Dashboard() {
           />
           <StatCard
             title="Avg Transaction Value"
-            titleAr={'\u0645\u062A\u0648\u0633\u0637 \u0642\u064A\u0645\u0629 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0629'}
             value={loading ? '...' : formatOMR(avgTxValue)}
             icon={IconCash}
             color="grape"
@@ -226,7 +221,6 @@ export default function Dashboard() {
               <Group justify="space-between" mb="md">
                 <Box>
                   <Text fw={600}>Daily Revenue (Last 7 Days)</Text>
-                  <Text size="xs" c="dimmed">{'\u0627\u0644\u0625\u064A\u0631\u0627\u062F\u0627\u062A \u0627\u0644\u064A\u0648\u0645\u064A\u0629'}</Text>
                 </Box>
                 <Button
                   variant="subtle"
@@ -256,7 +250,6 @@ export default function Dashboard() {
               <Group justify="space-between" mb="md">
                 <Box>
                   <Text fw={600}>Top Customers</Text>
-                  <Text size="xs" c="dimmed">{'\u0623\u0641\u0636\u0644 \u0627\u0644\u0639\u0645\u0644\u0627\u0621'}</Text>
                 </Box>
                 <ThemeIcon size={28} radius="md" variant="light" color="teal">
                   <IconUsers size={16} />
@@ -314,7 +307,6 @@ export default function Dashboard() {
               <Group justify="space-between" p="md" pb="sm">
                 <Box>
                   <Text fw={600}>Recent Transactions</Text>
-                  <Text size="xs" c="dimmed">{'\u0622\u062E\u0631 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A'}</Text>
                 </Box>
                 <Button
                   variant="subtle"
@@ -351,7 +343,6 @@ export default function Dashboard() {
             <Card shadow="sm" radius="md" withBorder>
               <Box mb="md">
                 <Text fw={600}>Cash Flow This Month</Text>
-                <Text size="xs" c="dimmed">{'\u0627\u0644\u062A\u062F\u0641\u0642 \u0627\u0644\u0646\u0642\u062F\u064A \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631'}</Text>
               </Box>
               {loading ? (
                 <Stack gap="md">
@@ -393,7 +384,6 @@ export default function Dashboard() {
                           <IconTrendingUp size={16} color="#00B894" />
                           <Box>
                             <Text size="sm" fw={500}>Income</Text>
-                            <Text size="xs" c="dimmed">{'\u0627\u0644\u062F\u062E\u0644'}</Text>
                           </Box>
                         </Group>
                         <Text size="sm" fw={700} c="teal" style={{ fontVariantNumeric: 'tabular-nums' }}>
@@ -408,7 +398,6 @@ export default function Dashboard() {
                           <IconTrendingDown size={16} color="#e17055" />
                           <Box>
                             <Text size="sm" fw={500}>Expenses</Text>
-                            <Text size="xs" c="dimmed">{'\u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A'}</Text>
                           </Box>
                         </Group>
                         <Text size="sm" fw={700} c="red" style={{ fontVariantNumeric: 'tabular-nums' }}>

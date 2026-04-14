@@ -51,9 +51,6 @@ export default function Header({ onCartOpen }: HeaderProps) {
               <Text fw={700} size="lg" style={{ color: '#D35400' }}>
                 Salalah Souq
               </Text>
-              <Text size="sm" c="dimmed" fw={500}>
-                {'\u0635\u0644\u0627\u0644\u0629 \u0633\u0648\u0642'}
-              </Text>
             </Group>
             <Text size="xs" c="dimmed" mt={-4}>
               Oman's Premium Gift & Heritage Store

@@ -73,11 +73,10 @@ export default function PaymentMethods({ total, disabled }: PaymentMethodsProps)
           </ThemeIcon>
           <Box>
             <Text fw={700} size="md">Sadad Payment Gateway</Text>
-            <Text size="xs" c="dimmed">{'\u0633\u062F\u0627\u062F \u2014 \u0628\u0648\u0627\u0628\u0629 \u0627\u0644\u062F\u0641\u0639 \u0627\u0644\u0622\u0645\u0646\u0629'}</Text>
           </Box>
         </Group>
         <Text size="sm" c="dimmed" mb="md">
-          Choose your payment method / {'\u0627\u062E\u062A\u0631 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639'}
+          Choose your payment method
         </Text>
 
         {error && (

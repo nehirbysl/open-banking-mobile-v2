@@ -33,28 +33,24 @@ const FEATURES = [
   {
     icon: IconChartBar,
     title: 'Revenue Analytics',
-    titleAr: '\u062A\u062D\u0644\u064A\u0644 \u0627\u0644\u0625\u064A\u0631\u0627\u062F\u0627\u062A',
     description: 'Track your daily and monthly revenue with visual breakdowns and trend analysis.',
     color: '#00B894',
   },
   {
     icon: IconCash,
     title: 'Cash Flow',
-    titleAr: '\u0627\u0644\u062A\u062F\u0641\u0642 \u0627\u0644\u0646\u0642\u062F\u064A',
     description: 'Monitor income vs expenses in real-time to keep your business cash flow healthy.',
     color: '#00CEC9',
   },
   {
     icon: IconUsers,
     title: 'Customer Insights',
-    titleAr: '\u0631\u0624\u0649 \u0627\u0644\u0639\u0645\u0644\u0627\u0621',
     description: 'Identify your top customers by transaction volume and total spending.',
     color: '#0984e3',
   },
   {
     icon: IconFileInvoice,
     title: 'Invoice Matching',
-    titleAr: '\u0645\u0637\u0627\u0628\u0642\u0629 \u0627\u0644\u0641\u0648\u0627\u062A\u064A\u0631',
     description: 'Match incoming payments against outstanding invoices automatically.',
     color: '#e17055',
   },
@@ -155,23 +151,11 @@ export default function Landing() {
         <Container size="lg" style={{ position: 'relative', zIndex: 1 }}>
           <Stack align="center" gap="xl">
             <Box ta="center">
-              <Text
-                size="lg"
-                fw={600}
-                c="rgba(255,255,255,0.85)"
-                mb="xs"
-                style={{ fontFamily: 'serif', letterSpacing: 1 }}
-              >
-                {'\u062D\u0633\u0627\u0628'}
-              </Text>
               <Title order={1} c="white" size={48} ta="center" style={{ lineHeight: 1.2 }}>
                 Smart Business Insights
                 <br />
                 for Omani Merchants
               </Title>
-              <Text size="xl" c="rgba(255,255,255,0.85)" ta="center" mt="md" maw={600} mx="auto">
-                {'\u0631\u0624\u0649 \u0623\u0639\u0645\u0627\u0644 \u0630\u0643\u064A\u0629 \u0644\u0644\u062A\u062C\u0627\u0631 \u0627\u0644\u0639\u0645\u0627\u0646\u064A\u064A\u0646'}
-              </Text>
               <Text size="md" c="rgba(255,255,255,0.7)" ta="center" mt="sm" maw={500} mx="auto">
                 Connect your Bank Dhofar business account and get real-time revenue analytics,
                 cash flow insights, and customer intelligence.
@@ -242,7 +226,6 @@ export default function Landing() {
                 <feature.icon size={28} color={feature.color} />
               </ThemeIcon>
               <Text fw={600} size="lg" mt="md">{feature.title}</Text>
-              <Text size="sm" c="teal.5" mt={2}>{feature.titleAr}</Text>
               <Text size="sm" c="dimmed" mt="sm">{feature.description}</Text>
             </Card>
           ))}
@@ -262,9 +245,9 @@ export default function Landing() {
           </Stack>
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
             {[
-              { step: '1', title: 'Create Account', titleAr: '\u0625\u0646\u0634\u0627\u0621 \u062D\u0633\u0627\u0628', desc: 'Sign up for Hisab with your business email in seconds.' },
-              { step: '2', title: 'Connect Bank Dhofar', titleAr: '\u0631\u0628\u0637 \u0628\u0646\u0643 \u0638\u0641\u0627\u0631', desc: 'Securely link your business bank account via Open Banking consent.' },
-              { step: '3', title: 'Get Insights', titleAr: '\u0627\u062D\u0635\u0644 \u0639\u0644\u0649 \u0631\u0624\u0649', desc: 'See revenue analytics, cash flow, top customers, and transaction trends.' },
+              { step: '1', title: 'Create Account', desc: 'Sign up for Hisab with your business email in seconds.' },
+              { step: '2', title: 'Connect Bank Dhofar', desc: 'Securely link your business bank account via Open Banking consent.' },
+              { step: '3', title: 'Get Insights', desc: 'See revenue analytics, cash flow, top customers, and transaction trends.' },
             ].map((item) => (
               <Paper key={item.step} p="xl" radius="lg" ta="center">
                 <Box
@@ -283,7 +266,6 @@ export default function Landing() {
                   <Text c="white" fw={700} size="lg">{item.step}</Text>
                 </Box>
                 <Text fw={600} size="lg">{item.title}</Text>
-                <Text size="xs" c="teal.5" mt={2}>{item.titleAr}</Text>
                 <Text size="sm" c="dimmed" mt="xs">{item.desc}</Text>
               </Paper>
             ))}

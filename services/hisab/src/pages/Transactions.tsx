@@ -79,7 +79,6 @@ function EmptyState() {
           <IconBuildingBank size={40} color="#00B894" />
         </Box>
         <Text fw={700} size="xl" ta="center">Connect Your Bank to Get Started</Text>
-        <Text size="sm" c="dimmed" ta="center">{'\u0627\u0631\u0628\u0637 \u062D\u0633\u0627\u0628\u0643 \u0627\u0644\u0628\u0646\u0643\u064A \u0644\u0644\u0628\u062F\u0621'}</Text>
         <Button color="teal" size="md" onClick={() => navigate('/connect')}>
           Connect Bank Dhofar
         </Button>
@@ -222,7 +221,7 @@ export default function Transactions() {
           <Group justify="space-between" align="flex-end">
             <Box>
               <Title order={2}>All Transactions</Title>
-              <Text size="sm" c="dimmed">{'\u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A'} - All accounts</Text>
+              <Text size="sm" c="dimmed">All accounts</Text>
             </Box>
             <Button
               variant="light"

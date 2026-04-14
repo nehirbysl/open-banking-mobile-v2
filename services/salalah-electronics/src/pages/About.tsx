@@ -70,9 +70,6 @@ export default function About() {
               </Text>
             </Box>
             <Title order={2}>Salalah Souq</Title>
-            <Text size="lg" c="dimmed" dir="rtl" fw={500}>
-              {'\u0635\u0644\u0627\u0644\u0629 \u0633\u0648\u0642'}
-            </Text>
             <Badge color="orange" variant="light" size="lg">
               Est. 2015 &mdash; Salalah, Oman
             </Badge>
@@ -83,10 +80,6 @@ export default function About() {
             heritage products. We bring the rich traditions of Dhofar to your
             doorstep with genuine frankincense, traditional coffee sets, handcrafted
             khanjars, and artisan-crafted goods from across the Sultanate.
-          </Text>
-
-          <Text size="md" ta="center" maw={500} mx="auto" c="dimmed" dir="rtl">
-            {'\u0635\u0644\u0627\u0644\u0629 \u0633\u0648\u0642 \u0647\u064A \u0627\u0644\u0648\u062C\u0647\u0629 \u0627\u0644\u0641\u0627\u062E\u0631\u0629 \u0641\u064A \u0639\u064F\u0645\u0627\u0646 \u0644\u0644\u0647\u062F\u0627\u064A\u0627 \u0627\u0644\u0623\u0635\u064A\u0644\u0629 \u0648\u0645\u0646\u062A\u062C\u0627\u062A \u0627\u0644\u062A\u0631\u0627\u062B \u0627\u0644\u0639\u0645\u0627\u0646\u064A.'}
           </Text>
         </Paper>
 
@@ -154,7 +147,7 @@ export default function About() {
 
         {/* Footer */}
         <Text size="xs" c="dimmed" ta="center" mt="xl">
-          Salalah Souq / {'\u0635\u0644\u0627\u0644\u0629 \u0633\u0648\u0642'} — Payments powered by Sadad
+          Salalah Souq — Payments powered by Sadad
         </Text>
       </Container>
     </Box>

@@ -123,7 +123,7 @@ export default function Spending() {
       <Stack gap="xl">
         <Box>
           <Title order={2}>Spending Analysis</Title>
-          <Text size="sm" c="dimmed">{'\u062A\u062D\u0644\u064A\u0644 \u0627\u0644\u0645\u0635\u0627\u0631\u064A\u0641'} - {thisMonth.label}</Text>
+          <Text size="sm" c="dimmed">{thisMonth.label}</Text>
         </Box>
 
         {error && (
@@ -253,7 +253,7 @@ export default function Spending() {
               <Card shadow="sm" radius="md" withBorder>
                 <Box mb="md">
                   <Text fw={600} size="lg">Spending Breakdown</Text>
-                  <Text size="xs" c="dimmed">{'\u062A\u0641\u0635\u064A\u0644 \u0627\u0644\u0645\u0635\u0627\u0631\u064A\u0641'} - {thisMonth.label}</Text>
+                  <Text size="xs" c="dimmed">{thisMonth.label}</Text>
                 </Box>
                 {isLoading ? (
                   <Stack gap="md">
@@ -338,7 +338,7 @@ export default function Spending() {
             <Stack gap="lg">
               {/* Monthly Trend — 3 month bar comparison */}
               <Card shadow="sm" radius="md" withBorder>
-                <Text fw={600} size="sm" mb="md">Monthly Trend / {'\u0627\u0644\u0627\u062A\u062C\u0627\u0647 \u0627\u0644\u0634\u0647\u0631\u064A'}</Text>
+                <Text fw={600} size="sm" mb="md">Monthly Trend</Text>
                 {isLoading ? (
                   <Skeleton height={100} />
                 ) : (
@@ -384,7 +384,7 @@ export default function Spending() {
 
               {/* Top Merchants */}
               <Card shadow="sm" radius="md" withBorder>
-                <Text fw={600} size="sm" mb="md">Top Merchants / {'\u0623\u0643\u062B\u0631 \u0627\u0644\u062A\u062C\u0627\u0631'}</Text>
+                <Text fw={600} size="sm" mb="md">Top Merchants</Text>
                 {isLoading ? (
                   <Stack gap="sm">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -481,13 +481,6 @@ export default function Spending() {
                           : savingsRate >= 10
                           ? 'Good progress! Try reducing your top spending category to reach 20%.'
                           : 'Try setting a monthly spending budget for your top 3 categories.'}
-                      </Text>
-                      <Text size="xs" c="dimmed" mt={4}>
-                        {savingsRate >= 20
-                          ? '\u0645\u0639\u062F\u0644 \u0627\u062F\u062E\u0627\u0631 \u0645\u0645\u062A\u0627\u0632!'
-                          : savingsRate >= 10
-                          ? '\u0628\u062F\u0627\u064A\u0629 \u062C\u064A\u062F\u0629!'
-                          : '\u062D\u0627\u0648\u0644 \u062A\u0642\u0644\u064A\u0644 \u0627\u0644\u0645\u0635\u0627\u0631\u064A\u0641'}
                       </Text>
                     </Box>
                   </Group>

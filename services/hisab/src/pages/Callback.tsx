@@ -87,7 +87,6 @@ export default function Callback() {
                 <Text size="sm" c="dimmed" mt="xs">
                   Exchanging authorization and setting up your business account...
                 </Text>
-                <Text size="xs" c="dimmed" mt={4}>{'\u062C\u0627\u0631\u064A \u0631\u0628\u0637 \u062D\u0633\u0627\u0628\u0643 \u0627\u0644\u0628\u0646\u0643\u064A...'}</Text>
               </Box>
             </Stack>
           )}
@@ -102,7 +101,6 @@ export default function Callback() {
                 <Text size="sm" c="dimmed" mt="xs">
                   Your Bank Dhofar business account is now linked to Hisab.
                 </Text>
-                <Text size="xs" c="dimmed" mt={4}>{'\u062A\u0645 \u0631\u0628\u0637 \u062D\u0633\u0627\u0628\u0643 \u0628\u0646\u062C\u0627\u062D'}</Text>
               </Box>
               <Text size="xs" c="dimmed">Redirecting to dashboard...</Text>
             </Stack>

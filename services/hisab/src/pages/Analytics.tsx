@@ -45,7 +45,6 @@ function EmptyState() {
           <IconBuildingBank size={40} />
         </ThemeIcon>
         <Text fw={700} size="xl" ta="center">Connect Your Bank to Get Started</Text>
-        <Text size="sm" c="dimmed" ta="center">{'\u0627\u0631\u0628\u0637 \u062D\u0633\u0627\u0628\u0643 \u0627\u0644\u0628\u0646\u0643\u064A \u0644\u0644\u0628\u062F\u0621'}</Text>
         <Button color="teal" size="md" onClick={() => navigate('/connect')}>
           Connect Bank Dhofar
         </Button>
@@ -133,7 +132,7 @@ export default function Analytics() {
       <Stack gap="xl">
         <Box>
           <Title order={2}>Analytics</Title>
-          <Text size="sm" c="dimmed">{'\u0627\u0644\u062A\u062D\u0644\u064A\u0644\u0627\u062A'} - Business Intelligence</Text>
+          <Text size="sm" c="dimmed">Business Intelligence</Text>
         </Box>
 
         {/* Average Order Value */}
@@ -141,7 +140,6 @@ export default function Analytics() {
           <Group justify="space-between">
             <Box>
               <Text size="xs" tt="uppercase" fw={600} c="dimmed">Average Transaction Value</Text>
-              <Text size="xs" c="dimmed">{'\u0645\u062A\u0648\u0633\u0637 \u0642\u064A\u0645\u0629 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0629'}</Text>
             </Box>
             <ThemeIcon size={36} radius="md" variant="light" color="teal">
               <IconTrendingUp size={20} />
@@ -173,7 +171,6 @@ export default function Analytics() {
                 </ThemeIcon>
                 <Box>
                   <Text fw={600}>Monthly Revenue Trend</Text>
-                  <Text size="xs" c="dimmed">{'\u0627\u062A\u062C\u0627\u0647 \u0627\u0644\u0625\u064A\u0631\u0627\u062F\u0627\u062A \u0627\u0644\u0634\u0647\u0631\u064A\u0629'}</Text>
                 </Box>
               </Group>
               {loading ? (
@@ -203,7 +200,6 @@ export default function Analytics() {
                 </ThemeIcon>
                 <Box>
                   <Text fw={600}>Transaction Volume (30 Days)</Text>
-                  <Text size="xs" c="dimmed">{'\u062D\u062C\u0645 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A'}</Text>
                 </Box>
               </Group>
               {loading ? (
@@ -256,7 +252,6 @@ export default function Analytics() {
                 </ThemeIcon>
                 <Box>
                   <Text fw={600}>Peak Hours</Text>
-                  <Text size="xs" c="dimmed">{'\u0633\u0627\u0639\u0627\u062A \u0627\u0644\u0630\u0631\u0648\u0629'}</Text>
                 </Box>
               </Group>
               {loading ? (
@@ -285,7 +280,6 @@ export default function Analytics() {
                 </ThemeIcon>
                 <Box>
                   <Text fw={600}>Revenue by Day of Week</Text>
-                  <Text size="xs" c="dimmed">{'\u0627\u0644\u0625\u064A\u0631\u0627\u062F\u0627\u062A \u062D\u0633\u0628 \u0623\u064A\u0627\u0645 \u0627\u0644\u0623\u0633\u0628\u0648\u0639'}</Text>
                 </Box>
               </Group>
               {loading ? (
@@ -311,7 +305,6 @@ export default function Analytics() {
         <Card shadow="sm" radius="md" withBorder>
           <Box mb="md">
             <Text fw={600}>Monthly Breakdown</Text>
-            <Text size="xs" c="dimmed">{'\u0627\u0644\u062A\u0641\u0635\u064A\u0644 \u0627\u0644\u0634\u0647\u0631\u064A'}</Text>
           </Box>
           {loading ? (
             <Stack gap="sm">

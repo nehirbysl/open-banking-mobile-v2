@@ -31,9 +31,9 @@ import { createConsent, buildConsentRedirectUrl, isBankConnected } from '@/utils
 import { useNavigate } from 'react-router-dom';
 
 const PERMISSIONS = [
-  { label: 'View account details', labelAr: '\u0639\u0631\u0636 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062D\u0633\u0627\u0628', icon: IconCreditCard },
-  { label: 'View account balances', labelAr: '\u0639\u0631\u0636 \u0623\u0631\u0635\u062F\u0629 \u0627\u0644\u062D\u0633\u0627\u0628\u0627\u062A', icon: IconEye },
-  { label: 'View transaction history', labelAr: '\u0639\u0631\u0636 \u0633\u062C\u0644 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A', icon: IconReceipt },
+  { label: 'View account details', icon: IconCreditCard },
+  { label: 'View account balances', icon: IconEye },
+  { label: 'View transaction history', icon: IconReceipt },
 ];
 
 export default function ConnectBank() {
@@ -96,7 +96,6 @@ export default function ConnectBank() {
       <Stack gap="xl">
         <Box>
           <Title order={2}>Connect Bank Dhofar</Title>
-          <Text size="sm" c="dimmed" mt={4}>{'\u0631\u0628\u0637 \u062D\u0633\u0627\u0628 \u0628\u0646\u0643 \u0638\u0641\u0627\u0631'}</Text>
         </Box>
 
         {error && (
@@ -125,7 +124,6 @@ export default function ConnectBank() {
                 <Text fw={700} size="xl">Bank Dhofar</Text>
                 <Badge color="green" size="sm" variant="filled">Supported</Badge>
               </Group>
-              <Text size="sm" c="dimmed">{'\u0628\u0646\u0643 \u0638\u0641\u0627\u0631'}</Text>
               <Text size="xs" c="dimmed" mt={2}>Secure connection via Open Banking APIs</Text>
             </Box>
           </Group>
@@ -138,10 +136,7 @@ export default function ConnectBank() {
                   <ThemeIcon size={28} radius="xl" color="teal" variant="light">
                     <perm.icon size={14} />
                   </ThemeIcon>
-                  <Box>
-                    <Text size="sm">{perm.label}</Text>
-                    <Text size="xs" c="dimmed">{perm.labelAr}</Text>
-                  </Box>
+                  <Text size="sm">{perm.label}</Text>
                 </Group>
               ))}
             </Stack>
@@ -176,7 +171,6 @@ export default function ConnectBank() {
             <Text size="xs" c="dimmed" ta="center">
               You will be redirected to Bank Dhofar Online to approve the connection.
               <br />
-              {'\u0633\u064A\u062A\u0645 \u0625\u0639\u0627\u062F\u0629 \u062A\u0648\u062C\u064A\u0647\u0643 \u0625\u0644\u0649 \u0628\u0646\u0643 \u0638\u0641\u0627\u0631 \u0639\u0628\u0631 \u0627\u0644\u0625\u0646\u062A\u0631\u0646\u062A \u0644\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0639\u0644\u0649 \u0627\u0644\u0627\u062A\u0635\u0627\u0644.'}
             </Text>
           </Stack>
         </Card>

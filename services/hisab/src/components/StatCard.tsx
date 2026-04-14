@@ -2,7 +2,6 @@ import { Paper, Group, Text, ThemeIcon, Skeleton, Box } from '@mantine/core';
 
 interface StatCardProps {
   title: string;
-  titleAr: string;
   value: string;
   icon: React.ElementType;
   color: string;
@@ -10,7 +9,7 @@ interface StatCardProps {
   loading?: boolean;
 }
 
-export default function StatCard({ title, titleAr, value, icon: Icon, color, borderColor, loading }: StatCardProps) {
+export default function StatCard({ title, value, icon: Icon, color, borderColor, loading }: StatCardProps) {
   return (
     <Paper
       shadow="sm"
@@ -32,7 +31,6 @@ export default function StatCard({ title, titleAr, value, icon: Icon, color, bor
           {value}
         </Text>
       )}
-      <Text size="xs" c="dimmed" mt={4}>{titleAr}</Text>
     </Paper>
   );
 }

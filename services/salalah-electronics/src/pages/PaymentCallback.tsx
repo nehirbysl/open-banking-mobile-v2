@@ -159,9 +159,6 @@ export default function PaymentCallback() {
           <Stack align="center" gap="lg" py={60}>
             <Loader size="xl" color="orange" />
             <Title order={2}>Processing Payment...</Title>
-            <Text c="dimmed" size="lg" dir="rtl">
-              {'\u062C\u0627\u0631\u064A \u0645\u0639\u0627\u0644\u062C\u0629 \u0627\u0644\u062F\u0641\u0639...'}
-            </Text>
             <Text c="dimmed" size="sm">
               Please do not close this window.
             </Text>
@@ -189,9 +186,6 @@ export default function PaymentCallback() {
                 </ThemeIcon>
                 <Text size="xl" fw={700} c="teal.7">
                   Payment Successful
-                </Text>
-                <Text size="sm" c="dimmed" dir="rtl">
-                  {'\u062A\u0645\u062A \u0639\u0645\u0644\u064A\u0629 \u0627\u0644\u062F\u0641\u0639 \u0628\u0646\u062C\u0627\u062D'}
                 </Text>
               </Stack>
 

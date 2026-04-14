@@ -214,7 +214,7 @@ export default function Transactions() {
           <Text size="sm" c="dimmed">
             {accountId && account
               ? `${account.Nickname || 'Account'} - ${account.Account?.[0]?.Identification || ''}`
-              : '\u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A - All accounts'}
+              : 'All accounts'}
           </Text>
         </Box>
 

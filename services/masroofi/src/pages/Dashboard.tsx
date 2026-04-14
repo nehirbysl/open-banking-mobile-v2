@@ -134,7 +134,6 @@ export default function Dashboard() {
         <Group justify="space-between" align="flex-start">
           <Box>
             <Title order={2}>Dashboard</Title>
-            <Text size="sm" c="dimmed">{'\u0644\u0648\u062D\u0629 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A'}</Text>
           </Box>
         </Group>
 
@@ -159,7 +158,7 @@ export default function Dashboard() {
           <Stack gap="xs" style={{ position: 'relative', zIndex: 1 }}>
             <Group gap="xs" align="center">
               <IconWallet size={20} color="rgba(255,255,255,0.8)" />
-              <Text size="sm" c="rgba(255,255,255,0.8)" fw={500}>Total Balance / \u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0631\u0635\u064A\u062F</Text>
+              <Text size="sm" c="rgba(255,255,255,0.8)" fw={500}>Total Balance</Text>
             </Group>
             {loading ? (
               <Skeleton height={48} width="60%" style={{ opacity: 0.3 }} />
@@ -210,7 +209,6 @@ export default function Dashboard() {
                 +{formatAmount(totalIncome, currency)}
               </Text>
             )}
-            <Text size="xs" c="dimmed" mt={4}>\u0627\u0644\u062F\u062E\u0644 \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631</Text>
           </Paper>
 
           <Paper
@@ -233,7 +231,6 @@ export default function Dashboard() {
                 -{formatAmount(totalSpending, currency)}
               </Text>
             )}
-            <Text size="xs" c="dimmed" mt={4}>\u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062A \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631</Text>
           </Paper>
 
           <Paper
@@ -267,7 +264,7 @@ export default function Dashboard() {
               </Text>
             )}
             <Text size="xs" c="dimmed" mt={4}>
-              {netDifference >= 0 ? '\u0641\u0627\u0626\u0636 \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631' : '\u0639\u062C\u0632 \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631'}
+              {netDifference >= 0 ? '' : ''}
             </Text>
           </Paper>
         </SimpleGrid>
@@ -277,7 +274,6 @@ export default function Dashboard() {
           <Group justify="space-between" mb="md">
             <Box>
               <Text fw={600} size="lg">Your Accounts</Text>
-              <Text size="xs" c="dimmed">\u062D\u0633\u0627\u0628\u0627\u062A\u0643</Text>
             </Box>
             <Button
               variant="subtle"
@@ -315,7 +311,6 @@ export default function Dashboard() {
               <Group justify="space-between" p="md" pb="sm">
                 <Box>
                   <Text fw={600}>Recent Transactions</Text>
-                  <Text size="xs" c="dimmed">\u0622\u062E\u0631 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062A</Text>
                 </Box>
                 <Button
                   variant="subtle"
@@ -353,7 +348,6 @@ export default function Dashboard() {
               <Group justify="space-between" mb="md">
                 <Box>
                   <Text fw={600}>Spending This Month</Text>
-                  <Text size="xs" c="dimmed">\u0645\u0635\u0627\u0631\u064A\u0641 \u0647\u0630\u0627 \u0627\u0644\u0634\u0647\u0631</Text>
                 </Box>
                 <Button
                   variant="subtle"
