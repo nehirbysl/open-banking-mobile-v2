@@ -37,7 +37,7 @@ async def sign_contract(
     async with acquire() as conn:
         ctx = await conn.fetchrow(
             """
-            SELECT a.application_id, a.dealer_id, a.environment, a.status,
+            SELECT a.application_id, a.dealer_id, a.environment, a.status, a.customer_id,
                    d.decision_id, d.decision, d.valid_until, d.approved_amount,
                    d.interest_rate, d.tenor_months, d.monthly_installment, d.total_repayable
               FROM loan_applications a
