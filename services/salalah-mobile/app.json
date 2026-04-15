@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Salalah Souq",
+    "slug": "salalah-mobile",
+    "scheme": "salalahsouq",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#D35400",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bankdhofar.salalahsouq",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.bankdhofar.salalahsouq",
+      "adaptiveIcon": {
+        "backgroundColor": "#D35400"
+      }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
