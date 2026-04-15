@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Hisab",
+    "slug": "hisab-mobile",
+    "scheme": "hisab",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#00B894"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bankdhofar.hisab",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.bankdhofar.hisab",
+      "adaptiveIcon": {
+        "backgroundColor": "#00B894"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ]
+  }
+}

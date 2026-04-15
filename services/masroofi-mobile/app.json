@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Masroofi",
+    "slug": "masroofi-mobile",
+    "scheme": "masroofi",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#6C5CE7"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bankdhofar.masroofi",
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["bdonline"]
+      }
+    },
+    "android": {
+      "package": "com.bankdhofar.masroofi",
+      "adaptiveIcon": {
+        "backgroundColor": "#6C5CE7"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": false,
+          "data": [
+            { "scheme": "masroofi", "host": "callback" }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-linking",
+      "expo-linear-gradient"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

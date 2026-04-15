@@ -1,0 +1,12 @@
+.git/
+.gitignore
+node_modules/
+.expo/
+.metro/
+dist/
+ios/
+android/
+*.log
+.env
+.env.*
+coverage/

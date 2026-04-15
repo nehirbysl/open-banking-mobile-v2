@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Bank Dhofar Online",
+    "slug": "bd-online-mobile",
+    "scheme": "bdonline",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#4D9134",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bankdhofar.bdonline",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow Bank Dhofar Online to use the camera to scan QR codes for car loan applications and bill payments."
+      }
+    },
+    "android": {
+      "package": "com.bankdhofar.bdonline",
+      "adaptiveIcon": {
+        "backgroundColor": "#4D9134"
+      },
+      "permissions": [
+        "android.permission.CAMERA"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Bank Dhofar Online to use the camera to scan QR codes."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
