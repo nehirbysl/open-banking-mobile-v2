@@ -1,8 +1,6 @@
-// Runs BEFORE expo-router initialises its internals. enableScreens(false)
-// must be called while react-native-screens native module is still dormant
-// — once any screen is rendered, flipping it has no effect.
-import { enableScreens } from "react-native-screens";
+// CommonJS require() — NOT ES import — because ES imports are hoisted
+// by the bundler. We need enableScreens(false) to run BEFORE any
+// expo-router / react-native-screens code initialises the native module.
+const { enableScreens } = require("react-native-screens");
 enableScreens(false);
-
-// Then hand off to expo-router's default entry.
-import "expo-router/entry";
+require("expo-router/entry");
