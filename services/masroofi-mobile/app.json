@@ -34,9 +34,7 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store",
-      "expo-linking",
-      "expo-linear-gradient"
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
