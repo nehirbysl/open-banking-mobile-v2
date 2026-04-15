@@ -9,7 +9,6 @@
  * redirect to /(auth) (the dashboard).
  */
 
-import "../__init_guards/disable-native-screens";
 import React, { useCallback, useEffect, useState } from "react";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
