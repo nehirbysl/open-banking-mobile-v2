@@ -44,9 +44,26 @@ COPY . .
 # zustand ships `import.meta.env.MODE` DEV-warning checks in its compiled
 # output. Hermes / Metro web can't evaluate `import.meta` outside an ESM
 # context → "Cannot use import.meta outside a module" at bundle init.
-# Neutralize at build-time: replace `import.meta.env` with `({})`.
-RUN find node_modules/zustand \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \) \
-      -exec sed -i 's/import\.meta\.env/({})/g' {} \;
+# Neutralize at build-time by rewriting via Node (sed-in-Kaniko has been
+# unreliable under layer caching; an explicit node rewrite always lands
+# in the resulting layer because it writes NEW file bytes).
+RUN node -e "\
+const fs = require('fs'); const path = require('path'); \
+function walk(dir) { \
+  for (const f of fs.readdirSync(dir, { withFileTypes: true })) { \
+    const p = path.join(dir, f.name); \
+    if (f.isDirectory()) walk(p); \
+    else if (/\\.(js|mjs|cjs)$/.test(f.name)) { \
+      let s = fs.readFileSync(p, 'utf8'); \
+      if (s.includes('import.meta.env')) { \
+        s = s.replace(/import\\.meta\\.env/g, '({})'); \
+        fs.writeFileSync(p, s); \
+      } \
+    } \
+  } \
+} \
+walk('node_modules/zustand'); \
+console.log('zustand import.meta.env neutralized');"
 
 # Sanity check: the entry point must resolve. Fails early if package.json
 # "main" or app.json "entryPoint" is broken.
