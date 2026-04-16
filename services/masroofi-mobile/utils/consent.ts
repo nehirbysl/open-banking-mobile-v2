@@ -24,9 +24,21 @@ const CLIENT_ID = "masroofi-demo";
 const CLIENT_SECRET = "masroofi-demo-secret-tnd";
 
 const BD_ONLINE_WEB = "https://banking-api.omtd.bankdhofar.com";
-const BD_ONLINE_DEEPLINK = "bdonline://consent/approve";
 
-export const MASROOFI_CALLBACK_URL = "masroofi://callback";
+// Deep-link targets, tried in order:
+//   1. `bdonline://consent/approve` — only works in a standalone install.
+//   2. `exp://expo-bdonline.omtd.bankdhofar.com/--/consent/approve` — the
+//      Expo Go form: re-enters Expo Go with the target app's Metro URL so
+//      the BD Online dev bundle loads and routes to /consent/approve.
+//   3. Web fallback (banking-api.omtd...) — only if both deep-links fail.
+const BD_ONLINE_DEEPLINK_NATIVE = "bdonline://consent/approve";
+const BD_ONLINE_DEEPLINK_EXPO_GO = "exp://expo-bdonline.omtd.bankdhofar.com/--/consent/approve";
+
+// Same dual-form for the callback URL that BD Online uses to return here.
+const MASROOFI_CALLBACK_NATIVE = "masroofi://callback";
+const MASROOFI_CALLBACK_EXPO_GO = "exp://expo-masroofi.omtd.bankdhofar.com/--/callback";
+
+export const MASROOFI_CALLBACK_URL = MASROOFI_CALLBACK_NATIVE;
 
 export interface CreateConsentResponse {
   consent_id: string;
@@ -80,34 +92,51 @@ export interface BuiltConsentLinks {
   state: string;
 }
 
+export interface BuiltConsentLinksV2 extends BuiltConsentLinks {
+  deepLinkExpoGo: string;
+}
+
 export async function buildConsentRedirectUrls(
   consentId: string,
-): Promise<BuiltConsentLinks> {
+): Promise<BuiltConsentLinksV2> {
   const state = randomState();
   await AsyncStorage.setItem(STATE_KEY, state);
 
-  const query = buildQuery({
+  // Two flavours of redirect_uri — try native scheme first, Expo Go second.
+  // BD Online's /consent/approve passes the redirect_uri through verbatim,
+  // so whichever one comes back matches our own open-URL listener.
+  const redirectExpoGo = MASROOFI_CALLBACK_EXPO_GO;
+
+  const commonParams = {
     consent_id: consentId,
-    redirect_uri: MASROOFI_CALLBACK_URL,
     state,
     client_id: CLIENT_ID,
-  });
+  };
+  const nativeQuery = buildQuery({ ...commonParams, redirect_uri: MASROOFI_CALLBACK_NATIVE });
+  const expoGoQuery = buildQuery({ ...commonParams, redirect_uri: redirectExpoGo });
 
   return {
-    deepLink: `${BD_ONLINE_DEEPLINK}?${query}`,
-    webFallback: `${BD_ONLINE_WEB}/consent/approve?${query}`,
+    deepLink: `${BD_ONLINE_DEEPLINK_NATIVE}?${nativeQuery}`,
+    deepLinkExpoGo: `${BD_ONLINE_DEEPLINK_EXPO_GO}?${expoGoQuery}`,
+    webFallback: `${BD_ONLINE_WEB}/consent/approve?${nativeQuery}`,
     state,
   };
 }
 
 /**
- * Attempt to open the BD Online mobile app via deep link; fall back
- * to the web approval page in the system browser. Returns the URL we
- * actually launched so callers can log it.
+ * Attempt, in priority order:
+ *   1. Native scheme `bdonline://` — standalone-only but tried first.
+ *   2. Expo Go manifest URL `exp://expo-bdonline.omtd...` — works inside
+ *      Expo Go by navigating the already-running Expo Go binary to the
+ *      BD Online dev bundle.
+ *   3. Web fallback — Safari opens banking-api.omtd.bankdhofar.com.
+ *
+ * Returns the URL we actually launched so callers can log it.
  */
 export async function openBankConsent(consentId: string): Promise<string> {
-  const { deepLink, webFallback } = await buildConsentRedirectUrls(consentId);
+  const { deepLink, deepLinkExpoGo, webFallback } = await buildConsentRedirectUrls(consentId);
 
+  // 1. Native scheme
   try {
     const canOpen = await Linking.canOpenURL(deepLink);
     if (canOpen) {
@@ -115,9 +144,20 @@ export async function openBankConsent(consentId: string): Promise<string> {
       return deepLink;
     }
   } catch {
+    // fall through
+  }
+
+  // 2. Expo Go cross-app deep link — Expo Go registers `exp://` on iOS so
+  //    canOpenURL always returns true; rely on openURL directly and let
+  //    its promise reject on failure.
+  try {
+    await Linking.openURL(deepLinkExpoGo);
+    return deepLinkExpoGo;
+  } catch {
     // fall through to web
   }
 
+  // 3. Web
   await Linking.openURL(webFallback);
   return webFallback;
 }
