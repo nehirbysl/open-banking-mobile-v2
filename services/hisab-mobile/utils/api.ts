@@ -14,10 +14,10 @@ import { getSecret } from "./storage";
 // ---------------------------------------------------------------------------
 
 /** Hisab backend (auth, consent redirect helper, bank-connection cache). */
-export const HISAB_API_BASE = "https://hisab.tnd.bankdhofar.com/api";
+export const HISAB_API_BASE = "https://hisab-api.omtd.bankdhofar.com/api";
 
 /** Qantara consent service — AISP APIs live under `/open-banking/v4.0/aisp`. */
-export const QANTARA_BASE = "https://qantara.tnd.bankdhofar.com";
+export const QANTARA_BASE = "https://qantara-api.omtd.bankdhofar.com";
 
 /** BD Online consent approval origin. */
 export const BD_ONLINE_BASE = "https://banking.tnd.bankdhofar.com";
