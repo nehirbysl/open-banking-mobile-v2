@@ -41,11 +41,16 @@ export default function RootLayout() {
     if (user === undefined) return; // still loading
     const inPublic = segments[0] === "(public)";
     const inAuth = segments[0] === "(auth)";
+    // Deep link with consent params — user is coming from a TPP (Masroofi,
+    // Hisab, etc.) wanting consent approval, regardless of which route
+    // expo-router initially landed on. Honour that before anything else.
+    const consentId = params.consent_id;
+    const alreadyOnApprove = inAuth && segments[1] === "consent" && segments[2] === "approve";
 
-    if (!user && !inPublic) {
-      // Not signed in, redirect to login (preserve consent params if present).
-      const consentId = params.consent_id;
-      if (consentId) {
+    if (consentId && !alreadyOnApprove) {
+      if (!user) {
+        // Unauthenticated → login, carrying consent params. Login will
+        // redirect to consent/approve after successful sign-in.
         router.replace({
           pathname: "/(public)/login",
           params: {
@@ -55,8 +60,21 @@ export default function RootLayout() {
           },
         });
       } else {
-        router.replace("/(public)/login");
+        // Authenticated → straight to the consent approve screen.
+        router.replace({
+          pathname: "/(auth)/consent/approve",
+          params: {
+            consent_id: consentId,
+            redirect_uri: params.redirect_uri || "",
+            state: params.state || "",
+          },
+        });
       }
+      return;
+    }
+
+    if (!user && !inPublic) {
+      router.replace("/(public)/login");
     } else if (user && inPublic) {
       router.replace("/(auth)");
     } else if (user && !inAuth && !inPublic) {

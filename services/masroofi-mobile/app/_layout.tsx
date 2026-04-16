@@ -31,13 +31,21 @@ export default function RootLayout() {
 
   useEffect(() => { refreshAuth(); }, [refreshAuth, segments]);
 
-  // Deep-link listener — route BD Online callbacks into /(public)/callback
+  // Deep-link listener — route BD Online callbacks into /(public)/callback.
+  // Matches BOTH URL shapes:
+  //   masroofi://callback?code=...&state=...                (standalone)
+  //   exp://expo-masroofi.omtd.bankdhofar.com/--/callback?… (Expo Go)
+  // In the Expo Go form, hostname is the Metro host and the in-app path
+  // lives in parsed.path ("callback" with the --/ stripped by Linking).
   useEffect(() => {
     const handle = (event: { url: string }) => {
       const { url } = event;
       if (!url) return;
       const parsed = Linking.parse(url);
-      if (parsed.hostname === "callback") {
+      const pathStr = (parsed.path || "").replace(/^--\//, "");
+      const isCallback =
+        parsed.hostname === "callback" || pathStr === "callback" || pathStr.endsWith("/callback");
+      if (isCallback) {
         const params: Record<string, string> = {};
         const qp = parsed.queryParams || {};
         for (const [k, v] of Object.entries(qp)) {
