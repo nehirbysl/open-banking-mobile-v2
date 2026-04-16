@@ -197,16 +197,21 @@ function DashboardBody({
     );
   }
 
-  const { accounts, balances, transactions } = data;
+  // Defensive defaults — the API can return shapes with missing keys on
+  // a freshly-connected consent (no transactions yet etc.) and the old
+  // code would crash with `.filter of undefined` the moment data arrives.
+  const accounts = data.accounts ?? [];
+  const balances = data.balances ?? [];
+  const transactions = data.transactions ?? [];
   const { total: totalBalance, currency } = computeTotalBalance(balances);
 
   const thisMonthTx = transactions.filter((t) => inMonth(t, 0));
   const income = thisMonthTx
     .filter((t) => t.CreditDebitIndicator === "Credit")
-    .reduce((s, t) => s + parseFloat(t.Amount.Amount), 0);
+    .reduce((s, t) => s + parseFloat(t.Amount?.Amount ?? "0"), 0);
   const spending = thisMonthTx
     .filter((t) => t.CreditDebitIndicator === "Debit")
-    .reduce((s, t) => s + parseFloat(t.Amount.Amount), 0);
+    .reduce((s, t) => s + parseFloat(t.Amount?.Amount ?? "0"), 0);
 
   const savingsRate = income > 0 ? Math.max(0, Math.min(1, (income - spending) / income)) : 0;
   const spendingSummary = buildSpendingSummary(thisMonthTx).slice(0, 4);

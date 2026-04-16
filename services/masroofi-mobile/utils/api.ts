@@ -101,23 +101,39 @@ interface TransactionsResponse {
 // ---------------------------------------------------------------------------
 
 export async function getAccounts(): Promise<OBAccount[]> {
-  const res = await apiCall<AccountsResponse>("/accounts");
-  return res.Data?.Account || [];
+  try {
+    const res = await apiCall<AccountsResponse>("/accounts");
+    return Array.isArray(res?.Data?.Account) ? res.Data.Account : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getAllBalances(): Promise<OBBalance[]> {
-  const res = await apiCall<BalancesResponse>("/balances");
-  return res.Data?.Balance || [];
+  try {
+    const res = await apiCall<BalancesResponse>("/balances");
+    return Array.isArray(res?.Data?.Balance) ? res.Data.Balance : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getAllTransactions(): Promise<OBTransaction[]> {
-  const res = await apiCall<TransactionsResponse>("/transactions");
-  return res.Data?.Transaction || [];
+  try {
+    const res = await apiCall<TransactionsResponse>("/transactions");
+    return Array.isArray(res?.Data?.Transaction) ? res.Data.Transaction : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getTransactions(accountId: string): Promise<OBTransaction[]> {
-  const res = await apiCall<TransactionsResponse>(
-    `/accounts/${accountId}/transactions`,
-  );
-  return res.Data?.Transaction || [];
+  try {
+    const res = await apiCall<TransactionsResponse>(
+      `/accounts/${accountId}/transactions`,
+    );
+    return Array.isArray(res?.Data?.Transaction) ? res.Data.Transaction : [];
+  } catch {
+    return [];
+  }
 }
