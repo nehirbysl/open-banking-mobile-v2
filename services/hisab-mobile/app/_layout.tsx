@@ -27,9 +27,13 @@ export default function RootLayout() {
     setUser(u);
   }, []);
 
+  // Re-check AsyncStorage on every route change. Signup / login write the
+  // session asynchronously and then navigate — this effect picks up the
+  // fresh session instead of using the stale null from initial mount
+  // (which would otherwise redirect straight back to /welcome).
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, [checkAuth, segments]);
 
   useEffect(() => {
     if (user === undefined) return; // loading
