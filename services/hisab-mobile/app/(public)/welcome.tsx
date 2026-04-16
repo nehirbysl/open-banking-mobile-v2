@@ -42,6 +42,10 @@ export default function Welcome() {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
+      {/* BUILD_BADGE_INJECTED — remove once verified on device */}
+      <View style={{position:"absolute",top:4,right:8,zIndex:10,backgroundColor:"#F59E0B",paddingHorizontal:8,paddingVertical:3,borderRadius:6}}>
+        <Text style={{color:"white",fontSize:10,fontWeight:"700"}}>v2 · 2026-04-16 14:23 Oman</Text>
+      </View>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.hero}>
           <View style={styles.logoWrap}>
