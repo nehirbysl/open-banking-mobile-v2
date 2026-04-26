@@ -14,16 +14,24 @@ type Phase = 'connecting' | 'authorizing' | 'approved';
 
 export default function CheckoutCallbackScreen() {
   const router = useRouter();
-  const { ref, total } = useLocalSearchParams<{ ref?: string; total?: string }>();
-  const [phase, setPhase] = useState<Phase>('connecting');
+  const params = useLocalSearchParams<{
+    ref?: string;
+    total?: string;
+    fromBank?: string;
+  }>();
+  const [phase, setPhase] = useState<Phase>(
+    params.fromBank ? 'authorizing' : 'connecting',
+  );
 
   useEffect(() => {
     let cancelled = false;
 
     const run = async () => {
-      await new Promise((r) => setTimeout(r, 1200));
-      if (cancelled) return;
-      setPhase('authorizing');
+      if (!params.fromBank) {
+        await new Promise((r) => setTimeout(r, 1200));
+        if (cancelled) return;
+        setPhase('authorizing');
+      }
 
       await new Promise((r) => setTimeout(r, 1400));
       if (cancelled) return;
@@ -36,7 +44,10 @@ export default function CheckoutCallbackScreen() {
       if (cancelled) return;
       router.replace({
         pathname: '/checkout/success',
-        params: { ref: ref || consentId || 'BD-PAY', total: total || '0' },
+        params: {
+          ref: params.ref || consentId || 'BD-PAY',
+          total: params.total || '0',
+        },
       });
     };
 
@@ -67,10 +78,16 @@ export default function CheckoutCallbackScreen() {
             <LinearGradient colors={['#1565C0', '#0D47A1']} style={styles.iconCircle}>
               <Ionicons name="shield-checkmark" size={36} color="#FFF" />
             </LinearGradient>
-            <Text style={styles.title}>Authorizing payment</Text>
-            <Text style={styles.desc}>Bank Dhofar is verifying your account...</Text>
-            {ref && (
-              <Text style={styles.refText}>Ref: {formatMerchantRef(ref)}</Text>
+            <Text style={styles.title}>
+              {params.fromBank ? 'Processing approval' : 'Authorizing payment'}
+            </Text>
+            <Text style={styles.desc}>
+              {params.fromBank
+                ? 'Bank Dhofar approved — finalizing...'
+                : 'Bank Dhofar is verifying your account...'}
+            </Text>
+            {params.ref && (
+              <Text style={styles.refText}>Ref: {formatMerchantRef(params.ref)}</Text>
             )}
             <View style={styles.dots}>
               <View style={[styles.dot, styles.dotDone]} />
