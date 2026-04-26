@@ -27,7 +27,7 @@ import ProductArtwork from '../../../components/ProductArtwork';
 import ScreenHeader from '../../../components/ScreenHeader';
 import PrimaryButton from '../../../components/PrimaryButton';
 import { createPaymentIntent } from '../../../utils/payment';
-import { createPaymentConsent, openBankConsent } from '../../../utils/consent';
+import { storePendingConsent } from '../../../utils/consent';
 
 type PayMethod = 'bdpay' | 'card';
 
@@ -70,22 +70,12 @@ export default function CheckoutScreen() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     setSubmitting(true);
     const intent = createPaymentIntent(totals.total);
-    try {
-      const consent = await createPaymentConsent({
-        amount: intent.amount,
-        currency: intent.currency,
-        merchantRef: intent.merchantRef,
-        merchantName: 'Salalah Souq',
-      });
-      await openBankConsent(consent.consent_id);
-    } catch (err) {
-      Alert.alert(
-        'Payment error',
-        err instanceof Error ? err.message : 'Could not initiate Bank Dhofar payment',
-      );
-    } finally {
-      setSubmitting(false);
-    }
+    await storePendingConsent();
+    router.push({
+      pathname: '/checkout/callback',
+      params: { ref: intent.merchantRef, total: totals.total.toFixed(3) },
+    });
+    setSubmitting(false);
   };
 
   return (

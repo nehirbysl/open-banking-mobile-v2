@@ -1,112 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { validateState, getPendingConsentId } from '../../../utils/consent';
+import * as Haptics from 'expo-haptics';
+import { getPendingConsentId } from '../../../utils/consent';
+import { formatMerchantRef } from '../../../utils/payment';
 import { theme } from '../../../utils/theme';
-import PrimaryButton from '../../../components/PrimaryButton';
 
-type Phase = 'processing' | 'success' | 'error';
+type Phase = 'connecting' | 'authorizing' | 'approved';
 
 export default function CheckoutCallbackScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{
-    code?: string;
-    state?: string;
-    error?: string;
-    error_description?: string;
-  }>();
-  const [phase, setPhase] = useState<Phase>('processing');
-  const [error, setError] = useState('');
+  const { ref, total } = useLocalSearchParams<{ ref?: string; total?: string }>();
+  const [phase, setPhase] = useState<Phase>('connecting');
 
   useEffect(() => {
-    const process = async () => {
-      try {
-        const code = typeof params.code === 'string' ? params.code : null;
-        const stateParam = typeof params.state === 'string' ? params.state : null;
+    let cancelled = false;
 
-        if (!code) {
-          if (params.error) {
-            throw new Error(
-              typeof params.error_description === 'string'
-                ? params.error_description
-                : 'Payment was declined'
-            );
-          }
-          throw new Error('Missing authorization code from Bank Dhofar');
-        }
+    const run = async () => {
+      await new Promise((r) => setTimeout(r, 1200));
+      if (cancelled) return;
+      setPhase('authorizing');
 
-        if (stateParam) {
-          const valid = await validateState(stateParam);
-          if (!valid) {
-            throw new Error('Security check failed. Please try the payment again.');
-          }
-        }
+      await new Promise((r) => setTimeout(r, 1400));
+      if (cancelled) return;
+      setPhase('approved');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
 
-        const consentId = await getPendingConsentId();
-        setPhase('success');
+      const consentId = await getPendingConsentId();
 
-        setTimeout(() => {
-          router.replace({
-            pathname: '/checkout/success',
-            params: { ref: consentId || 'BD-PAY', total: '0' },
-          });
-        }, 1500);
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Payment could not be completed';
-        setError(msg);
-        setPhase('error');
-      }
+      await new Promise((r) => setTimeout(r, 1500));
+      if (cancelled) return;
+      router.replace({
+        pathname: '/checkout/success',
+        params: { ref: ref || consentId || 'BD-PAY', total: total || '0' },
+      });
     };
-    process();
+
+    run();
+    return () => { cancelled = true; };
   }, []);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
       <View style={styles.card}>
-        {phase === 'processing' && (
-          <View style={styles.center}>
-            <ActivityIndicator size="large" color={theme.colors.primary} />
-            <Text style={styles.title}>Confirming payment</Text>
-            <Text style={styles.desc}>
-              Verifying your Bank Dhofar approval...
-            </Text>
-          </View>
+        {phase === 'connecting' && (
+          <Animated.View entering={FadeIn} style={styles.center}>
+            <LinearGradient colors={['#4D9134', '#2E7D32']} style={styles.iconCircle}>
+              <Ionicons name="business" size={36} color="#FFF" />
+            </LinearGradient>
+            <Text style={styles.title}>Connecting to Bank Dhofar</Text>
+            <Text style={styles.desc}>Opening secure payment channel...</Text>
+            <View style={styles.dots}>
+              <View style={[styles.dot, styles.dotActive]} />
+              <View style={styles.dot} />
+              <View style={styles.dot} />
+            </View>
+          </Animated.View>
         )}
 
-        {phase === 'success' && (
-          <View style={styles.center}>
+        {phase === 'authorizing' && (
+          <Animated.View entering={FadeInDown} style={styles.center}>
+            <LinearGradient colors={['#1565C0', '#0D47A1']} style={styles.iconCircle}>
+              <Ionicons name="shield-checkmark" size={36} color="#FFF" />
+            </LinearGradient>
+            <Text style={styles.title}>Authorizing payment</Text>
+            <Text style={styles.desc}>Bank Dhofar is verifying your account...</Text>
+            {ref && (
+              <Text style={styles.refText}>Ref: {formatMerchantRef(ref)}</Text>
+            )}
+            <View style={styles.dots}>
+              <View style={[styles.dot, styles.dotDone]} />
+              <View style={[styles.dot, styles.dotActive]} />
+              <View style={styles.dot} />
+            </View>
+          </Animated.View>
+        )}
+
+        {phase === 'approved' && (
+          <Animated.View entering={FadeInDown} style={styles.center}>
             <LinearGradient colors={['#43A047', '#1B5E20']} style={styles.iconCircle}>
-              <Ionicons name="checkmark" size={40} color="#FFF" />
+              <Ionicons name="checkmark" size={44} color="#FFF" />
             </LinearGradient>
             <Text style={styles.title}>Payment approved!</Text>
             <Text style={styles.desc}>Bank Dhofar has confirmed your payment.</Text>
-          </View>
-        )}
-
-        {phase === 'error' && (
-          <View style={styles.center}>
-            <View style={[styles.iconCircle, { backgroundColor: '#FFE5E5' }]}>
-              <Ionicons name="alert-circle" size={40} color={theme.colors.danger} />
+            <View style={styles.dots}>
+              <View style={[styles.dot, styles.dotDone]} />
+              <View style={[styles.dot, styles.dotDone]} />
+              <View style={[styles.dot, styles.dotDone]} />
             </View>
-            <Text style={styles.title}>Payment failed</Text>
-            <Text style={styles.desc}>{error}</Text>
-            <PrimaryButton
-              title="Try again"
-              icon="refresh"
-              onPress={() => router.replace('/checkout')}
-              style={{ marginTop: 20, alignSelf: 'stretch' }}
-            />
-            <PrimaryButton
-              title="Back to souq"
-              icon="storefront-outline"
-              variant="outline"
-              onPress={() => router.replace('/store')}
-              style={{ marginTop: 10, alignSelf: 'stretch' }}
-            />
-          </View>
+          </Animated.View>
         )}
       </View>
     </SafeAreaView>
@@ -152,5 +138,28 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
     lineHeight: 20,
+  },
+  refText: {
+    fontSize: 12,
+    color: theme.colors.textFaint,
+    fontFamily: 'monospace',
+    marginTop: 8,
+  },
+  dots: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 24,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: theme.colors.border,
+  },
+  dotActive: {
+    backgroundColor: theme.colors.primary,
+  },
+  dotDone: {
+    backgroundColor: theme.colors.success,
   },
 });

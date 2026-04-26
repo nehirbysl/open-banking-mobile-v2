@@ -12,10 +12,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.bankdhofar.salalahsouq",
-      "supportsTablet": true,
-      "infoPlist": {
-        "LSApplicationQueriesSchemes": ["bdonline"]
-      }
+      "supportsTablet": true
     },
     "android": {
       "package": "com.bankdhofar.salalahsouq",
