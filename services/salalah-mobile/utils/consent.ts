@@ -5,14 +5,9 @@ const STATE_KEY = "salalah_oauth_state";
 const CONSENT_ID_KEY = "salalah_pending_consent";
 const TPP_ID = "salalah-souq-demo";
 
-const BD_ONLINE_DEEPLINK_NATIVE = "bdonline://consent/approve";
-const BD_ONLINE_DEEPLINK_EXPO_GO =
-  "exp://expo-bdonline.omtd.bankdhofar.com/--/consent/approve";
-const BD_ONLINE_WEB = "https://banking-api.omtd.bankdhofar.com";
+const BD_ONLINE_DEEPLINK = "bdonline://consent/approve";
 
-const SALALAH_CALLBACK_NATIVE = "salalahsouq://callback";
-const SALALAH_CALLBACK_EXPO_GO =
-  "exp://expo-salalah.omtd.bankdhofar.com/--/callback";
+const SALALAH_CALLBACK = "salalahsouq://callback";
 
 const DEMO_CONSENT_ID = "703b51f7-4dae-437e-b66c-1aecec7d2d07";
 
@@ -52,44 +47,24 @@ export async function openBankConsent(consentId: string): Promise<string> {
   await AsyncStorage.setItem(STATE_KEY, state);
   await AsyncStorage.setItem(CONSENT_ID_KEY, consentId);
 
-  const commonParams = {
+  const query = buildQuery({
     consent_id: consentId,
     state,
     client_id: TPP_ID,
-  };
-
-  const nativeQuery = buildQuery({
-    ...commonParams,
-    redirect_uri: SALALAH_CALLBACK_NATIVE,
-  });
-  const expoGoQuery = buildQuery({
-    ...commonParams,
-    redirect_uri: SALALAH_CALLBACK_EXPO_GO,
+    redirect_uri: SALALAH_CALLBACK,
   });
 
-  const deepLink = `${BD_ONLINE_DEEPLINK_NATIVE}?${nativeQuery}`;
-  const deepLinkExpoGo = `${BD_ONLINE_DEEPLINK_EXPO_GO}?${expoGoQuery}`;
-  const webFallback = `${BD_ONLINE_WEB}/consent/approve?${nativeQuery}`;
+  const deepLink = `${BD_ONLINE_DEEPLINK}?${query}`;
 
-  try {
-    const canOpen = await Linking.canOpenURL(deepLink);
-    if (canOpen) {
-      await Linking.openURL(deepLink);
-      return deepLink;
-    }
-  } catch {
-    // fall through
+  const canOpen = await Linking.canOpenURL(deepLink);
+  if (!canOpen) {
+    throw new Error(
+      "BD Online app is not installed. Please install it from TestFlight first."
+    );
   }
 
-  try {
-    await Linking.openURL(deepLinkExpoGo);
-    return deepLinkExpoGo;
-  } catch {
-    // fall through
-  }
-
-  await Linking.openURL(webFallback);
-  return webFallback;
+  await Linking.openURL(deepLink);
+  return deepLink;
 }
 
 export async function validateState(received: string | null): Promise<boolean> {
