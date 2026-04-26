@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { exchangeAuthCode, validateState, getPendingConsentId } from '../../../utils/consent';
+import { validateState, getPendingConsentId } from '../../../utils/consent';
 import { theme } from '../../../utils/theme';
 import PrimaryButton from '../../../components/PrimaryButton';
 
@@ -45,8 +45,7 @@ export default function CheckoutCallbackScreen() {
           }
         }
 
-        const result = await exchangeAuthCode(code);
-        const consentId = result.consent_id || (await getPendingConsentId());
+        const consentId = await getPendingConsentId();
         setPhase('success');
 
         setTimeout(() => {

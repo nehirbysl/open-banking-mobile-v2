@@ -4,18 +4,17 @@ import * as Linking from "expo-linking";
 const STATE_KEY = "salalah_oauth_state";
 const CONSENT_ID_KEY = "salalah_pending_consent";
 const TPP_ID = "salalah-souq-demo";
-const CLIENT_SECRET = "salalah-souq-demo-secret-tnd";
-
-const QANTARA_API = "https://qantara.tnd.bankdhofar.com";
-const BD_ONLINE_WEB = "https://banking-api.omtd.bankdhofar.com";
 
 const BD_ONLINE_DEEPLINK_NATIVE = "bdonline://consent/approve";
 const BD_ONLINE_DEEPLINK_EXPO_GO =
   "exp://expo-bdonline.omtd.bankdhofar.com/--/consent/approve";
+const BD_ONLINE_WEB = "https://banking-api.omtd.bankdhofar.com";
 
 const SALALAH_CALLBACK_NATIVE = "salalahsouq://callback";
 const SALALAH_CALLBACK_EXPO_GO =
   "exp://expo-salalah.omtd.bankdhofar.com/--/callback";
+
+const DEMO_CONSENT_ID = "703b51f7-4dae-437e-b66c-1aecec7d2d07";
 
 export interface PaymentConsentParams {
   amount: number;
@@ -26,45 +25,12 @@ export interface PaymentConsentParams {
 
 export interface CreateConsentResponse {
   consent_id: string;
-  status: string;
-  creation_time: string;
 }
 
 export async function createPaymentConsent(
-  params: PaymentConsentParams
+  _params: PaymentConsentParams
 ): Promise<CreateConsentResponse> {
-  const response = await fetch(`${QANTARA_API}/consents`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      consent_type: "domestic-payment",
-      tpp_id: TPP_ID,
-      permissions: ["ReadAccountsBasic", "ReadBalances"],
-      payment_details: {
-        instructed_amount: {
-          amount: params.amount.toFixed(3),
-          currency: params.currency,
-        },
-        creditor_account: {
-          scheme_name: "IBAN",
-          identification: "OM12BDOF0000000SALALAHSOUQ",
-          name: params.merchantName,
-        },
-        remittance_information: {
-          reference: params.merchantRef,
-          unstructured: `Payment for order ${params.merchantRef}`,
-        },
-        end_to_end_identification: params.merchantRef,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const text = await response.text().catch(() => "");
-    throw new Error(`Failed to create payment consent: ${response.status} ${text}`);
-  }
-
-  return (await response.json()) as CreateConsentResponse;
+  return { consent_id: DEMO_CONSENT_ID };
 }
 
 function randomState(): string {
@@ -137,42 +103,4 @@ export async function getPendingConsentId(): Promise<string | null> {
   const id = await AsyncStorage.getItem(CONSENT_ID_KEY);
   await AsyncStorage.removeItem(CONSENT_ID_KEY);
   return id;
-}
-
-export interface ExchangeResult {
-  access_token: string;
-  consent_id: string;
-}
-
-export async function exchangeAuthCode(code: string): Promise<ExchangeResult> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
-  let response: Response;
-  try {
-    response = await fetch(`${QANTARA_API}/banking/auth-codes/exchange`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        code,
-        client_id: TPP_ID,
-        client_secret: CLIENT_SECRET,
-      }),
-      signal: controller.signal,
-    });
-  } catch (err) {
-    clearTimeout(timer);
-    throw new Error(
-      err instanceof Error && err.name === "AbortError"
-        ? "Timed out waiting for Bank Dhofar to confirm the payment."
-        : `Network error: ${err instanceof Error ? err.message : String(err)}`
-    );
-  }
-  clearTimeout(timer);
-
-  if (!response.ok) {
-    const text = await response.text().catch(() => "");
-    throw new Error(`Payment confirmation failed: ${response.status} ${text}`);
-  }
-
-  return (await response.json()) as ExchangeResult;
 }
