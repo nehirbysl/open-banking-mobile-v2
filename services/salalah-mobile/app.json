@@ -4,7 +4,6 @@
     "slug": "salalah-mobile",
     "scheme": "salalahsouq",
     "version": "1.0.2",
-    "jsEngine": "jsc",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "splash": {
@@ -14,7 +13,7 @@
     "ios": {
       "bundleIdentifier": "com.bankdhofar.salalahsouq",
       "supportsTablet": true,
-      "buildNumber": "9",
+      "buildNumber": "10",
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["bdonline"],
         "ITSAppUsesNonExemptEncryption": false
@@ -30,7 +29,7 @@
       "expo-router"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": false
     }
   }
 }
