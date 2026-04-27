@@ -25,7 +25,7 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Sharing from 'expo-sharing';
+import { Share } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { getProduct, PRODUCTS, type Product } from '../../../utils/products';
@@ -92,14 +92,9 @@ export default function ProductDetailScreen() {
 
   const shareable = async () => {
     try {
-      const available = await Sharing.isAvailableAsync();
-      if (!available) {
-        Alert.alert('Share', `${product.name} — ${formatOMR(product.price)}`);
-        return;
-      }
-      Alert.alert('Share', `${product.name} ready to share`);
+      await Share.share({ message: `${product.name} — ${formatOMR(product.price)}` });
     } catch {
-      Alert.alert('Share', `${product.name} — ${formatOMR(product.price)}`);
+      // user cancelled
     }
   };
 

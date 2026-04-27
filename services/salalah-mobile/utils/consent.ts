@@ -5,7 +5,9 @@ const STATE_KEY = "salalah_oauth_state";
 const REF_KEY = "salalah_payment_ref";
 const TOTAL_KEY = "salalah_payment_total";
 const CONSENT_ID_KEY = "salalah_pending_consent";
-const DEMO_CONSENT_ID = "703b51f7-4dae-437e-b66c-1aecec7d2d07";
+
+const API_BASE = "https://banking-api.omtd.bankdhofar.com";
+const TPP_ID = "salalah-souq-demo";
 const CLIENT_ID = "salalah-souq-demo";
 const REDIRECT_URI = "salalahsouq://callback";
 
@@ -17,20 +19,56 @@ function randomState(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+async function createPaymentConsent(
+  amount: string,
+  merchantRef: string,
+): Promise<string> {
+  const resp = await fetch(`${API_BASE}/api/consents`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      consent_type: "domestic-payment",
+      tpp_id: TPP_ID,
+      payment_details: {
+        instructed_amount: { amount, currency: "OMR" },
+        creditor_account: {
+          scheme_name: "IBAN",
+          identification: "OM12BDOF0000000SALALAHSOUQ",
+          name: "Salalah Souq",
+        },
+        remittance_information: {
+          reference: merchantRef,
+          unstructured: "Salalah Souq payment",
+        },
+      },
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => "");
+    throw new Error(`Consent creation failed: ${resp.status} ${text}`);
+  }
+
+  const data = await resp.json();
+  return data.consent_id;
+}
+
 export async function openBankConsent(
   merchantRef: string,
   total: string,
 ): Promise<void> {
+  const consentId = await createPaymentConsent(total, merchantRef);
+
   const state = randomState();
   await AsyncStorage.multiSet([
     [STATE_KEY, state],
     [REF_KEY, merchantRef],
     [TOTAL_KEY, total],
-    [CONSENT_ID_KEY, DEMO_CONSENT_ID],
+    [CONSENT_ID_KEY, consentId],
   ]);
 
   const params = new URLSearchParams({
-    consent_id: DEMO_CONSENT_ID,
+    consent_id: consentId,
     state,
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
