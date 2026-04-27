@@ -1,13 +1,14 @@
 diff --git a/node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios/ReactCommon/RCTTurboModule.mm b/node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios/ReactCommon/RCTTurboModule.mm
-index 2a67797..5dc4652 100644
+index 2a67797..b8fa7f3 100644
 --- a/node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios/ReactCommon/RCTTurboModule.mm
 +++ b/node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios/ReactCommon/RCTTurboModule.mm
-@@ -435,7 +435,7 @@ void ObjCTurboModule::performVoidMethodInvocation(
+@@ -435,7 +435,8 @@ void ObjCTurboModule::performVoidMethodInvocation(
      @try {
        [inv invokeWithTarget:strongModule];
      } @catch (NSException *exception) {
 -      throw convertNSExceptionToJSError(runtime, exception, std::string{moduleName}, methodNameStr);
-+      @throw exception;
++      RCTLogError(@"Exception in async void TurboModule method %s.%s: %@", moduleName, methodNameStr.c_str(), exception);
++      return;
      } @finally {
        [retainedObjectsForInvocation removeAllObjects];
      }
